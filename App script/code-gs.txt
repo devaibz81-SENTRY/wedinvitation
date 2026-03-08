@@ -11,6 +11,7 @@
 
 const GUEST_SHEET = 'Guests';
 const ADMIN_SHEET = 'Admin';
+const DEBUG_SHEET = 'Debug';
 
 const GUEST_COLS = [
   'id', 'first_name', 'last_name', 'email', 'phone',
@@ -22,6 +23,7 @@ const GUEST_COLS = [
 // ─── INIT: Run this manually ONCE to create everything ───────────
 function initializeSheets() {
   getOrCreateSheet(GUEST_SHEET, GUEST_COLS);
+  getOrCreateSheet(DEBUG_SHEET, ['Time', 'Msg', 'Raw Content']);
   
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let adminSheet = ss.getSheetByName(ADMIN_SHEET);
@@ -74,8 +76,23 @@ function doPost(e) {
   if (!lock.tryLock(10000)) return jsonOut({ success: false, error: 'Server busy.' });
 
   try {
-    const payload = JSON.parse(e.postData.contents);
-    const action  = payload.action || 'rsvp';
+    // ⬇️ ADDED SUPER DEBUGGER: Logs every single attempt to reach Apps Script
+    try {
+      let contentStr = '';
+      if (e && e.postData && e.postData.contents) contentStr = e.postData.contents;
+      getOrCreateSheet(DEBUG_SHEET, ['Time', 'Msg', 'Raw']).appendRow([new Date(), 'Hit doPost', contentStr || 'No contents/Empty block']);
+    } catch(debugErr) {}
+
+    // Parse payload
+    let payload;
+    if (e.postData && e.postData.contents) {
+      payload = JSON.parse(e.postData.contents);
+    } else {
+      // Fallback if data was sent weirdly
+      payload = JSON.parse(Object.keys(e.parameter)[0]);
+    }
+    
+    const action = payload.action || 'rsvp';
 
     if (action === 'rsvp')         return saveRSVP(payload);
     if (action === 'add_guest')    return saveGuest(payload);
@@ -83,6 +100,7 @@ function doPost(e) {
 
     return jsonOut({ success: false, error: 'Unknown action' });
   } catch (err) {
+    try { getOrCreateSheet(DEBUG_SHEET, []).appendRow([new Date(), 'ERROR in doPost', err.toString()]); } catch(e){}
     return jsonOut({ success: false, error: err.toString() });
   } finally {
     lock.releaseLock();
@@ -91,6 +109,8 @@ function doPost(e) {
 
 // ─── SAVE RSVP (Updates existing guest or adds new one) ──────────
 function saveRSVP(data) {
+  try { getOrCreateSheet(DEBUG_SHEET, []).appendRow([new Date(), 'Entering saveRSVP', JSON.stringify(data)]); } catch(e){}
+  
   const sheet = getOrCreateSheet(GUEST_SHEET, GUEST_COLS);
   const rows = sheet.getDataRange().getValues();
   const headers = rows[0].map(h => h.toString().toLowerCase().replace(/ /g, '_'));
@@ -122,6 +142,7 @@ function saveRSVP(data) {
         sheet.getRange(rowIndex, j + 1).setValue(data[col]);
       }
     });
+    try { getOrCreateSheet(DEBUG_SHEET, []).appendRow([new Date(), 'Updated existing guest', targetId]); } catch(e){}
     return jsonOut({ success: true, id: targetId });
   } else {
     // If no guest_id found or provided, append a new row anyway (failsafe)
@@ -133,6 +154,7 @@ function saveRSVP(data) {
       return data[col] !== undefined ? data[col] : '';
     });
     sheet.appendRow(row);
+    try { getOrCreateSheet(DEBUG_SHEET, []).appendRow([new Date(), 'Added brand new guest row', fallbackId]); } catch(e){}
     return jsonOut({ success: true, id: fallbackId });
   }
 }
@@ -204,5 +226,6 @@ function readSheet(name, cols) {
 }
 
 function jsonOut(data) {
-  return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
 }
