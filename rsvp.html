@@ -245,7 +245,7 @@
 
       <!-- SUBMIT -->
       <div class="submit-wrap">
-        <button type="button" class="btn-submit" id="submit-btn" onclick="submitRSVP()">
+        <button type="button" class="btn-submit" id="submit-btn" onclick="alert('RSVP button clicked!'); submitRSVP()">
           Send My RSVP
         </button>
         <p class="submit-note">Your response will be shared with Rosanna &amp; Andrew.</p>
@@ -287,19 +287,18 @@
     Rosanna &amp; Andrew · July 4, 2026 · Belize ✦
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // ─── Apps Script endpoint ────────────────────────────────────
-    const APPS_SCRIPT_URL = 'https://script.google.com/a/tnc.bz/macros/s/AKfycbwiPKjlkG4IF7uOGEP_7NqmxunKigfSGFFs02QXSMUt/dev';
+    // ─── Supabase Config ────────────────────────────────────
+    const SUPABASE_URL = 'https://hyalpsznjfuhpamzruyg.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_EsTDh8GbuyYRkVCq7jAtSg_9JUhJCTw';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // ─── Read URL params for personalisation ─────────────────────
-    // For App script hosting we grab params right out of the URL string query
     const gUrl = new URL(window.location.href);
     const params = gUrl.searchParams;
-    
-    // Fallback if Apps Script injects params weirdly
     const getParam = (k) => params.get(k) || '';
-
-    const GUEST_ID   = getParam('id');
+    const GUEST_ID = getParam('id');
     const GUEST_NAME = getParam('name');
     const GUEST_TYPE = getParam('type') || 'single';   // single | couple | family
     const MAX_PARTY  = parseInt(getParam('max') || '1', 10);
@@ -444,44 +443,47 @@
 
     function confirmSubmit() {
       closeConfirm();
-      const btn       = document.getElementById('submit-btn');
+      const btn = document.getElementById('submit-btn');
       btn.textContent = 'Sending…'; btn.disabled = true;
 
-      const firstName  = document.getElementById('first-name').value.trim();
-      const lastName   = document.getElementById('last-name').value.trim();
-      const email      = document.getElementById('email').value.trim();
-      const phone      = document.getElementById('phone').value.trim();
+      const firstName = document.getElementById('first-name').value.trim();
+      const lastName = document.getElementById('last-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
       const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
-      const party      = getPartyNames();
-      const partySize  = attendance === 'attending' ? MAX_PARTY : 1;
-      const meal       = document.getElementById('meal').value;
-      const dietary    = [...document.querySelectorAll('.dietary:checked')].map(c => c.value).join(', ');
-      const song       = document.getElementById('song').value.trim();
-      const message    = document.getElementById('message').value.trim();
+      const meal = document.getElementById('meal').value;
+      const dietary = [...document.querySelectorAll('.dietary:checked')].map(c => c.value).join(', ');
+      const song = document.getElementById('song').value.trim();
+      const message = document.getElementById('message').value.trim();
 
-      sendToAppsScript({
-        action: 'rsvp', guest_id: GUEST_ID,
-        first_name: firstName, last_name: lastName, email, phone,
-        guest_type: GUEST_TYPE, attendance, party_size: partySize,
-        party_names: party, meal_preference: meal, dietary,
-        song_request: song, message, submitted_at: new Date().toISOString()
+      // Send to Supabase
+      supabase.from('rsvps').insert([{
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        phone: phone || null,
+        attendance: attendance,
+        plus_one: false,
+        meal_preference: meal || null,
+        dietary_requirements: dietary || null,
+        song_request: song || null,
+        message: message || null,
+        created_at: new Date().toISOString()
+      }]).then(({ error }) => {
+        if (error) {
+          alert('Error: ' + error.message);
+          btn.textContent = 'Send My RSVP'; btn.disabled = false;
+          return;
+        }
+        
+        document.getElementById('rsvp-form-wrap').style.display = 'none';
+        document.getElementById('success-state').style.display = 'block';
+        const msgs = {
+          attending: `We are beyond excited to celebrate with you, ${firstName}! See you in Belize! 🥂`,
+          declined: `We'll miss you dearly, ${firstName}. Thank you for letting us know. 💌`
+        };
+        document.getElementById('success-text').textContent = msgs[attendance] || msgs.attending;
       });
-
-      document.getElementById('rsvp-form-wrap').style.display = 'none';
-      document.getElementById('success-state').style.display  = 'block';
-      const msgs = {
-        attending: `We are beyond excited to celebrate with you, ${firstName}! See you in Belize! 🥂`,
-        declined:  `We'll miss you dearly, ${firstName}. Thank you for letting us know. 💌`
-      };
-      document.getElementById('success-text').textContent = msgs[attendance] || msgs.attending;
-    }
-
-    function sendToAppsScript(payload) {
-      fetch(APPS_SCRIPT_URL, {
-        method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload)
-      }).catch(e => console.error(e));
     }
 
     function showStatus(type, msg) {
