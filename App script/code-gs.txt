@@ -9,27 +9,19 @@
 // DEPLOYMENT: Deploy as Web App -> Execute as 'Me', Access 'Anyone'
 // ════════════════════════════════════════════════════════════════
 
-const RSVP_SHEET  = 'RSVPs';
 const GUEST_SHEET = 'Guests';
 const ADMIN_SHEET = 'Admin';
-
-const RSVP_COLS = [
-  'id', 'guest_id', 'first_name', 'last_name', 'email', 'phone',
-  'guest_type', 'attendance', 'party_size', 'party_names',
-  'meal_preference', 'dietary', 'song_request', 'message',
-  'status', 'submitted_at'
-];
 
 const GUEST_COLS = [
   'id', 'first_name', 'last_name', 'email', 'phone',
   'guest_type', 'max_party', 'deadline', 'notes',
-  'attendance', 'submitted_at', 'reminder_sent', 'created_at'
+  'attendance', 'party_size', 'party_names', 'meal_preference',
+  'dietary', 'song_request', 'message', 'submitted_at', 'reminder_sent', 'created_at'
 ];
 
 // ─── INIT: Run this manually ONCE to create everything ───────────
 function initializeSheets() {
   getOrCreateSheet(GUEST_SHEET, GUEST_COLS);
-  getOrCreateSheet(RSVP_SHEET, RSVP_COLS);
   
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let adminSheet = ss.getSheetByName(ADMIN_SHEET);
@@ -52,15 +44,16 @@ function initializeSheets() {
 
 // ─── GET (Serve HTML or GET API) ────────────────────────────────
 function doGet(e) {
+  // Fix for manual running error:
+  const params = (e && e.parameter) ? e.parameter : {};
+  const action = params.action;
+  const page   = params.page;
+
   // 1. First, make sure our sheets exist
   initializeSheets();
 
-  const action = e.parameter.action;
-  const page   = e.parameter.page;
-
   // 2. API: Fetch Data
   if (action === 'guests') return jsonOut(readSheet(GUEST_SHEET, GUEST_COLS));
-  if (action === 'rsvps')  return jsonOut(readSheet(RSVP_SHEET, RSVP_COLS));
 
   // 3. HTML: Serve Web Pages
   if (page === 'admin') {
@@ -84,8 +77,8 @@ function doPost(e) {
     const payload = JSON.parse(e.postData.contents);
     const action  = payload.action || 'rsvp';
 
-    if (action === 'rsvp')       return saveRSVP(payload);
-    if (action === 'add_guest')  return saveGuest(payload);
+    if (action === 'rsvp')         return saveRSVP(payload);
+    if (action === 'add_guest')    return saveGuest(payload);
     if (action === 'update_guest') return updateGuest(payload);
 
     return jsonOut({ success: false, error: 'Unknown action' });
@@ -96,28 +89,55 @@ function doPost(e) {
   }
 }
 
-// ─── SAVE RSVP ───────────────────────────────────────────────────
+// ─── SAVE RSVP (Updates existing guest or adds new one) ──────────
 function saveRSVP(data) {
-  const sheet = getOrCreateSheet(RSVP_SHEET, RSVP_COLS);
-  const id    = Utilities.getUuid();
+  const sheet = getOrCreateSheet(GUEST_SHEET, GUEST_COLS);
+  const rows = sheet.getDataRange().getValues();
+  const headers = rows[0].map(h => h.toString().toLowerCase().replace(/ /g, '_'));
+  
+  const idCol = headers.indexOf('id');
+  const targetId = data.guest_id;
+  let rowIndex = -1;
 
-  const row = RSVP_COLS.map(col => {
-    if (col === 'id')           return id;
-    if (col === 'status')       return data.attendance === 'later' ? 'waiting_list' : 'responded';
-    if (col === 'submitted_at') return new Date().toISOString();
-    return data[col] !== undefined ? data[col] : '';
-  });
-
-  sheet.appendRow(row);
-
-  if (data.guest_id) {
-    updateGuestAttendance(data.guest_id, data.attendance, new Date().toISOString());
+  // Search for the existing guest
+  if (targetId) {
+    for (let i = 1; i < rows.length; i++) {
+      if (rows[i][idCol] === targetId) {
+        rowIndex = i + 1; // 1-indexed for getRange
+        break;
+      }
+    }
   }
 
-  return jsonOut({ success: true, id });
+  // Set defaults for the RSVP
+  data.status = data.attendance === 'later' ? 'waiting_list' : 'responded';
+  data.submitted_at = new Date().toISOString();
+
+  // If found, update the row with the RSVP answers
+  if (rowIndex > -1) {
+    headers.forEach((col, j) => {
+      // Don't overwrite admin properties randomly, but do overwrite all RSVP answers
+      const rsvpFields = ['email', 'phone', 'attendance', 'party_size', 'party_names', 'meal_preference', 'dietary', 'song_request', 'message', 'submitted_at'];
+      if (rsvpFields.includes(col) && data[col] !== undefined) {
+        sheet.getRange(rowIndex, j + 1).setValue(data[col]);
+      }
+    });
+    return jsonOut({ success: true, id: targetId });
+  } else {
+    // If no guest_id found or provided, append a new row anyway (failsafe)
+    const fallbackId = targetId || Utilities.getUuid();
+    const row = GUEST_COLS.map(col => {
+      if (col === 'id') return fallbackId;
+      if (col === 'status') return data.attendance === 'later' ? 'waiting_list' : 'responded';
+      if (col === 'created_at' || col === 'submitted_at') return data.submitted_at;
+      return data[col] !== undefined ? data[col] : '';
+    });
+    sheet.appendRow(row);
+    return jsonOut({ success: true, id: fallbackId });
+  }
 }
 
-// ─── SAVE GUEST ──────────────────────────────────────────────────
+// ─── SAVE GUEST (From Admin) ─────────────────────────────────────
 function saveGuest(data) {
   const sheet = getOrCreateSheet(GUEST_SHEET, GUEST_COLS);
   const id    = data.id || Utilities.getUuid();
@@ -132,24 +152,26 @@ function saveGuest(data) {
   return jsonOut({ success: true, id });
 }
 
-// ─── UPDATE ATTENDANCE ───────────────────────────────────────────
-function updateGuestAttendance(guestId, attendance, submittedAt) {
+// ─── UPDATE GUEST ──────────────────────────────────────────────────
+function updateGuest(data) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(GUEST_SHEET);
-  if (!sheet || sheet.getLastRow() < 2) return;
+  if (!sheet) return jsonOut({ success: false, error: 'Guests sheet not found' });
 
-  const data = sheet.getDataRange().getValues();
-  const headers = data[0].map(h => h.toString().toLowerCase().replace(/ /g, '_'));
-  const idCol  = headers.indexOf('id');
-  const attCol = headers.indexOf('attendance');
-  const subCol = headers.indexOf('submitted_at');
+  const rows    = sheet.getDataRange().getValues();
+  const headers = rows[0].map(h => h.toString().toLowerCase().replace(/ /g, '_'));
+  const idCol   = headers.indexOf('id');
 
-  for (let i = 1; i < data.length; i++) {
-    if (data[i][idCol] === guestId) {
-      if (attCol >= 0) sheet.getRange(i + 1, attCol + 1).setValue(attendance);
-      if (subCol >= 0) sheet.getRange(i + 1, subCol + 1).setValue(submittedAt);
-      break;
+  for (let i = 1; i < rows.length; i++) {
+    if (rows[i][idCol] === data.id) {
+      headers.forEach((col, j) => {
+        if (col !== 'id' && col !== 'created_at' && data[col] !== undefined) {
+          sheet.getRange(i + 1, j + 1).setValue(data[col]);
+        }
+      });
+      return jsonOut({ success: true });
     }
   }
+  return jsonOut({ success: false, error: 'Guest not found' });
 }
 
 // ─── HELPERS ─────────────────────────────────────────────────────
