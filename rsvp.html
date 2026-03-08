@@ -389,7 +389,7 @@
 
       <!-- SUBMIT -->
       <div class="submit-wrap">
-        <button class="btn-submit" id="submit-btn" onclick="submitRSVP()">
+        <button type="button" class="btn-submit" id="submit-btn" onclick="submitRSVP()">
           Send My RSVP
         </button>
         <p class="submit-note">Your response will be saved securely and shared with Rosanna &amp; Andrew.</p>
@@ -449,6 +449,7 @@
 
     // ─── Submit RSVP ──────────────────────────────────────────
     async function submitRSVP() {
+      alert('Button clicked!');
       const btn = document.getElementById('submit-btn');
       const statusEl = document.getElementById('status-message');
       statusEl.className = 'status-msg';
