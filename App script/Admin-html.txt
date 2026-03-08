@@ -371,9 +371,9 @@ With love, Rosanna & Andrew ✦</textarea>
 
     // ─── WHATSAPP BUILDER ───────────────────────────────────────
     function generatePersonalLink(g) {
-      if(!g || !g.first_name) return `${WEDDING_URL}/rsvp.html`;
-      const p = new URLSearchParams({ id:g.id||'', name:`${g.first_name} ${g.last_name}`, type:g.guest_type||'single', max:g.max_party||1, due:g.deadline||'' });
-      return `${WEDDING_URL}/rsvp.html?${p.toString()}`;
+      if(!g || !g.first_name) return `${APPS_SCRIPT_URL}?page=rsvp`;
+      const p = new URLSearchParams({ page:'rsvp', id:g.id||'', name:`${g.first_name} ${g.last_name}`, type:g.guest_type||'single', max:g.max_party||1, due:g.deadline||'' });
+      return `${APPS_SCRIPT_URL}?${p.toString()}`;
     }
 
     function buildText(g) {

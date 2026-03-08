@@ -259,7 +259,7 @@
       </div>
       <h2>You're All Set!</h2>
       <p id="success-text">Your RSVP has been received. We are so looking forward to celebrating with you in Belize!</p>
-      <a href="index.html" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">← Return to Invitation</a>
+      <a href="https://invitation1.vercel.app" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">← Return to Invitation</a>
     </div>
 
     <!-- ASK AGAIN LATER STATE -->
@@ -267,7 +267,7 @@
       <span class="later-icon">🔔</span>
       <h2>We'll Check Back!</h2>
       <p id="later-text">No worries — we completely understand. We'll reach out closer to the date. We hope you can make it! 🌿</p>
-      <a href="index.html" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">← Return to Invitation</a>
+      <a href="https://invitation1.vercel.app" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">← Return to Invitation</a>
     </div>
 
     <!-- CONFIRM MODAL -->
@@ -292,13 +292,19 @@
     const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/tnc.bz/s/AKfycbwiPKjlkG4IF7uOGEP_7NqmxunKigfSGFFs02QXSMUt/dev';
 
     // ─── Read URL params for personalisation ─────────────────────
-    const params     = new URLSearchParams(window.location.search);
-    const GUEST_ID   = params.get('id')   || '';
-    const GUEST_NAME = params.get('name') || '';
-    const GUEST_TYPE = params.get('type') || 'single';   // single | couple | family
-    const MAX_PARTY  = parseInt(params.get('max') || '1', 10);
-    const DEADLINE   = params.get('due')  || '2026-06-10';
-    const PERS_NOTE  = params.get('msg')  || '';
+    // For App script hosting we grab params right out of the URL string query
+    const gUrl = new URL(window.location.href);
+    const params = gUrl.searchParams;
+    
+    // Fallback if Apps Script injects params weirdly
+    const getParam = (k) => params.get(k) || '';
+
+    const GUEST_ID   = getParam('id');
+    const GUEST_NAME = getParam('name');
+    const GUEST_TYPE = getParam('type') || 'single';   // single | couple | family
+    const MAX_PARTY  = parseInt(getParam('max') || '1', 10);
+    const DEADLINE   = getParam('due')  || '2026-06-10';
+    const PERS_NOTE  = getParam('msg')  || '';
 
     // Format deadline nicely
     function fmtDeadline(iso) {
