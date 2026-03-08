@@ -1,0 +1,174 @@
+// ════════════════════════════════════════════════════════════════
+// ROSANNA & ANDREW WEDDING — Google Apps Script Backend
+// Paste this entire file into your Apps Script editor (code.gs)
+// Deploy as Web App: Execute as Me, Access: Anyone
+// ════════════════════════════════════════════════════════════════
+
+const RSVP_SHEET  = 'RSVPs';
+const GUEST_SHEET = 'Guests';
+
+const RSVP_COLS = [
+  'id', 'guest_id', 'first_name', 'last_name', 'email', 'phone',
+  'guest_type', 'attendance', 'party_size', 'party_names',
+  'meal_preference', 'dietary', 'song_request', 'message',
+  'status', 'submitted_at'
+];
+
+const GUEST_COLS = [
+  'id', 'first_name', 'last_name', 'email', 'phone',
+  'guest_type', 'max_party', 'deadline', 'notes',
+  'attendance', 'submitted_at', 'reminder_sent', 'created_at'
+];
+
+// ─── GET ────────────────────────────────────────────────────────
+function doGet(e) {
+  const action = (e.parameter && e.parameter.action) || 'rsvps';
+  let data;
+
+  if (action === 'rsvps')  data = readSheet(RSVP_SHEET,  RSVP_COLS);
+  else if (action === 'guests') data = readSheet(GUEST_SHEET, GUEST_COLS);
+  else data = { error: 'Unknown action' };
+
+  return jsonOut(data);
+}
+
+// ─── POST ───────────────────────────────────────────────────────
+function doPost(e) {
+  const lock = LockService.scriptLock();
+  if (!lock.tryLock(10000)) return jsonOut({ success: false, error: 'Server busy, retry.' });
+
+  try {
+    const payload = JSON.parse(e.postData.contents);
+    const action  = payload.action || 'rsvp';
+
+    if (action === 'rsvp') {
+      return saveRSVP(payload);
+    } else if (action === 'add_guest') {
+      return saveGuest(payload);
+    } else if (action === 'update_guest') {
+      return updateGuest(payload);
+    }
+    return jsonOut({ success: false, error: 'Unknown action' });
+
+  } catch (err) {
+    return jsonOut({ success: false, error: err.toString() });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// ─── Save RSVP submission ────────────────────────────────────────
+function saveRSVP(data) {
+  const sheet = getOrCreateSheet(RSVP_SHEET, RSVP_COLS);
+  const id    = Utilities.getUuid();
+
+  const row = RSVP_COLS.map(col => {
+    if (col === 'id')           return id;
+    if (col === 'status')       return data.attendance === 'later' ? 'waiting_list' : 'responded';
+    if (col === 'submitted_at') return new Date().toISOString();
+    return data[col] !== undefined ? data[col] : '';
+  });
+
+  sheet.appendRow(row);
+
+  // Also update the Guests sheet attendance if guest_id provided
+  if (data.guest_id) {
+    updateGuestAttendance(data.guest_id, data.attendance, new Date().toISOString());
+  }
+
+  return jsonOut({ success: true, id });
+}
+
+// ─── Save new guest ──────────────────────────────────────────────
+function saveGuest(data) {
+  const sheet = getOrCreateSheet(GUEST_SHEET, GUEST_COLS);
+  const id    = data.id || Utilities.getUuid();
+
+  const row = GUEST_COLS.map(col => {
+    if (col === 'id')         return id;
+    if (col === 'created_at') return new Date().toISOString();
+    return data[col] !== undefined ? data[col] : '';
+  });
+
+  sheet.appendRow(row);
+  return jsonOut({ success: true, id });
+}
+
+// ─── Update guest attendance in Guests sheet ─────────────────────
+function updateGuestAttendance(guestId, attendance, submittedAt) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(GUEST_SHEET);
+  if (!sheet || sheet.getLastRow() < 2) return;
+
+  const data = sheet.getDataRange().getValues();
+  const headers = data[0].map(h => h.toString().toLowerCase().replace(/ /g, '_'));
+  const idCol  = headers.indexOf('id');
+  const attCol = headers.indexOf('attendance');
+  const subCol = headers.indexOf('submitted_at');
+
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][idCol] === guestId) {
+      if (attCol >= 0) sheet.getRange(i + 1, attCol + 1).setValue(attendance);
+      if (subCol >= 0) sheet.getRange(i + 1, subCol + 1).setValue(submittedAt);
+      break;
+    }
+  }
+}
+
+// ─── Update guest record ─────────────────────────────────────────
+function updateGuest(data) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(GUEST_SHEET);
+  if (!sheet) return jsonOut({ success: false, error: 'Guests sheet not found' });
+
+  const rows    = sheet.getDataRange().getValues();
+  const headers = rows[0].map(h => h.toString().toLowerCase().replace(/ /g, '_'));
+  const idCol   = headers.indexOf('id');
+
+  for (let i = 1; i < rows.length; i++) {
+    if (rows[i][idCol] === data.id) {
+      headers.forEach((col, j) => {
+        if (col !== 'id' && col !== 'created_at' && data[col] !== undefined) {
+          sheet.getRange(i + 1, j + 1).setValue(data[col]);
+        }
+      });
+      return jsonOut({ success: true });
+    }
+  }
+  return jsonOut({ success: false, error: 'Guest not found' });
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────
+function getOrCreateSheet(name, cols) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(name);
+  if (!sheet) {
+    sheet = ss.insertSheet(name);
+    const headers = cols.map(c => c.toUpperCase().replace(/_/g, ' '));
+    sheet.appendRow(headers);
+    sheet.getRange(1, 1, 1, cols.length)
+         .setFontWeight('bold')
+         .setBackground('#f3f3f3');
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function readSheet(name, cols) {
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(name);
+  if (!sheet || sheet.getLastRow() < 2) return [];
+
+  const rows    = sheet.getDataRange().getValues();
+  const headers = rows[0].map(h => h.toString().toLowerCase().replace(/ /g, '_'));
+
+  return rows.slice(1).map(row => {
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = row[i]; });
+    return obj;
+  });
+}
+
+function jsonOut(data) {
+  return ContentService
+    .createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}

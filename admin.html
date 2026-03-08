@@ -7,774 +7,413 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --black: #0d0d0d;
-      --ivory: #f5f0e8;
-      --champagne: #d4b896;
-      --blush: #e8c4b8;
-      --green: #3a5c3f;
-      --gold: #c9a84c;
-      --cream: #faf7f2;
-      --sidebar: #111;
-      --attending: #2ecc71;
-      --declined: #e74c3c;
-      --maybe: #f39c12;
-      --not-opened: #95a5a6;
-    }
+    :root { --black:#0d0d0d; --ivory:#f5f0e8; --champagne:#d4b896; --gold:#c9a84c; --sidebar:#111; --attending:#2ecc71; --declined:#e74c3c; --later:#f39c12; --msg:#3498db; }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      display: flex; min-height: 100vh;
-      background: #f0ede8;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 500; font-size: 16px;
-    }
+    body { display: flex; min-height: 100vh; background: #f0ede8; font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 16px; }
 
-    /* ─── LOGIN OVERLAY ───────────────────────────── */
-    #login-overlay {
-      position: fixed; inset: 0; z-index: 999;
-      background: var(--black);
-      display: flex; align-items: center; justify-content: center;
-    }
-    #login-overlay.hidden {
-      display: none;
-    }
-    .login-box {
-      text-align: center; padding: 3rem;
-      border: 1px solid rgba(201,168,76,0.3);
-      min-width: 320px;
-    }
-    .login-box h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem; color: var(--ivory); margin-bottom: 0.5rem;
-    }
+    /* Login */
+    #login-overlay { position: fixed; inset: 0; z-index: 999; background: var(--black); display: flex; align-items: center; justify-content: center; }
+    #login-overlay.hidden { display: none; }
+    .login-box { text-align: center; padding: 3rem; border: 1px solid rgba(201,168,76,0.3); min-width: 320px; }
+    .login-box h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--ivory); margin-bottom: 0.5rem; }
     .login-box p { font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 0.2em; margin-bottom: 2rem; }
-    .login-input {
-      width: 100%; padding: 0.8rem 1rem;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(201,168,76,0.3);
-      color: var(--ivory);
-      font-family: 'Montserrat', sans-serif;
-      outline: none; margin-bottom: 1rem; text-align: center;
-      letter-spacing: 0.2em;
-    }
+    .login-input { width: 100%; padding: 0.8rem 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.3); color: var(--ivory); font-family: 'Montserrat', sans-serif; outline: none; margin-bottom: 1rem; text-align: center; letter-spacing: 0.2em; }
     .login-input:focus { border-color: var(--gold); }
-    .login-btn {
-      width: 100%; padding: 0.9rem;
-      background: var(--gold); border: none;
-      color: var(--black); cursor: pointer;
-      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
-      transition: background 0.3s;
-    }
+    .login-btn { width: 100%; padding: 0.9rem; background: var(--gold); border: none; color: var(--black); cursor: pointer; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; transition: background 0.3s; }
     .login-btn:hover { background: #a8863a; }
-    .login-error { color: #e74c3c; font-size: 0.7rem; margin-top: 0.8rem; display: none; }
 
-    /* ─── SIDEBAR ─────────────────────────────────── */
-    #sidebar {
-      width: 240px; background: var(--sidebar);
-      display: flex; flex-direction: column;
-      padding: 2rem 0; min-height: 100vh; flex-shrink: 0;
-    }
-    .sidebar-brand {
-      text-align: center; padding: 0 1.5rem 2rem;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .sidebar-brand .brand-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem; color: var(--champagne);
-      font-style: italic;
-    }
-    .sidebar-brand .brand-sub {
-      font-size: 0.55rem; letter-spacing: 0.2em;
-      color: rgba(255,255,255,0.3); text-transform: uppercase; margin-top: 0.3rem;
-    }
+    /* Sidebar */
+    #sidebar { width: 240px; background: var(--sidebar); display: flex; flex-direction: column; padding: 2rem 0; min-height: 100vh; flex-shrink: 0; }
+    .sidebar-brand { text-align: center; padding: 0 1.5rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .sidebar-brand .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--champagne); font-style: italic; }
+    .nav-label { font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 0 1.5rem; margin: 1.5rem 0 0.5rem; }
+    .nav-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 1.5rem; cursor: pointer; color: rgba(255,255,255,0.5); border-left: 2px solid transparent; font-size: 0.78rem; transition: 0.2s; }
+    .nav-item:hover, .nav-item.active { color: var(--gold); background: rgba(201,168,76,0.06); border-left-color: var(--gold); }
 
-    .nav-section { padding: 1.5rem 0; }
-    .nav-label {
-      font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase;
-      color: rgba(255,255,255,0.25); padding: 0 1.5rem; margin-bottom: 0.5rem;
-    }
-    .nav-item {
-      display: flex; align-items: center; gap: 0.8rem;
-      padding: 0.7rem 1.5rem; cursor: pointer;
-      color: rgba(255,255,255,0.5); transition: all 0.2s;
-      border-left: 2px solid transparent;
-      font-size: 0.78rem;
-    }
-    .nav-item:hover { color: var(--ivory); background: rgba(255,255,255,0.04); }
-    .nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(201,168,76,0.06); }
-    .nav-icon { width: 16px; text-align: center; font-size: 0.9rem; }
-
-    .sidebar-footer {
-      margin-top: auto; padding: 1.5rem;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-    .sidebar-footer a {
-      font-size: 0.65rem; color: rgba(255,255,255,0.3);
-      text-decoration: none; letter-spacing: 0.1em;
-    }
-    .sidebar-footer a:hover { color: var(--champagne); }
-
-    /* ─── MAIN ────────────────────────────────────── */
+    /* Main Area */
     #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-
-    .top-bar {
-      background: white; padding: 1.2rem 2rem;
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid #e5e0d8; flex-shrink: 0;
-    }
-    .top-bar h1 { font-size: 1rem; font-weight: 400; color: var(--black); }
+    .top-bar { background: white; padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e0d8; }
     .top-bar-actions { display: flex; gap: 1rem; }
-
-    .btn-sm {
-      padding: 0.5rem 1.2rem;
-      border: 1px solid var(--gold); background: transparent;
-      color: var(--black); cursor: pointer;
-      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
-      transition: all 0.2s;
-    }
+    .btn-sm { padding: 0.5rem 1.2rem; border: 1px solid var(--gold); background: transparent; color: var(--black); cursor: pointer; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; transition: 0.2s; }
     .btn-sm:hover { background: var(--gold); color: white; }
-    .btn-sm.primary { background: var(--gold); color: white; border-color: var(--gold); }
-    .btn-sm.primary:hover { background: #a8863a; }
-
-    /* ─── CONTENT AREA ────────────────────────────── */
+    .btn-sm.primary { background: var(--gold); color: white; }
     #content { flex: 1; overflow-y: auto; padding: 2rem; }
 
-    /* ─── STAT CARDS ──────────────────────────────── */
-    .stats-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .stat-card {
-      background: white; padding: 1.5rem;
-      border-bottom: 3px solid transparent;
-      position: relative; overflow: hidden;
-    }
-    .stat-card.green  { border-bottom-color: var(--attending); }
-    .stat-card.red    { border-bottom-color: var(--declined); }
-    .stat-card.yellow { border-bottom-color: var(--maybe); }
-    .stat-card.grey   { border-bottom-color: var(--not-opened); }
-
+    /* Stats Grid */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: white; padding: 1.5rem; border-bottom: 3px solid transparent; }
+    .stat-card.green { border-color: var(--attending); } .stat-card.red { border-color: var(--declined); }
+    .stat-card.yellow { border-color: var(--later); } .stat-card.blue { border-color: var(--msg); }
     .stat-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #999; margin-bottom: 0.5rem; }
     .stat-num { font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--black); line-height: 1; }
-    .stat-pct { font-size: 0.7rem; color: #bbb; margin-top: 0.3rem; }
 
-    /* ─── FILTERS ─────────────────────────────────── */
-    .filter-bar {
-      background: white; padding: 1rem 1.5rem;
-      display: flex; gap: 1rem; align-items: center;
-      flex-wrap: wrap; margin-bottom: 1rem;
-    }
-    .filter-btn {
-      padding: 0.4rem 1rem;
-      border: 1px solid #ddd; background: transparent;
-      font-size: 0.65rem; letter-spacing: 0.1em; cursor: pointer;
-      transition: all 0.2s; border-radius: 2px;
-    }
+    /* Filters */
+    .filter-bar { background: white; padding: 1rem 1.5rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+    .filter-btn { padding: 0.4rem 1rem; border: 1px solid #ddd; background: transparent; font-size: 0.65rem; cursor: pointer; border-radius: 2px; }
     .filter-btn.active { background: var(--black); color: white; border-color: var(--black); }
     .filter-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
 
-    .search-input {
-      margin-left: auto;
-      padding: 0.4rem 1rem;
-      border: 1px solid #ddd; background: transparent;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.75rem; outline: none; min-width: 200px;
-      transition: border-color 0.2s;
-    }
-    .search-input:focus { border-color: var(--gold); }
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; background: white; }
+    th { padding: 0.8rem 1rem; text-align: left; font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: #aaa; background: #fafaf9; }
+    td { padding: 0.9rem 1rem; border-bottom: 1px solid #f8f5f0; font-size: 0.8rem; color: #333; }
+    .status-pill { display: inline-block; padding: 0.25rem 0.8rem; border-radius: 2px; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .pill-attending{background:rgba(46,204,113,0.1);color:var(--attending);}
+    .pill-declined{background:rgba(231,76,60,0.1);color:var(--declined);}
+    .pill-later{background:rgba(243,156,18,0.1);color:var(--later);}
+    .pill-invited{background:rgba(149,165,166,0.1);color:#95a5a6;}
 
-    /* ─── TABLE ───────────────────────────────────── */
-    .table-wrap { background: white; overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; }
-    thead tr { background: #fafaf9; }
-    th {
-      padding: 0.8rem 1rem; text-align: left;
-      font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: #aaa; font-weight: 400; white-space: nowrap;
-      border-bottom: 1px solid #f0ede8;
-      cursor: pointer; user-select: none;
-    }
-    th:hover { color: var(--gold); }
-    td {
-      padding: 0.9rem 1rem; border-bottom: 1px solid #f8f5f0;
-      font-size: 0.8rem; color: #333; vertical-align: middle;
-    }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #faf9f7; }
+    /* WhatsApp Inbox Build */
+    .wa-builder { background: white; padding: 2rem; }
+    .wa-builder h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 1rem; }
+    .wa-template { width: 100%; min-height: 150px; padding: 1rem; border: 1px solid #ddd; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; line-height: 1.6; resize: vertical; margin-bottom: 1rem; }
+    .wa-vars { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .wa-var { padding: 0.3rem 0.7rem; background: #f5f5f5; font-size: 0.65rem; cursor: pointer; border: 1px solid #e0e0e0; }
+    .wa-var:hover { background: var(--gold); color: white; }
+    .wa-preview { background: #f0ede8; padding: 1rem; border-left: 3px solid #25D366; font-size: 0.82rem; white-space: pre-wrap; margin-bottom: 1rem; }
+    .action-btn { padding: 0.3rem 0.6rem; border: 1px solid #ddd; background: transparent; cursor: pointer; font-size: 0.65rem; }
+    .action-btn.wa { border-color: #25D366; color: #25D366; } .action-btn.wa:hover { background: #25D366; color: white; }
 
-    .status-pill {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      padding: 0.25rem 0.8rem;
-      border-radius: 2px; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
-      font-weight: 400;
-    }
-    .pill-attending   { background: rgba(46,204,113,0.1);  color: var(--attending); }
-    .pill-declined    { background: rgba(231,76,60,0.1);   color: var(--declined); }
-    .pill-maybe       { background: rgba(243,156,18,0.1);  color: var(--maybe); }
-    .pill-not-opened  { background: rgba(149,165,166,0.1); color: var(--not-opened); }
-    .pill-invited     { background: rgba(52,152,219,0.1);  color: #3498db; }
-
-    .action-btns { display: flex; gap: 0.4rem; }
-    .action-btn {
-      padding: 0.3rem 0.7rem; border: 1px solid #ddd;
-      background: transparent; cursor: pointer; font-size: 0.6rem;
-      transition: all 0.2s; white-space: nowrap;
-    }
-    .action-btn:hover { background: var(--gold); border-color: var(--gold); color: white; }
-    .action-btn.wa { border-color: #25D366; color: #25D366; }
-    .action-btn.wa:hover { background: #25D366; color: white; }
-
-    /* ─── ADD GUEST MODAL ─────────────────────────── */
-    #modal-overlay {
-      position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0.6);
-      display: none; align-items: center; justify-content: center;
-    }
-    #modal-overlay.open { display: flex; }
-    .modal {
-      background: white; padding: 2.5rem;
-      width: 500px; max-width: 90vw; max-height: 85vh; overflow-y: auto;
-    }
-    .modal h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem; margin-bottom: 1.5rem;
-      padding-bottom: 1rem; border-bottom: 1px solid #f0ede8;
-    }
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 50; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: white; padding: 2.5rem; width: 600px; max-height: 90vh; overflow-y: auto; }
+    .modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #eee; }
     .modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-    .modal-row.full { grid-template-columns: 1fr; }
-    .modal-group { display: flex; flex-direction: column; gap: 0.4rem; }
-    .modal-group label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #aaa; }
-    .modal-group input,
-    .modal-group select {
-      padding: 0.6rem 0; border: none; border-bottom: 1px solid #ddd;
-      font-family: 'Montserrat', sans-serif; font-size: 0.85rem;
-      outline: none; background: transparent;
-    }
-    .modal-group input:focus,
-    .modal-group select:focus { border-bottom-color: var(--gold); }
-    .modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end; }
-
-    /* ─── WHATSAPP PANEL ──────────────────────────── */
-    #wa-panel {
-      background: white; padding: 2rem; margin-top: 1rem; display: none;
-    }
-    #wa-panel h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem; margin-bottom: 1.5rem;
-    }
-    .wa-template {
-      width: 100%; min-height: 120px;
-      padding: 1rem; border: 1px solid #ddd;
-      font-family: 'Montserrat', sans-serif; font-size: 0.85rem;
-      resize: vertical; outline: none; line-height: 1.6;
-      transition: border-color 0.2s;
-    }
-    .wa-template:focus { border-color: var(--gold); }
-    .wa-vars {
-      display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.8rem 0;
-    }
-    .wa-var {
-      padding: 0.3rem 0.7rem; background: #f5f5f5;
-      font-size: 0.65rem; cursor: pointer; border: 1px solid #e0e0e0;
-      transition: all 0.2s;
-    }
-    .wa-var:hover { background: var(--gold); color: white; border-color: var(--gold); }
-    .wa-preview {
-      background: #f0ede8; padding: 1rem 1.2rem;
-      border-left: 3px solid #25D366;
-      font-size: 0.82rem; line-height: 1.7; margin: 1rem 0;
-      white-space: pre-wrap;
-    }
-
-    /* ─── EMPTY STATE ─────────────────────────────── */
-    .empty-state {
-      text-align: center; padding: 4rem;
-      color: #aaa; font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-size: 1.1rem;
-    }
-
-    @media (max-width: 768px) {
-      #sidebar { display: none; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    }
+    .modal-group label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #aaa; display:block; margin-bottom: 0.4rem; }
+    .modal-group input, .modal-group select { width: 100%; padding: 0.6rem; border: 1px solid #ddd; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; outline: none; }
+    .modal-group input:focus, .modal-group select:focus { border-color: var(--gold); }
   </style>
 </head>
 <body>
-
-  <!-- LOGIN -->
+  <!-- Login -->
   <div id="login-overlay">
     <div class="login-box">
-      <h2>Wedding Admin</h2>
-      <p>Rosanna &amp; Andrew · July 4, 2026</p>
-      <input type="password" id="admin-pass" class="login-input" placeholder="Enter Admin Password" onkeydown="if(event.key==='Enter') doLogin()" />
-      <button class="login-btn" onclick="alert('Click works!'); doLogin()">Enter</button>
-      <div class="login-error" id="login-err">Incorrect password. Please try again.</div>
+      <h2>Wedding Admin</h2><p>Rosanna &amp; Andrew · 2026</p>
+      <input type="password" id="admin-pass" class="login-input" placeholder="Enter Password" onkeydown="if(event.key==='Enter') doLogin()" />
+      <button class="login-btn" onclick="doLogin()">Enter</button>
+      <p id="login-err" style="color:#e74c3c;display:none;margin-top:1rem;">Incorrect password.</p>
     </div>
   </div>
 
-  <!-- SIDEBAR -->
+  <!-- Sidebar -->
   <div id="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-name">Rosanna &amp; Andrew</div>
-      <div class="brand-sub">Wedding Admin · 2026</div>
-    </div>
-    <div class="nav-section">
-      <div class="nav-label">Management</div>
-      <div class="nav-item active" onclick="showView('guests')">
-        <span class="nav-icon">◈</span> Guests
-      </div>
-      <div class="nav-item" onclick="showView('whatsapp')">
-        <span class="nav-icon">✉</span> WhatsApp
-      </div>
-    </div>
-    <div class="sidebar-footer">
-      <a href="index.html">← View Invitation</a>
-    </div>
+    <div class="sidebar-brand"><div class="brand-name">Rosanna &amp; Andrew</div></div>
+    <div class="nav-label">Management</div>
+    <div class="nav-item active" onclick="showView('guests')">Guests Data</div>
+    <div class="nav-item" onclick="showView('whatsapp')">WhatsApp Inbox</div>
   </div>
 
-  <!-- MAIN -->
+  <!-- Main -->
   <div id="main">
     <div class="top-bar">
-      <h1 id="view-title">Guest Management</h1>
+      <h1 id="view-title" style="font-size:1.1rem;font-weight:400;">Guest Management</h1>
       <div class="top-bar-actions">
-        <button class="btn-sm" onclick="loadGuests()">⟳ Refresh</button>
-        <button class="btn-sm primary" onclick="openAddModal()">+ Add Guest</button>
+        <button class="btn-sm" onclick="fetchGuests()">⟳ Refresh from Sheets</button>
+        <button class="btn-sm primary" onclick="openAddGuest()">+ Add Guest / Family</button>
       </div>
     </div>
 
     <div id="content">
-
-      <!-- GUESTS VIEW -->
+      <!-- GUEST LIST VIEW -->
       <div id="view-guests">
-        <!-- Stats -->
         <div class="stats-grid">
-          <div class="stat-card green">
-            <div class="stat-label">Attending</div>
-            <div class="stat-num" id="st-attending">—</div>
-            <div class="stat-pct" id="st-attending-pct"></div>
-          </div>
-          <div class="stat-card red">
-            <div class="stat-label">Declined</div>
-            <div class="stat-num" id="st-declined">—</div>
-            <div class="stat-pct" id="st-declined-pct"></div>
-          </div>
-          <div class="stat-card yellow">
-            <div class="stat-label">Maybe / Pending</div>
-            <div class="stat-num" id="st-maybe">—</div>
-            <div class="stat-pct"></div>
-          </div>
-          <div class="stat-card grey">
-            <div class="stat-label">Not Opened</div>
-            <div class="stat-num" id="st-not-opened">—</div>
-            <div class="stat-pct"></div>
-          </div>
+          <div class="stat-card green"><div class="stat-label">Attending</div><div class="stat-num" id="st-attending">0</div></div>
+          <div class="stat-card red"><div class="stat-label">Declined</div><div class="stat-num" id="st-declined">0</div></div>
+          <div class="stat-card yellow"><div class="stat-label">Ask Later (Waitlist)</div><div class="stat-num" id="st-later">0</div></div>
+          <div class="stat-card blue"><div class="stat-label">Total Invited</div><div class="stat-num" id="st-total">0</div></div>
         </div>
 
-        <!-- Filters -->
         <div class="filter-bar">
           <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
           <button class="filter-btn" onclick="setFilter('attending', this)">Attending</button>
-          <button class="filter-btn" onclick="setFilter('maybe', this)">Maybe</button>
-          <button class="filter-btn" onclick="setFilter('declined', this)">Declined</button>
-          <button class="filter-btn" onclick="setFilter('invited', this)">Invited</button>
-          <button class="filter-btn" onclick="setFilter('not_opened', this)">Not Opened</button>
-          <input type="text" class="search-input" id="search-input" placeholder="Search guests…" oninput="renderTable()" />
+          <button class="filter-btn" onclick="setFilter('later', this)">Ask Again Later</button>
+          <button class="filter-btn" onclick="setFilter('invited', this)">Not Responded</button>
+          <button class="filter-btn" onclick="setFilter('single', this)">Singles</button>
+          <button class="filter-btn" onclick="setFilter('couple', this)">Couples</button>
+          <button class="filter-btn" onclick="setFilter('family', this)">Families</button>
         </div>
 
-        <!-- Table -->
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th onclick="sortBy('first_name')">Name</th>
-                <th onclick="sortBy('email')">Email</th>
-                <th>Phone</th>
-                <th onclick="sortBy('attendance')">Status</th>
-                <th>+1</th>
-                <th>Meal</th>
-                <th onclick="sortBy('created_at')">RSVP Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="guests-tbody">
-              <tr><td colspan="8" class="empty-state">Loading guests…</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Guest / Family Lead</th>
+              <th>Type</th>
+              <th>Max Size</th>
+              <th>Status</th>
+              <th>Contact</th>
+              <th>Deadline</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="guests-tbody"><tr><td colspan="7" style="text-align:center;padding:3rem;">Loading data from Google Sheets...</td></tr></tbody>
+        </table>
       </div>
 
       <!-- WHATSAPP VIEW -->
       <div id="view-whatsapp" style="display:none;">
-        <div style="background:white; padding:2rem; margin-bottom:1rem;">
-          <h2 style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; margin-bottom:0.5rem;">
-            WhatsApp Message Builder
-          </h2>
-          <p style="font-size:0.75rem; color:#888; margin-bottom:1.5rem;">
-            Compose personalised messages. Use variables to auto-fill guest details.
-          </p>
+        <div class="wa-builder">
+          <h2>Personalised Invitations &amp; Reminders</h2>
+          <p style="font-size:0.8rem;color:#777;margin-bottom:1.5rem;">Send tailored WhatsApp messages. Unique RSVP links are generated automatically.</p>
 
-          <div style="margin-bottom:1rem;">
-            <label style="font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:#aaa; display:block; margin-bottom:0.6rem;">
-              Send To
-            </label>
-            <select id="wa-send-to" style="padding:0.5rem 1rem; border:1px solid #ddd; font-size:0.8rem; outline:none; background:transparent; min-width:200px;" onchange="updateWAPreview()">
-              <option value="all">All Guests</option>
-              <option value="attending">Attending Only</option>
-              <option value="maybe">Maybe / No Response</option>
-              <option value="not_opened">Not Opened</option>
-              <option value="declined">Declined</option>
+          <div style="margin-bottom:1.5rem;">
+            <label style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Select Group to Message</label><br>
+            <select id="wa-group" style="padding:0.6rem;margin-top:0.4rem;border:1px solid #ddd;outline:none;" onchange="updateWaPreview()">
+              <option value="all">All Guests (Initial Invite)</option>
+              <option value="invited">Not Responded Yet (Reminders)</option>
+              <option value="later">"Ask Later" / Waitlist (Follow-ups)</option>
+              <option value="attending">Attending (Event Updates)</option>
             </select>
           </div>
 
-          <div style="margin-bottom:0.8rem;">
-            <label style="font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:#aaa; display:block; margin-bottom:0.6rem;">
-              Message Template
-            </label>
-            <div class="wa-vars">
-              <span class="wa-var" onclick="insertVar('{{first_name}}')">{{first_name}}</span>
-              <span class="wa-var" onclick="insertVar('{{full_name}}')">{{full_name}}</span>
-              <span class="wa-var" onclick="insertVar('{{wedding_date}}')">{{wedding_date}}</span>
-              <span class="wa-var" onclick="insertVar('{{venue}}')">{{venue}}</span>
-              <span class="wa-var" onclick="insertVar('{{rsvp_link}}')">{{rsvp_link}}</span>
-            </div>
-            <textarea id="wa-message" class="wa-template" oninput="updateWAPreview()">Hi {{first_name}}! 🌿
+          <div class="wa-vars">
+            <span class="wa-var" onclick="insertVar('{{name}}')">{{name}}</span>
+            <span class="wa-var" onclick="insertVar('{{type}}')">{{type}}</span>
+            <span class="wa-var" onclick="insertVar('{{deadline}}')">{{deadline}}</span>
+            <span class="wa-var" onclick="insertVar('{{link}}')">{{link}}</span>
+          </div>
+
+          <!-- Default Template Box -->
+          <textarea id="wa-text" class="wa-template" oninput="updateWaPreview()">Hi {{name}}! 🌿
 
 You are cordially invited to the wedding of *Rosanna Vanessa Depaz* & *Andrew Denton Haylock* 🥂
 
-📅 *Saturday, July 4th, 2026*
-📍 *Belize*
+We've reserved an RSVP specifically for you as a {{type}}. Please let us know if you can make it by {{deadline}}.
 
-We would be so honoured to have you celebrate with us. Follow the link below to view the full invitation and RSVP:
-
-👉 {{rsvp_link}}
+Tap the link below to view your personal invitation and respond:
+👉 {{link}}
 
 With love, Rosanna & Andrew ✦</textarea>
-          </div>
 
-          <div>
-            <div style="font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:#aaa; margin-bottom:0.6rem;">Preview (first guest)</div>
-            <div class="wa-preview" id="wa-preview-text">Loading preview…</div>
-          </div>
+          <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Live Preview (First match)</div>
+          <div class="wa-preview" id="wa-preview">Loading preview...</div>
 
-          <div style="display:flex; gap:1rem; margin-top:1.5rem;">
-            <button class="btn-sm primary" onclick="sendWhatsAppMessages()">Send via WhatsApp</button>
-            <button class="btn-sm" onclick="copyMessage()">Copy Message</button>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem;">
+            <button class="btn-sm primary" onclick="sendMassWA()">Open WhatsApp for Group</button>
+            <button class="btn-sm" onclick="copyWA()">Copy Message</button>
           </div>
-          <p style="font-size:0.65rem; color:#bbb; margin-top:0.8rem;">
-            WhatsApp will open for each guest individually. Approve each send on your device.
-          </p>
         </div>
       </div>
-
     </div>
   </div>
 
   <!-- ADD GUEST MODAL -->
-  <div id="modal-overlay">
+  <div class="modal-overlay" id="add-modal">
     <div class="modal">
-      <h2>Add Guest</h2>
+      <h2>Add Guest / Household</h2>
       <div class="modal-row">
         <div class="modal-group">
-          <label>First Name *</label>
-          <input type="text" id="m-fname" placeholder="First name" />
+          <label>First Name (Lead Guest)</label>
+          <input type="text" id="m-fname" placeholder="John" />
         </div>
         <div class="modal-group">
-          <label>Last Name *</label>
-          <input type="text" id="m-lname" placeholder="Last name" />
+          <label>Last Name</label>
+          <input type="text" id="m-lname" placeholder="Doe" />
         </div>
       </div>
       <div class="modal-row">
         <div class="modal-group">
-          <label>Email</label>
-          <input type="email" id="m-email" placeholder="email@example.com" />
+          <label>Guest Type</label>
+          <select id="m-type" onchange="syncPartySize()">
+            <option value="single">Single</option>
+            <option value="couple">Couple</option>
+            <option value="family">Family (up to 4)</option>
+          </select>
         </div>
+        <div class="modal-group">
+          <label>Max Party Size</label>
+          <input type="number" id="m-max" value="1" min="1" max="4" />
+        </div>
+      </div>
+      <div class="modal-row">
         <div class="modal-group">
           <label>WhatsApp Number</label>
-          <input type="tel" id="m-phone" placeholder="+501 000 0000" />
-        </div>
-      </div>
-      <div class="modal-row">
-        <div class="modal-group">
-          <label>Status</label>
-          <select id="m-status">
-            <option value="invited">Invited (not opened)</option>
-            <option value="attending">Attending</option>
-            <option value="maybe">Maybe</option>
-            <option value="declined">Declined</option>
-          </select>
+          <input type="tel" id="m-phone" placeholder="+501..." />
         </div>
         <div class="modal-group">
-          <label>Plus One?</label>
-          <select id="m-plusone">
-            <option value="false">No</option>
-            <option value="true">Yes</option>
-          </select>
+          <label>RSVP Deadline</label>
+          <input type="date" id="m-due" value="2026-06-10" />
         </div>
       </div>
-      <div class="modal-row full">
-        <div class="modal-group">
-          <label>Notes</label>
-          <input type="text" id="m-notes" placeholder="Any notes…" />
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-sm" onclick="closeModal()">Cancel</button>
-        <button class="btn-sm primary" onclick="addGuest()">Add Guest</button>
+      <div style="display:flex;justify-content:flex-end;gap:1rem;margin-top:2rem;">
+        <button class="btn-sm" onclick="document.getElementById('add-modal').classList.remove('open')">Cancel</button>
+        <button class="btn-sm primary" onclick="submitGuest()">Save to Sheets</button>
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // ─── CONFIG ──────────────────────────────────────────────
-    const SUPABASE_URL = 'https://hyalpsznjfuhpamzruyg.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_EsTDh8GbuyYRkVCq7jAtSg_9JUhJCTw';
-    const ADMIN_PASSWORD = 'admin';   // Change this anytime in admin.html
-    const WEDDING_URL = 'https://invitation1.vercel.app';
-
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    let allGuests = [];
+    const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/tnc.bz/s/AKfycbwiPKjlkG4IF7uOGEP_7NqmxunKigfSGFFs02QXSMUt/dev';
+    const WEDDING_URL     = 'https://invitation1.vercel.app';
+    let guests = [];
     let currentFilter = 'all';
-    let currentSort = { key: 'created_at', dir: 'desc' };
 
-    // ─── AUTH ─────────────────────────────────────────────────
     function doLogin() {
-      const pw = document.getElementById('admin-pass').value;
-      if (pw === 'admin') {
+      if (document.getElementById('admin-pass').value === 'admin') {
         document.getElementById('login-overlay').classList.add('hidden');
-        loadGuests();
+        fetchGuests();
       } else {
-        alert('Wrong password! Try: admin');
         document.getElementById('login-err').style.display = 'block';
       }
     }
     
-    // Auto-login for testing
-    window.onload = function() {
-      setTimeout(function() {
-        document.getElementById('login-overlay').classList.add('hidden');
-        loadGuests();
-      }, 500);
-    };
+    // Auto-login for dev
+    window.onload = () => { setTimeout(() => { document.getElementById('login-overlay').classList.add('hidden'); fetchGuests(); }, 500); };
 
-    // ─── NAV ──────────────────────────────────────────────────
     function showView(view) {
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
       event.currentTarget.classList.add('active');
-
-      document.getElementById('view-guests').style.display   = view === 'guests'    ? 'block' : 'none';
-      document.getElementById('view-whatsapp').style.display = view === 'whatsapp'  ? 'block' : 'none';
-
-      const titles = { guests: 'Guest Management', whatsapp: 'WhatsApp Messaging' };
-      document.getElementById('view-title').textContent = titles[view];
+      document.getElementById('view-guests').style.display = view==='guests'?'block':'none';
+      document.getElementById('view-whatsapp').style.display = view==='whatsapp'?'block':'none';
+      document.getElementById('view-title').textContent = view==='guests'?'Guest Management':'WhatsApp Inbox';
+      updateWaPreview();
     }
 
-    // ─── LOAD DATA ────────────────────────────────────────────
-    async function loadGuests() {
-      try {
-        const { data, error } = await supabase
-          .from('rsvps')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        allGuests = data || [];
-        updateStats();
-        renderTable();
-        updateWAPreview();
-      } catch (err) {
-        console.error('Load error:', err);
-        document.getElementById('guests-tbody').innerHTML =
-          `<tr><td colspan="8" class="empty-state">Error loading data. Check Supabase config.</td></tr>`;
-      }
-    }
-
-    // ─── STATS ────────────────────────────────────────────────
-    function updateStats() {
-      const total = allGuests.length;
-      const att = allGuests.filter(g => g.attendance === 'attending').length;
-      const dec = allGuests.filter(g => g.attendance === 'declined').length;
-      const may = allGuests.filter(g => g.attendance === 'maybe').length;
-      const inv = allGuests.filter(g => !g.attendance || g.attendance === 'invited').length;
-
-      document.getElementById('st-attending').textContent = att;
-      document.getElementById('st-declined').textContent = dec;
-      document.getElementById('st-maybe').textContent = may;
-      document.getElementById('st-not-opened').textContent = inv;
-
-      if (total) {
-        document.getElementById('st-attending-pct').textContent = `${Math.round(att/total*100)}% of total`;
-        document.getElementById('st-declined-pct').textContent  = `${Math.round(dec/total*100)}% of total`;
-      }
-    }
-
-    // ─── FILTER & RENDER ──────────────────────────────────────
-    function setFilter(filter, btn) {
-      currentFilter = filter;
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    function setFilter(f, btn) {
+      currentFilter = f;
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       renderTable();
     }
 
-    function sortBy(key) {
-      if (currentSort.key === key) currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
-      else currentSort = { key, dir: 'asc' };
-      renderTable();
+    // ─── DATA SYNC ──────────────────────────────────────────────
+    async function fetchGuests() {
+      document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">Syncing with Sheets...</td></tr>`;
+      try {
+        const res = await fetch(`${APPS_SCRIPT_URL}?action=guests`);
+        guests = await res.json();
+        updateStats(); renderTable(); updateWaPreview();
+      } catch (err) {
+        document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;color:red;padding:2rem;">Error loading data. Are you sure Apps Script is published correctly?</td></tr>`;
+      }
+    }
+
+    function updateStats() {
+      const att = guests.filter(g => g.attendance === 'attending').length;
+      const dec = guests.filter(g => g.attendance === 'declined').length;
+      const lat = guests.filter(g => g.attendance === 'later').length;
+      document.getElementById('st-total').textContent = guests.length;
+      document.getElementById('st-attending').textContent = att;
+      document.getElementById('st-declined').textContent = dec;
+      document.getElementById('st-later').textContent = lat;
     }
 
     function renderTable() {
-      const search = (document.getElementById('search-input')?.value || '').toLowerCase();
-
-      let filtered = allGuests.filter(g => {
-        const matchFilter =
-          currentFilter === 'all' ||
-          (currentFilter === 'not_opened' && (!g.attendance || g.attendance === 'invited')) ||
-          g.attendance === currentFilter;
-        const name = `${g.first_name} ${g.last_name}`.toLowerCase();
-        const matchSearch = !search || name.includes(search) || (g.email||'').includes(search);
-        return matchFilter && matchSearch;
-      });
-
-      filtered.sort((a, b) => {
-        const v1 = (a[currentSort.key] || '').toString().toLowerCase();
-        const v2 = (b[currentSort.key] || '').toString().toLowerCase();
-        return currentSort.dir === 'asc' ? v1.localeCompare(v2) : v2.localeCompare(v1);
+      let filtered = guests.filter(g => {
+        if(currentFilter === 'all') return true;
+        if(currentFilter === 'single' || currentFilter === 'couple' || currentFilter === 'family') return g.guest_type === currentFilter;
+        if(currentFilter === 'invited') return (!g.attendance || g.attendance === 'invited');
+        return g.attendance === currentFilter;
       });
 
       const tbody = document.getElementById('guests-tbody');
-      if (!filtered.length) {
-        tbody.innerHTML = `<tr><td colspan="8" class="empty-state">No guests found.</td></tr>`;
-        return;
-      }
+      if(!filtered.length) { tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">No guests matching filter.</td></tr>`; return; }
 
       tbody.innerHTML = filtered.map(g => {
-        const status = g.attendance || 'invited';
-        const pillClass = {
-          attending: 'pill-attending', declined: 'pill-declined',
-          maybe: 'pill-maybe', invited: 'pill-invited'
-        }[status] || 'pill-not-opened';
-        const pillLabel = {
-          attending: '✓ Attending', declined: '✗ Declined',
-          maybe: '? Maybe', invited: '✉ Invited'
-        }[status] || '○ No Response';
+        const st = g.attendance || 'invited';
+        const pClass = { attending:'pill-attending', declined:'pill-declined', later:'pill-later', invited:'pill-invited' }[st];
+        const pLabel = { attending:'✓ Yes', declined:'✗ No', later:'🔔 Ask Later', invited:'✉ Invited' }[st];
 
-        const date = g.created_at ? new Date(g.created_at).toLocaleDateString('en-GB', {
-          day:'numeric', month:'short', year:'numeric'
-        }) : '—';
-
-        const phone = g.phone ? g.phone.replace(/\s/g, '') : '';
-        const waMsg = encodeURIComponent(buildMessage(g));
+        const link = generatePersonalLink(g);
+        const waMsg = encodeURIComponent(buildText(g));
+        const phone = g.phone ? g.phone.replace(/\s/g,'') : '';
 
         return `<tr>
           <td><strong>${g.first_name} ${g.last_name}</strong></td>
-          <td style="color:#888">${g.email || '—'}</td>
-          <td>${g.phone || '—'}</td>
-          <td><span class="status-pill ${pillClass}">${pillLabel}</span></td>
-          <td>${g.plus_one ? `Yes${g.plus_one_name ? ` (${g.plus_one_name})` : ''}` : 'No'}</td>
-          <td>${g.meal_preference || '—'}</td>
-          <td style="color:#aaa; font-size:0.75rem">${date}</td>
-          <td>
-            <div class="action-btns">
-              ${phone ? `<button class="action-btn wa" onclick="window.open('https://wa.me/${phone}?text=${waMsg}','_blank')">WhatsApp</button>` : ''}
-              <button class="action-btn" onclick="deleteGuest('${g.id}')">Remove</button>
-            </div>
-          </td>
+          <td style="text-transform:capitalize">${g.guest_type || 'Single'}</td>
+          <td>${g.max_party || 1} allowed</td>
+          <td><span class="status-pill ${pClass}">${pLabel}</span></td>
+          <td>${g.phone||'—'}</td>
+          <td style="font-size:0.75rem">${g.deadline ? new Date(g.deadline).toLocaleDateString() : '—'}</td>
+          <td><div style="display:flex;gap:0.4rem;">
+            <button class="action-btn" onclick="navigator.clipboard.writeText('${link}');alert('Copied link!')">Copy URL</button>
+            ${phone ? `<button class="action-btn wa" onclick="window.open('https://wa.me/${phone}?text=${waMsg}','_blank')">WA</button>` : ''}
+          </div></td>
         </tr>`;
       }).join('');
     }
 
-    // ─── ADD GUEST ────────────────────────────────────────────
-    function openAddModal() {
-      document.getElementById('modal-overlay').classList.add('open');
-    }
-    function closeModal() {
-      document.getElementById('modal-overlay').classList.remove('open');
-    }
-
-    async function addGuest() {
-      const fn = document.getElementById('m-fname').value.trim();
-      const ln = document.getElementById('m-lname').value.trim();
-      if (!fn || !ln) { alert('Please enter first and last name.'); return; }
-
-      const { error } = await supabase.from('rsvps').insert([{
-        first_name: fn, last_name: ln,
-        email: document.getElementById('m-email').value.trim() || null,
-        phone: document.getElementById('m-phone').value.trim() || null,
-        attendance: document.getElementById('m-status').value,
-        plus_one: document.getElementById('m-plusone').value === 'true',
-        message: document.getElementById('m-notes').value.trim() || null,
-        created_at: new Date().toISOString()
-      }]);
-
-      if (error) { alert('Error: ' + error.message); return; }
-      closeModal();
-      loadGuests();
-      // Clear form
-      ['m-fname','m-lname','m-email','m-phone','m-notes'].forEach(id => document.getElementById(id).value = '');
+    // ─── ADDING FROM DASH ───────────────────────────────────────
+    function openAddGuest() { document.getElementById('add-modal').classList.add('open'); }
+    function syncPartySize() {
+      const t = document.getElementById('m-type').value;
+      const m = document.getElementById('m-max');
+      if(t==='single') m.value=1; else if(t==='couple') m.value=2; else if(t==='family') m.value=4;
     }
 
-    // ─── DELETE GUEST ─────────────────────────────────────────
-    async function deleteGuest(id) {
-      if (!confirm('Remove this guest from the list?')) return;
-      const { error } = await supabase.from('rsvps').delete().eq('id', id);
-      if (error) { alert('Error: ' + error.message); return; }
-      loadGuests();
+    function submitGuest() {
+      const btn = document.querySelector('.modal .primary');
+      btn.textContent = 'Saving...'; btn.disabled = true;
+
+      const payload = {
+        action: 'add_guest',
+        first_name: document.getElementById('m-fname').value.trim(),
+        last_name: document.getElementById('m-lname').value.trim(),
+        guest_type: document.getElementById('m-type').value,
+        max_party: parseInt(document.getElementById('m-max').value, 10),
+        phone: document.getElementById('m-phone').value.trim(),
+        deadline: document.getElementById('m-due').value,
+        attendance: 'invited'
+      };
+
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(() => {
+        payload.id = Date.now().toString(); // local mock till fetch
+        guests.unshift(payload);
+        document.getElementById('add-modal').classList.remove('open');
+        btn.textContent = 'Save to Sheets'; btn.disabled = false;
+        fetchGuests(); // grab real data
+      }).catch(e => { alert('Failed: '+e); btn.textContent = 'Save to Sheets'; btn.disabled = false; });
     }
 
-    // ─── WHATSAPP ─────────────────────────────────────────────
-    function buildMessage(guest) {
-      const template = document.getElementById('wa-message')?.value || '';
-      return template
-        .replace(/{{first_name}}/g, guest.first_name || 'there')
-        .replace(/{{full_name}}/g, `${guest.first_name} ${guest.last_name}`)
-        .replace(/{{wedding_date}}/g, 'Saturday, July 4th, 2026')
-        .replace(/{{venue}}/g, 'Belize')
-        .replace(/{{rsvp_link}}/g, `${WEDDING_URL}/rsvp.html`);
+    // ─── WHATSAPP BUILDER ───────────────────────────────────────
+    function generatePersonalLink(g) {
+      if(!g || !g.first_name) return `${WEDDING_URL}/rsvp.html`;
+      const p = new URLSearchParams({ id:g.id||'', name:`${g.first_name} ${g.last_name}`, type:g.guest_type||'single', max:g.max_party||1, due:g.deadline||'' });
+      return `${WEDDING_URL}/rsvp.html?${p.toString()}`;
     }
 
-    function updateWAPreview() {
-      const preview = document.getElementById('wa-preview-text');
-      if (!preview) return;
-      const sample = allGuests[0] || { first_name: 'Guest', last_name: 'Name' };
-      preview.textContent = buildMessage(sample);
+    function buildText(g) {
+      const tmpl = document.getElementById('wa-text').value;
+      if(!g) return tmpl;
+      return tmpl
+        .replace(/{{name}}/g, g.first_name || 'Guest')
+        .replace(/{{type}}/g, g.guest_type || 'single')
+        .replace(/{{deadline}}/g, g.deadline ? new Date(g.deadline).toLocaleDateString() : 'June 10th')
+        .replace(/{{link}}/g, generatePersonalLink(g));
+    }
+
+    function updateWaPreview() {
+      const tgt = document.getElementById('wa-group').value;
+      const list = guests.filter(g => tgt==='all' ? true : tgt==='invited' ? (!g.attendance || g.attendance==='invited') : g.attendance === tgt);
+      const sample = list[0];
+      document.getElementById('wa-preview').textContent = sample ? buildText(sample) : "No guests match this filter.";
     }
 
     function insertVar(v) {
-      const ta = document.getElementById('wa-message');
-      const start = ta.selectionStart; const end = ta.selectionEnd;
-      ta.value = ta.value.substring(0, start) + v + ta.value.substring(end);
-      ta.focus(); ta.selectionStart = ta.selectionEnd = start + v.length;
-      updateWAPreview();
+      const ta = document.getElementById('wa-text');
+      const s = ta.selectionStart, e = ta.selectionEnd;
+      ta.value = ta.value.substring(0, s) + v + ta.value.substring(e);
+      updateWaPreview();
     }
 
-    function sendWhatsAppMessages() {
-      const sendTo = document.getElementById('wa-send-to').value;
-      let targets = allGuests.filter(g => g.phone);
+    function copyWA() {
+      navigator.clipboard.writeText(document.getElementById('wa-preview').textContent);
+      alert('Copied to clipboard!');
+    }
 
-      if (sendTo !== 'all') {
-        targets = targets.filter(g => {
-          if (sendTo === 'not_opened') return !g.attendance || g.attendance === 'invited';
-          return g.attendance === sendTo;
-        });
-      }
+    function sendMassWA() {
+      const tgt = document.getElementById('wa-group').value;
+      const list = guests.filter(g => (tgt==='all' ? true : tgt==='invited' ? (!g.attendance || g.attendance==='invited') : g.attendance === tgt) && g.phone);
+      if(!list.length) { alert('No guests with phones match this filter.'); return; }
+      if(!confirm(`Deploy WhatsApp msg to ${list.length} guest(s)?`)) return;
 
-      if (!targets.length) { alert('No guests with phone numbers match this filter.'); return; }
-      if (!confirm(`Open WhatsApp for ${targets.length} guest(s)?`)) return;
-
-      targets.forEach((g, i) => {
-        setTimeout(() => {
-          const phone = g.phone.replace(/\s/g,'');
-          const msg = encodeURIComponent(buildMessage(g));
-          window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
-        }, i * 800);
+      list.forEach((g,i) => {
+        setTimeout(()=>{ window.open(`https://wa.me/${g.phone.replace(/\s/g,'')}?text=${encodeURIComponent(buildText(g))}`, '_blank'); }, i*800);
       });
-    }
-
-    function copyMessage() {
-      const sample = allGuests[0] || { first_name: 'Guest', last_name: 'Name' };
-      navigator.clipboard.writeText(buildMessage(sample));
-      alert('Message copied to clipboard!');
     }
   </script>
 </body>
