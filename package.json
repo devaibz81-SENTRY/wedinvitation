@@ -1,0 +1,11 @@
+{
+  "name": "rose-and-passy",
+  "private": true,
+  "scripts": {
+    "convex:dev": "convex dev",
+    "convex:deploy": "convex deploy"
+  },
+  "devDependencies": {
+    "convex": "^1.20.0"
+  }
+}

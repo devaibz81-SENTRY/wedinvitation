@@ -3,6 +3,42 @@
 
 ---
 
+## Convex Backend (Instant Commit + Fetch)
+
+This project now uses Convex for RSVP writes and admin guest reads/writes.
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start Convex locally:
+   ```bash
+   npm run convex:dev
+   ```
+3. Deploy Convex (when ready):
+   ```bash
+   npm run convex:deploy
+   ```
+4. Copy your Convex site URL (example: `https://your-project.convex.site`)
+5. Set `CONVEX_HTTP_URL` in:
+   - `rsvp.html`
+   - `admin.html`
+
+Convex HTTP routes used:
+- `GET /api/guests`
+- `POST /api/guest`
+- `POST /api/rsvp`
+- `POST /api/auth/login`
+- `GET /api/auth/me`
+- `POST /api/auth/logout`
+
+Admin auth is now enforced server-side:
+- Admin page logs in via `POST /api/auth/login`
+- Guest list/add APIs require `Authorization: Bearer <token>`
+- Set backend admin password with Convex env var `ADMIN_PASSWORD` (default fallback is `admin`)
+
+---
+
 ## 📁 File Structure
 
 ```

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin — R&A Wedding Management</title>
+  <title>Admin â€” R&A Wedding Management</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
@@ -89,7 +89,7 @@
   <!-- Login -->
   <div id="login-overlay">
     <div class="login-box">
-      <h2>Wedding Admin</h2><p>Rosanna &amp; Andrew · 2026</p>
+      <h2>Wedding Admin</h2><p>Rosanna &amp; Andrew Â· 2026</p>
       <input type="password" id="admin-pass" class="login-input" placeholder="Enter Password" onkeydown="if(event.key==='Enter') doLogin()" />
       <button class="login-btn" onclick="doLogin()">Enter</button>
       <p id="login-err" style="color:#e74c3c;display:none;margin-top:1rem;">Incorrect password.</p>
@@ -109,8 +109,9 @@
     <div class="top-bar">
       <h1 id="view-title" style="font-size:1.1rem;font-weight:400;">Guest Management</h1>
       <div class="top-bar-actions">
-        <button class="btn-sm" onclick="fetchGuests()">⟳ Refresh from Sheets</button>
+        <button class="btn-sm" onclick="fetchGuests()">âŸ³ Refresh</button>
         <button class="btn-sm primary" onclick="openAddGuest()">+ Add Guest / Family</button>
+        <button class="btn-sm" onclick="logout()">Logout</button>
       </div>
     </div>
 
@@ -146,7 +147,7 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody id="guests-tbody"><tr><td colspan="7" style="text-align:center;padding:3rem;">Loading data from Google Sheets...</td></tr></tbody>
+          <tbody id="guests-tbody"><tr><td colspan="7" style="text-align:center;padding:3rem;">Loading data from Convex...</td></tr></tbody>
         </table>
       </div>
 
@@ -174,16 +175,16 @@
           </div>
 
           <!-- Default Template Box -->
-          <textarea id="wa-text" class="wa-template" oninput="updateWaPreview()">Hi {{name}}! 🌿
+          <textarea id="wa-text" class="wa-template" oninput="updateWaPreview()">Hi {{name}}! ðŸŒ¿
 
-You are cordially invited to the wedding of *Rosanna Vanessa Depaz* & *Andrew Denton Haylock* 🥂
+You are cordially invited to the wedding of *Rosanna Vanessa Depaz* & *Andrew Denton Haylock* ðŸ¥‚
 
 We've reserved an RSVP specifically for you as a {{type}}. Please let us know if you can make it by {{deadline}}.
 
 Tap the link below to view your personal invitation and respond:
-👉 {{link}}
+ðŸ‘‰ {{link}}
 
-With love, Rosanna & Andrew ✦</textarea>
+With love, Rosanna & Andrew âœ¦</textarea>
 
           <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Live Preview (First match)</div>
           <div class="wa-preview" id="wa-preview">Loading preview...</div>
@@ -237,28 +238,78 @@ With love, Rosanna & Andrew ✦</textarea>
       </div>
       <div style="display:flex;justify-content:flex-end;gap:1rem;margin-top:2rem;">
         <button class="btn-sm" onclick="document.getElementById('add-modal').classList.remove('open')">Cancel</button>
-        <button class="btn-sm primary" onclick="submitGuest()">Save to Sheets</button>
+        <button class="btn-sm primary" onclick="submitGuest()">Save Guest</button>
       </div>
     </div>
   </div>
 
   <script>
-    const APPS_SCRIPT_URL = 'https://script.google.com/a/tnc.bz/macros/s/AKfycbwiPKjlkG4IF7uOGEP_7NqmxunKigfSGFFs02QXSMUt/dev';
+    const CONVEX_HTTP_URL = 'https://YOUR_DEPLOYMENT.convex.site';
     const WEDDING_URL     = 'https://wedding-invitation1-seven.vercel.app';
+    const SESSION_KEY     = 'ra_admin_token';
     let guests = [];
     let currentFilter = 'all';
+    let adminToken = localStorage.getItem(SESSION_KEY) || '';
 
-    function doLogin() {
-      if (document.getElementById('admin-pass').value === 'admin') {
+    async function doLogin() {
+      const pass = document.getElementById('admin-pass').value;
+      try {
+        const res = await fetch(`${CONVEX_HTTP_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pass })
+        });
+        if (!res.ok) throw new Error('Invalid password');
+        const data = await res.json();
+        adminToken = data.token;
+        localStorage.setItem(SESSION_KEY, adminToken);
         document.getElementById('login-overlay').classList.add('hidden');
-        fetchGuests();
-      } else {
+        document.getElementById('login-err').style.display = 'none';
+        await fetchGuests();
+      } catch (err) {
         document.getElementById('login-err').style.display = 'block';
       }
     }
     
-    // Auto-login for dev
-    window.onload = () => { setTimeout(() => { document.getElementById('login-overlay').classList.add('hidden'); fetchGuests(); }, 500); };
+    async function logout() {
+      if (adminToken) {
+        await fetch(`${CONVEX_HTTP_URL}/api/auth/logout`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${adminToken}` }
+        }).catch(() => {});
+      }
+      adminToken = '';
+      localStorage.removeItem(SESSION_KEY);
+      document.getElementById('login-overlay').classList.remove('hidden');
+      document.getElementById('admin-pass').value = '';
+    }
+
+    window.onload = async () => {
+      if (adminToken && await hasValidSession()) {
+        document.getElementById('login-overlay').classList.add('hidden');
+        await fetchGuests();
+      } else {
+        adminToken = '';
+        localStorage.removeItem(SESSION_KEY);
+        document.getElementById('login-overlay').classList.remove('hidden');
+      }
+    };
+
+    function authHeaders(extra = {}) {
+      return { ...extra, Authorization: `Bearer ${adminToken}` };
+    }
+
+    async function hasValidSession() {
+      if (!adminToken) return false;
+      try {
+        const res = await fetch(`${CONVEX_HTTP_URL}/api/auth/me`, {
+          headers: authHeaders()
+        });
+        return res.ok;
+      } catch {
+        return false;
+      }
+    }
 
     function showView(view) {
       document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
@@ -276,15 +327,22 @@ With love, Rosanna & Andrew ✦</textarea>
       renderTable();
     }
 
-    // ─── DATA SYNC ──────────────────────────────────────────────
+    // â”€â”€â”€ DATA SYNC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     async function fetchGuests() {
-      document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">Syncing with Sheets...</td></tr>`;
+      document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">Syncing with Convex...</td></tr>`;
       try {
-        const res = await fetch(`${APPS_SCRIPT_URL}?action=guests`);
+        const res = await fetch(`${CONVEX_HTTP_URL}/api/guests`, {
+          headers: authHeaders()
+        });
+        if (res.status === 401) {
+          await logout();
+          throw new Error('Session expired. Please log in again.');
+        }
+        if (!res.ok) throw new Error(await res.text());
         guests = await res.json();
         updateStats(); renderTable(); updateWaPreview();
       } catch (err) {
-        document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;color:red;padding:2rem;">Error loading data. Are you sure Apps Script is published correctly?</td></tr>`;
+        document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;color:red;padding:2rem;">Error loading data from Convex.</td></tr>`;
       }
     }
 
@@ -312,7 +370,7 @@ With love, Rosanna & Andrew ✦</textarea>
       tbody.innerHTML = filtered.map(g => {
         const st = g.attendance || 'invited';
         const pClass = { attending:'pill-attending', declined:'pill-declined', later:'pill-later', invited:'pill-invited' }[st];
-        const pLabel = { attending:'✓ Yes', declined:'✗ No', later:'🔔 Ask Later', invited:'✉ Invited' }[st];
+        const pLabel = { attending:'âœ“ Yes', declined:'âœ— No', later:'ðŸ”” Ask Later', invited:'âœ‰ Invited' }[st];
 
         const link = generatePersonalLink(g);
         const waMsg = encodeURIComponent(buildText(g));
@@ -323,8 +381,8 @@ With love, Rosanna & Andrew ✦</textarea>
           <td style="text-transform:capitalize">${g.guest_type || 'Single'}</td>
           <td>${g.max_party || 1} allowed</td>
           <td><span class="status-pill ${pClass}">${pLabel}</span></td>
-          <td>${g.phone||'—'}</td>
-          <td style="font-size:0.75rem">${g.deadline ? new Date(g.deadline).toLocaleDateString() : '—'}</td>
+          <td>${g.phone||'â€”'}</td>
+          <td style="font-size:0.75rem">${g.deadline ? new Date(g.deadline).toLocaleDateString() : 'â€”'}</td>
           <td><div style="display:flex;gap:0.4rem;">
             <button class="action-btn" onclick="navigator.clipboard.writeText('${link}');alert('Copied link!')">Copy URL</button>
             ${phone ? `<button class="action-btn wa" onclick="window.open('https://wa.me/${phone}?text=${waMsg}','_blank')">WA</button>` : ''}
@@ -333,7 +391,7 @@ With love, Rosanna & Andrew ✦</textarea>
       }).join('');
     }
 
-    // ─── ADDING FROM DASH ───────────────────────────────────────
+    // â”€â”€â”€ ADDING FROM DASH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function openAddGuest() { document.getElementById('add-modal').classList.add('open'); }
     function syncPartySize() {
       const t = document.getElementById('m-type').value;
@@ -356,24 +414,30 @@ With love, Rosanna & Andrew ✦</textarea>
         attendance: 'invited'
       };
 
-      fetch(APPS_SCRIPT_URL, {
-        method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
+      fetch(`${CONVEX_HTTP_URL}/api/guest`, {
+        method: 'POST',
+        headers: authHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(payload)
-      }).then(() => {
-        payload.id = Date.now().toString(); // local mock till fetch
+      }).then(async (res) => {
+        if (res.status === 401) {
+          await logout();
+          throw new Error('Session expired. Please log in again.');
+        }
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+        payload.id = data?.id || Date.now().toString();
         guests.unshift(payload);
         document.getElementById('add-modal').classList.remove('open');
-        btn.textContent = 'Save to Sheets'; btn.disabled = false;
-        fetchGuests(); // grab real data
-      }).catch(e => { alert('Failed: '+e); btn.textContent = 'Save to Sheets'; btn.disabled = false; });
+        btn.textContent = 'Save Guest'; btn.disabled = false;
+        fetchGuests();
+      }).catch(e => { alert('Failed: '+e); btn.textContent = 'Save Guest'; btn.disabled = false; });
     }
 
-    // ─── WHATSAPP BUILDER ───────────────────────────────────────
+    // â”€â”€â”€ WHATSAPP BUILDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function generatePersonalLink(g) {
-      if(!g || !g.first_name) return `${APPS_SCRIPT_URL}?page=rsvp`;
-      const p = new URLSearchParams({ page:'rsvp', id:g.id||'', name:`${g.first_name} ${g.last_name}`, type:g.guest_type||'single', max:g.max_party||1, due:g.deadline||'' });
-      return `${APPS_SCRIPT_URL}?${p.toString()}`;
+      if(!g || !g.first_name) return `${WEDDING_URL}/rsvp.html`;
+      const p = new URLSearchParams({ id:g._id || g.id || '', name:`${g.first_name} ${g.last_name}`, type:g.guest_type||'single', max:g.max_party||1, due:g.deadline||'' });
+      return `${WEDDING_URL}/rsvp.html?${p.toString()}`;
     }
 
     function buildText(g) {
@@ -418,3 +482,4 @@ With love, Rosanna & Andrew ✦</textarea>
   </script>
 </body>
 </html>
+

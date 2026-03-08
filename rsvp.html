@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RSVP — Rosanna &amp; Andrew · July 4, 2026</title>
+  <title>RSVP â€” Rosanna &amp; Andrew Â· July 4, 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
@@ -20,7 +20,7 @@
     nav a { color: var(--black); text-decoration: none; opacity: 0.6; transition: opacity 0.3s; }
     nav a:hover { opacity: 1; color: var(--gold); }
 
-    /* ─── HERO ─── */
+    /* â”€â”€â”€ HERO â”€â”€â”€ */
     .rsvp-hero { text-align: center; padding: 5rem 2rem 3rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
     .rsvp-hero .eyebrow { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
     .rsvp-hero h1 { font-family: 'Great Vibes', cursive; font-size: clamp(3rem,7vw,6rem); margin-bottom: 1rem; }
@@ -29,7 +29,7 @@
     .personal-note { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #888; margin-top: 0.5rem; font-style: italic; }
     .deadline { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1.5rem; padding: 0.5rem 2rem; border: 1px solid var(--gold); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
 
-    /* ─── FORM ─── */
+    /* â”€â”€â”€ FORM â”€â”€â”€ */
     .rsvp-container { max-width: 700px; margin: 4rem auto; padding: 0 2rem 4rem; }
     .form-section { margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.7s ease forwards; }
     .form-section:nth-child(1){animation-delay:.1s} .form-section:nth-child(2){animation-delay:.25s}
@@ -47,7 +47,7 @@
     .form-group textarea { resize: vertical; min-height: 80px; }
     .form-group select { cursor: pointer; appearance: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c9a84c'/%3E%3C/svg%3E") no-repeat right 0.5rem center; }
 
-    /* ─── ATTENDANCE ─── */
+    /* â”€â”€â”€ ATTENDANCE â”€â”€â”€ */
     .attendance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
     .attend-option { position: relative; }
     .attend-option input[type="radio"] { position: absolute; opacity: 0; width: 0; }
@@ -58,17 +58,17 @@
     .attend-text { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
     .attend-sub { font-size: 0.6rem; color: #999; margin-top: 0.3rem; font-style: italic; letter-spacing: 0; text-transform: none; font-family: 'Cormorant Garamond', serif; }
 
-    /* ─── PARTY MEMBERS ─── */
+    /* â”€â”€â”€ PARTY MEMBERS â”€â”€â”€ */
     .party-member { background: rgba(201,168,76,0.05); border: 1px solid rgba(201,168,76,0.2); padding: 1rem 1.2rem; margin-bottom: 0.8rem; border-radius: 2px; }
     .party-member-title { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
 
-    /* ─── DIETARY ─── */
+    /* â”€â”€â”€ DIETARY â”€â”€â”€ */
     .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
     .checkbox-item { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; }
     .checkbox-item input[type="checkbox"] { width: 14px; height: 14px; accent-color: var(--gold); cursor: pointer; }
     .checkbox-item span { font-size: 0.75rem; letter-spacing: 0.05em; }
 
-    /* ─── SUBMIT ─── */
+    /* â”€â”€â”€ SUBMIT â”€â”€â”€ */
     .submit-wrap { text-align: center; margin-top: 3rem; }
     .btn-submit { display: inline-block; padding: 1.3rem 5rem; background: var(--black); color: var(--cream); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; transition: background 0.3s, transform 0.2s; position: relative; overflow: hidden; }
     .btn-submit:hover { background: #1a1a1a; transform: translateY(-2px); }
@@ -79,7 +79,7 @@
     .status-msg.success { background: rgba(39,174,96,0.08); border-left: 3px solid var(--success); color: var(--success); display: block; }
     .status-msg.error { background: rgba(192,57,43,0.08); border-left: 3px solid var(--error); color: var(--error); display: block; }
 
-    /* ─── SUCCESS ─── */
+    /* â”€â”€â”€ SUCCESS â”€â”€â”€ */
     #success-state { display: none; text-align: center; padding: 5rem 2rem; animation: fadeInScale 0.8s ease-out; }
     @keyframes fadeInScale { from{opacity:0;transform:scale(0.9)} to{opacity:1;transform:scale(1)} }
     @keyframes checkmark { 0%{stroke-dashoffset:100} 100%{stroke-dashoffset:0} }
@@ -89,7 +89,7 @@
     #success-state h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; margin-bottom: 1rem; color: var(--green); }
     #success-state p { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #666; line-height: 1.9; max-width: 500px; margin: 0 auto 2rem; }
 
-    /* ─── LATER STATE ─── */
+    /* â”€â”€â”€ LATER STATE â”€â”€â”€ */
     #later-state { display: none; text-align: center; padding: 5rem 2rem; animation: fadeInScale 0.8s ease-out; }
     #later-state .later-icon { font-size: 4rem; margin-bottom: 1.5rem; display: block; animation: popIn 0.5s ease-out both; }
     #later-state h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; margin-bottom: 1rem; color: var(--gold); }
@@ -97,7 +97,7 @@
 
     @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
-    /* ─── CONFIRM MODAL ─── */
+    /* â”€â”€â”€ CONFIRM MODAL â”€â”€â”€ */
     #confirm-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center; }
     #confirm-modal.open { display:flex; }
     .confirm-box { background:var(--cream); padding:2.5rem; border-radius:12px; max-width:480px; width:90%; text-align:center; animation:fadeInScale 0.3s ease-out; }
@@ -118,7 +118,7 @@
 </head>
 <body>
   <nav>
-    <a href="index.html">← Back to Invitation</a>
+    <a href="index.html">â† Back to Invitation</a>
     <a href="#" style="color:var(--gold);pointer-events:none;">RSVP</a>
   </nav>
 
@@ -130,7 +130,7 @@
       <p class="personal-greeting" id="greeting-text"></p>
       <p class="personal-note" id="personal-note-text" style="display:none"></p>
     </div>
-    <div class="deadline">⏳ Respond by <span id="deadline-text">June 10th, 2026</span></div>
+    <div class="deadline">â³ Respond by <span id="deadline-text">June 10th, 2026</span></div>
   </div>
 
   <div class="rsvp-container">
@@ -170,14 +170,14 @@
           <div class="attend-option">
             <input type="radio" name="attendance" id="att-yes" value="attending" onchange="onAttendanceChange()" />
             <label class="attend-label" for="att-yes">
-              <span class="attend-icon">🥂</span>
+              <span class="attend-icon">ðŸ¥‚</span>
               <span class="attend-text">Accepts with Pleasure</span>
             </label>
           </div>
           <div class="attend-option">
             <input type="radio" name="attendance" id="att-later" value="later" onchange="onAttendanceChange()" />
             <label class="attend-label" for="att-later">
-              <span class="attend-icon">🔔</span>
+              <span class="attend-icon">ðŸ””</span>
               <span class="attend-text">Ask Me Again Later</span>
               <span class="attend-sub">I'll let you know soon</span>
             </label>
@@ -185,7 +185,7 @@
           <div class="attend-option">
             <input type="radio" name="attendance" id="att-no" value="declined" onchange="onAttendanceChange()" />
             <label class="attend-label" for="att-no">
-              <span class="attend-icon">💌</span>
+              <span class="attend-icon">ðŸ’Œ</span>
               <span class="attend-text">Declines with Regret</span>
             </label>
           </div>
@@ -231,21 +231,21 @@
         <div class="form-section-title"><span id="extras-num">05</span> A Little Extra</div>
         <div class="form-row single" style="margin-bottom:1.5rem">
           <div class="form-group">
-            <label for="song">Song Request for the Dance Floor 🎵</label>
-            <input type="text" id="song" placeholder="Song title — Artist" />
+            <label for="song">Song Request for the Dance Floor ðŸŽµ</label>
+            <input type="text" id="song" placeholder="Song title â€” Artist" />
           </div>
         </div>
         <div class="form-row single">
           <div class="form-group">
             <label for="message">Message for the Couple</label>
-            <textarea id="message" placeholder="Share a wish, a memory, or your excitement…"></textarea>
+            <textarea id="message" placeholder="Share a wish, a memory, or your excitementâ€¦"></textarea>
           </div>
         </div>
       </div>
 
       <!-- SUBMIT -->
       <div class="submit-wrap">
-        <button type="button" class="btn-submit" id="submit-btn" onclick="alert('RSVP button clicked!'); submitRSVP()">
+        <button type="button" class="btn-submit" id="submit-btn" onclick="submitRSVP()">
           Send My RSVP
         </button>
         <p class="submit-note">Your response will be shared with Rosanna &amp; Andrew.</p>
@@ -259,15 +259,15 @@
       </div>
       <h2>You're All Set!</h2>
       <p id="success-text">Your RSVP has been received. We are so looking forward to celebrating with you in Belize!</p>
-      <a href="https://wedding-invitation1-rojq.vercel.app/" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">← Return to Invitation</a>
+      <a href="https://wedding-invitation1-rojq.vercel.app/" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">â† Return to Invitation</a>
     </div>
 
     <!-- ASK AGAIN LATER STATE -->
     <div id="later-state">
-      <span class="later-icon">🔔</span>
+      <span class="later-icon">ðŸ””</span>
       <h2>We'll Check Back!</h2>
-      <p id="later-text">No worries — we completely understand. We'll reach out closer to the date. We hope you can make it! 🌿</p>
-      <a href="https://wedding-invitation1-rojq.vercel.app/" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">← Return to Invitation</a>
+      <p id="later-text">No worries â€” we completely understand. We'll reach out closer to the date. We hope you can make it! ðŸŒ¿</p>
+      <a href="https://wedding-invitation1-rojq.vercel.app/" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">â† Return to Invitation</a>
     </div>
 
     <!-- CONFIRM MODAL -->
@@ -284,17 +284,14 @@
   </div>
 
   <footer style="background:var(--black);color:var(--ivory);text-align:center;padding:2rem;font-size:0.6rem;letter-spacing:0.2em;opacity:0.8;">
-    Rosanna &amp; Andrew · July 4, 2026 · Belize ✦
+    Rosanna &amp; Andrew Â· July 4, 2026 Â· Belize âœ¦
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // ─── Supabase Config ────────────────────────────────────
-    const SUPABASE_URL = 'https://hyalpsznjfuhpamzruyg.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_EsTDh8GbuyYRkVCq7jAtSg_9JUhJCTw';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // â”€â”€â”€ Convex Config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    const CONVEX_HTTP_URL = 'https://YOUR_DEPLOYMENT.convex.site';
 
-    // ─── Read URL params for personalisation ─────────────────────
+    // â”€â”€â”€ Read URL params for personalisation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const gUrl = new URL(window.location.href);
     const params = gUrl.searchParams;
     const getParam = (k) => params.get(k) || '';
@@ -312,7 +309,7 @@
       } catch { return iso; }
     }
 
-    // ─── On load: personalise the page ───────────────────────────
+    // â”€â”€â”€ On load: personalise the page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('deadline-text').textContent = fmtDeadline(DEADLINE);
 
@@ -333,7 +330,7 @@
       buildPartySection();
     });
 
-    // ─── Build party members section ─────────────────────────────
+    // â”€â”€â”€ Build party members section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function buildPartySection() {
       const section = document.getElementById('party-section');
       const list    = document.getElementById('party-members-list');
@@ -372,7 +369,7 @@
       document.getElementById('extras-num').textContent  = hasParty ? '05' : '04';
     }
 
-    // ─── Attendance change ────────────────────────────────────────
+    // â”€â”€â”€ Attendance change â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function onAttendanceChange() {
       const val = document.querySelector('input[name="attendance"]:checked')?.value;
       const showFull = val === 'attending';
@@ -380,7 +377,7 @@
       document.getElementById('party-section').style.display  = (showFull && GUEST_TYPE !== 'single' && MAX_PARTY > 1) ? 'block' : 'none';
     }
 
-    // ─── Collect party names ──────────────────────────────────────
+    // â”€â”€â”€ Collect party names â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function getPartyNames() {
       const names = [];
       for (let i = 1; i < MAX_PARTY; i++) {
@@ -391,7 +388,7 @@
       return names.join(', ');
     }
 
-    // ─── Submit ───────────────────────────────────────────────────
+    // â”€â”€â”€ Submit â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function submitRSVP() {
       const statusEl = document.getElementById('status-message');
       statusEl.className = 'status-msg';
@@ -407,13 +404,31 @@
       if (!email)      { showStatus('error', 'Please enter your email address.'); return; }
       if (!attendance) { showStatus('error', "Please select your attendance."); return; }
 
-      // "Ask Again Later" — submit immediately, no confirmation
+      // "Ask Again Later" submits immediately
       if (attendance === 'later') {
-        sendToAppsScript({ action:'rsvp', guest_id:GUEST_ID, first_name:firstName, last_name:lastName, email, phone, guest_type:GUEST_TYPE, attendance:'later', status:'waiting_list', submitted_at: new Date().toISOString() });
-        document.getElementById('rsvp-form-wrap').style.display = 'none';
-        const lt = document.getElementById('later-text');
-        lt.textContent = `No worries, ${firstName} — we completely understand. We'll reach out closer to June 10th. We hope you can make it! 🌿`;
-        document.getElementById('later-state').style.display = 'block';
+        const payload = {
+          guest_id: GUEST_ID || undefined,
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          phone: phone || undefined,
+          guest_type: GUEST_TYPE,
+          attendance: 'later',
+          submitted_at: new Date().toISOString()
+        };
+        const btn = document.getElementById('submit-btn');
+        btn.textContent = 'Sending...';
+        btn.disabled = true;
+        postRsvp(payload).then(() => {
+          document.getElementById('rsvp-form-wrap').style.display = 'none';
+          const lt = document.getElementById('later-text');
+          lt.textContent = `No worries, ${firstName} â€” we completely understand. We'll reach out closer to June 10th. We hope you can make it! ðŸŒ¿`;
+          document.getElementById('later-state').style.display = 'block';
+        }).catch((err) => {
+          showStatus('error', err.message || 'Unable to submit RSVP right now.');
+          btn.textContent = 'Send My RSVP';
+          btn.disabled = false;
+        });
         return;
       }
 
@@ -423,11 +438,10 @@
       const dietary   = [...document.querySelectorAll('.dietary:checked')].map(c => c.value).join(', ');
       const song      = document.getElementById('song').value.trim();
       const message   = document.getElementById('message').value.trim();
-      const partySize = attendance === 'attending' ? MAX_PARTY : 1;
 
       document.getElementById('confirm-content').innerHTML = `
         <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-        <p><strong>Attending:</strong> ${attendance === 'attending' ? "Accepts with Pleasure 🥂" : "Declines with Regret 💌"}</p>
+        <p><strong>Attending:</strong> ${attendance === 'attending' ? "Accepts with Pleasure ðŸ¥‚" : "Declines with Regret ðŸ’Œ"}</p>
         ${party ? `<p><strong>Party:</strong> ${party}</p>` : ''}
         ${meal  ? `<p><strong>Meal:</strong> ${meal}</p>` : ''}
         ${dietary ? `<p><strong>Dietary:</strong> ${dietary}</p>` : ''}
@@ -444,7 +458,7 @@
     function confirmSubmit() {
       closeConfirm();
       const btn = document.getElementById('submit-btn');
-      btn.textContent = 'Sending…'; btn.disabled = true;
+      btn.textContent = 'Sending...'; btn.disabled = true;
 
       const firstName = document.getElementById('first-name').value.trim();
       const lastName = document.getElementById('last-name').value.trim();
@@ -456,34 +470,46 @@
       const song = document.getElementById('song').value.trim();
       const message = document.getElementById('message').value.trim();
 
-      // Send to Supabase
-      supabase.from('rsvps').insert([{
+      postRsvp({
+        guest_id: GUEST_ID || undefined,
         first_name: firstName,
         last_name: lastName,
-        email: email,
-        phone: phone || null,
-        attendance: attendance,
-        plus_one: false,
-        meal_preference: meal || null,
-        dietary_requirements: dietary || null,
-        song_request: song || null,
-        message: message || null,
-        created_at: new Date().toISOString()
-      }]).then(({ error }) => {
-        if (error) {
-          alert('Error: ' + error.message);
-          btn.textContent = 'Send My RSVP'; btn.disabled = false;
-          return;
-        }
-        
+        email,
+        phone: phone || undefined,
+        attendance,
+        guest_type: GUEST_TYPE,
+        party_names: getPartyNames() || undefined,
+        meal_preference: meal || undefined,
+        dietary_requirements: dietary || undefined,
+        song_request: song || undefined,
+        message: message || undefined,
+        submitted_at: new Date().toISOString()
+      }).then(() => {
         document.getElementById('rsvp-form-wrap').style.display = 'none';
         document.getElementById('success-state').style.display = 'block';
         const msgs = {
-          attending: `We are beyond excited to celebrate with you, ${firstName}! See you in Belize! 🥂`,
-          declined: `We'll miss you dearly, ${firstName}. Thank you for letting us know. 💌`
+          attending: `We are beyond excited to celebrate with you, ${firstName}! See you in Belize! ðŸ¥‚`,
+          declined: `We'll miss you dearly, ${firstName}. Thank you for letting us know. ðŸ’Œ`
         };
         document.getElementById('success-text').textContent = msgs[attendance] || msgs.attending;
+      }).catch((err) => {
+        showStatus('error', err.message || 'Unable to submit RSVP right now.');
+        btn.textContent = 'Send My RSVP';
+        btn.disabled = false;
       });
+    }
+
+    async function postRsvp(payload) {
+      const res = await fetch(`${CONVEX_HTTP_URL}/api/rsvp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        const detail = await res.text();
+        throw new Error(detail || 'Submit failed');
+      }
+      return res.json();
     }
 
     function showStatus(type, msg) {
@@ -495,3 +521,4 @@
   </script>
 </body>
 </html>
+
