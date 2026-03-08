@@ -526,7 +526,7 @@ With love, Rosanna & Andrew ✦</textarea>
     // ─── CONFIG ──────────────────────────────────────────────
     const SUPABASE_URL = 'https://hyalpsznjfuhpamzruyg.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_EsTDh8GbuyYRkVCq7jAtSg_9JUhJCTw';
-    const ADMIN_PASSWORD = 'RosAnna2026!';   // Change this anytime in admin.html
+    const ADMIN_PASSWORD = 'admin';   // Change this anytime in admin.html
     const WEDDING_URL = 'https://invitation1.vercel.app';
 
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -538,6 +538,7 @@ With love, Rosanna & Andrew ✦</textarea>
     // ─── AUTH ─────────────────────────────────────────────────
     function doLogin() {
       const pw = document.getElementById('admin-pass').value;
+      alert('Password entered: ' + pw + ' | Expected: ' + ADMIN_PASSWORD);
       if (pw === ADMIN_PASSWORD) {
         document.getElementById('login-overlay').style.display = 'none';
         loadGuests();
