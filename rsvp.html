@@ -190,6 +190,31 @@
     /* ─── SUCCESS STATE ───────────────────────────── */
     #success-state {
       display: none; text-align: center; padding: 5rem 2rem;
+      animation: fadeInScale 0.8s ease-out;
+    }
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes checkmark {
+      0% { stroke-dashoffset: 100; }
+      100% { stroke-dashoffset: 0; }
+    }
+    .success-checkmark {
+      width: 80px; height: 80px; margin: 0 auto 2rem;
+      border-radius: 50%; background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      animation: popIn 0.5s ease-out 0.2s both;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0); }
+      70% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    .success-checkmark svg {
+      width: 40px; height: 40px; stroke: white; stroke-width: 3;
+      fill: none; stroke-dasharray: 100; stroke-dashoffset: 100;
+      animation: checkmark 0.6s ease-out 0.5s forwards;
     }
     #success-state .success-icon {
       font-size: 3rem; margin-bottom: 2rem; display: block;
@@ -373,14 +398,29 @@
 
     <!-- SUCCESS STATE -->
     <div id="success-state">
-      <span class="success-icon">✦</span>
-      <h2>Thank You!</h2>
+      <div class="success-checkmark">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h2>You're All Set!</h2>
       <p id="success-text">
         Your RSVP has been received. We are so looking forward to celebrating with you in Belize!
       </p>
+      <div id="confirm-details" style="display:none; margin: 2rem auto; padding: 1.5rem; background: rgba(201,168,76,0.1); border-radius: 8px; max-width: 300px; text-align: left;"></div>
       <a href="index.html" style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); text-decoration:none;">
         ← Return to Invitation
       </a>
+    </div>
+
+    <!-- CONFIRMATION MODAL -->
+    <div id="confirm-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center;">
+      <div style="background:var(--cream); padding:2rem; border-radius:12px; max-width:400px; width:90%; text-align:center; animation:fadeInScale 0.3s ease-out;">
+        <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; margin-bottom:1rem;">Confirm Your RSVP</h3>
+        <div id="confirm-content" style="text-align:left; margin:1rem 0; font-size:0.9rem; line-height:1.6;"></div>
+        <div style="display:flex; gap:1rem; justify-content:center;">
+          <button onclick="closeConfirm()" style="padding:0.8rem 1.5rem; border:1px solid var(--gold); background:transparent; color:var(--black); cursor:pointer; border-radius:4px;">Edit</button>
+          <button onclick="confirmSubmit()" style="padding:0.8rem 1.5rem; border:none; background:var(--gold); color:white; cursor:pointer; border-radius:4px;">Confirm & Send</button>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -441,9 +481,52 @@
         return;
       }
 
-      btn.disabled = true;
+      // Show confirmation modal
+      const confirmContent = `
+        <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ''}
+        <p><strong>Attending:</strong> ${attendance === 'attending' ? 'Yes, I\'ll be there!' : attendance === 'maybe' ? 'Maybe' : 'No, I can\'t make it'}</p>
+        ${plusOne === 'yes' ? `<p><strong>Plus One:</strong> ${plusOneName || '(name not provided)'}</p>` : ''}
+        ${meal ? `<p><strong>Meal:</strong> ${meal}</p>` : ''}
+        ${dietary ? `<p><strong>Dietary:</strong> ${dietary}</p>` : ''}
+        ${song ? `<p><strong>Song:</strong> ${song}</p>` : ''}
+        ${message ? `<p><strong>Message:</strong> ${message}</p>` : ''}
+      `;
+      document.getElementById('confirm-content').innerHTML = confirmContent;
+      document.getElementById('confirm-modal').style.display = 'flex';
+      return;
+    }
+
+    function closeConfirm() {
+      document.getElementById('confirm-modal').style.display = 'none';
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = false;
+      btn.textContent = 'Send My RSVP';
+    }
+
+    function confirmSubmit() {
+      document.getElementById('confirm-modal').style.display = 'none';
+      const btn = document.getElementById('submit-btn');
       btn.textContent = 'Sending…';
 
+      const firstName = document.getElementById('first-name').value.trim();
+      const lastName = document.getElementById('last-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
+      const plusOne = document.getElementById('plus-one').value;
+      const plusOneName = document.getElementById('plus-one-name').value.trim();
+      const meal = document.getElementById('meal').value;
+      const dietary = [...document.querySelectorAll('.dietary:checked')].map(c => c.value).join(', ');
+      const song = document.getElementById('song').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      submitToSupabase(firstName, lastName, email, phone, attendance, plusOne, plusOneName, meal, dietary, song, message);
+    }
+
+    async function submitToSupabase(firstName, lastName, email, phone, attendance, plusOne, plusOneName, meal, dietary, song, message) {
+      const btn = document.getElementById('submit-btn');
       try {
         const { error } = await supabase.from('rsvps').insert([{
           first_name: firstName,
@@ -464,7 +547,6 @@
         if (error) throw error;
 
         // Show success
-        alert('RSVP submitted successfully!');
         document.getElementById('rsvp-form-wrap').style.display = 'none';
         const ss = document.getElementById('success-state');
         ss.style.display = 'block';
@@ -475,6 +557,15 @@
           declined: `We'll miss you dearly, ${firstName}. Thank you for letting us know, and we'll be thinking of you. 💌`
         };
         document.getElementById('success-text').textContent = msgs[attendance] || msgs.attending;
+
+        const detailsHtml = `
+          <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+          <p><strong>Attending:</strong> ${attendance === 'attending' ? 'Yes' : attendance === 'maybe' ? 'Maybe' : 'No'}</p>
+          ${plusOne === 'yes' ? `<p><strong>Plus One:</strong> ${plusOneName || '(name not provided)'}</p>` : ''}
+          ${meal ? `<p><strong>Meal:</strong> ${meal}</p>` : ''}
+        `;
+        document.getElementById('confirm-details').innerHTML = detailsHtml;
+        document.getElementById('confirm-details').style.display = 'block';
 
       } catch (err) {
         console.error(err);
