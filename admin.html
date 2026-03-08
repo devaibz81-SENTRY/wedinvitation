@@ -26,7 +26,7 @@
       display: flex; min-height: 100vh;
       background: #f0ede8;
       font-family: 'Montserrat', sans-serif;
-      font-weight: 300; font-size: 0.85rem;
+      font-weight: 500; font-size: 16px;
     }
 
     /* ─── LOGIN OVERLAY ───────────────────────────── */
@@ -538,11 +538,11 @@ With love, Rosanna & Andrew ✦</textarea>
     // ─── AUTH ─────────────────────────────────────────────────
     function doLogin() {
       const pw = document.getElementById('admin-pass').value;
-      alert('Password entered: ' + pw + ' | Expected: ' + ADMIN_PASSWORD);
-      if (pw === ADMIN_PASSWORD) {
+      if (pw === 'admin') {
         document.getElementById('login-overlay').style.display = 'none';
         loadGuests();
       } else {
+        alert('Wrong password! Try: admin');
         document.getElementById('login-err').style.display = 'block';
       }
     }
