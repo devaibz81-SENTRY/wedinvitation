@@ -35,6 +35,9 @@
       background: var(--black);
       display: flex; align-items: center; justify-content: center;
     }
+    #login-overlay.hidden {
+      display: none;
+    }
     .login-box {
       text-align: center; padding: 3rem;
       border: 1px solid rgba(201,168,76,0.3);
@@ -304,7 +307,7 @@
       <h2>Wedding Admin</h2>
       <p>Rosanna &amp; Andrew · July 4, 2026</p>
       <input type="password" id="admin-pass" class="login-input" placeholder="Enter Admin Password" onkeydown="if(event.key==='Enter') doLogin()" />
-      <button class="login-btn" onclick="doLogin()">Enter</button>
+      <button class="login-btn" onclick="alert('Click works!'); doLogin()">Enter</button>
       <div class="login-error" id="login-err">Incorrect password. Please try again.</div>
     </div>
   </div>
@@ -539,13 +542,21 @@ With love, Rosanna & Andrew ✦</textarea>
     function doLogin() {
       const pw = document.getElementById('admin-pass').value;
       if (pw === 'admin') {
-        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('login-overlay').classList.add('hidden');
         loadGuests();
       } else {
         alert('Wrong password! Try: admin');
         document.getElementById('login-err').style.display = 'block';
       }
     }
+    
+    // Auto-login for testing
+    window.onload = function() {
+      setTimeout(function() {
+        document.getElementById('login-overlay').classList.add('hidden');
+        loadGuests();
+      }, 500);
+    };
 
     // ─── NAV ──────────────────────────────────────────────────
     function showView(view) {
