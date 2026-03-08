@@ -11,3 +11,6 @@ Thumbs.db
 
 # Never commit real secrets here — keys are already baked into HTML (anon key only)
 # The sb_secret key should NEVER appear in any committed file
+
+# Private files
+private/
