@@ -464,6 +464,7 @@
         if (error) throw error;
 
         // Show success
+        alert('RSVP submitted successfully!');
         document.getElementById('rsvp-form-wrap').style.display = 'none';
         const ss = document.getElementById('success-state');
         ss.style.display = 'block';
@@ -477,6 +478,7 @@
 
       } catch (err) {
         console.error(err);
+        alert('Error: ' + err.message);
         showStatus('error', 'Something went wrong. Please try again or contact us directly.');
         btn.disabled = false;
         btn.textContent = 'Send My RSVP';
