@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RSVP — Rosanna & Andrew · July 4, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0d0d0d;
+      --ivory: #f5f0e8;
+      --champagne: #d4b896;
+      --blush: #e8c4b8;
+      --green: #3a5c3f;
+      --gold: #c9a84c;
+      --cream: #faf7f2;
+      --error: #c0392b;
+      --success: #27ae60;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    /* ─── NAV ─────────────────────────────────────── */
+    nav {
+      display: flex; justify-content: center; gap: 3rem;
+      padding: 1.4rem 2rem;
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+    }
+    nav a { color: var(--black); text-decoration: none; opacity: 0.6; transition: opacity 0.3s; }
+    nav a:hover { opacity: 1; color: var(--gold); }
+
+    /* ─── HERO ────────────────────────────────────── */
+    .rsvp-hero {
+      text-align: center; padding: 5rem 2rem 3rem;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .rsvp-hero .eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+    .rsvp-hero h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3rem, 7vw, 6rem);
+      margin-bottom: 1rem;
+    }
+    .rsvp-hero p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: #666; line-height: 1.8;
+    }
+    .deadline {
+      display: inline-block; margin-top: 1.5rem;
+      padding: 0.5rem 2rem;
+      border: 1px solid var(--gold);
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ─── FORM LAYOUT ─────────────────────────────── */
+    .rsvp-container {
+      max-width: 700px; margin: 4rem auto;
+      padding: 0 2rem 4rem;
+    }
+
+    .form-section {
+      margin-bottom: 3rem;
+      opacity: 0; animation: fadeUp 0.7s ease forwards;
+    }
+    .form-section:nth-child(1) { animation-delay: 0.1s; }
+    .form-section:nth-child(2) { animation-delay: 0.25s; }
+    .form-section:nth-child(3) { animation-delay: 0.4s; }
+    .form-section:nth-child(4) { animation-delay: 0.55s; }
+    .form-section:nth-child(5) { animation-delay: 0.7s; }
+
+    .form-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-style: italic;
+      color: var(--black); margin-bottom: 1.5rem;
+      padding-bottom: 0.7rem;
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .form-section-title span { font-size: 0.9rem; color: var(--gold); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .form-row.single { grid-template-columns: 1fr; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group label {
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: #888;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: transparent;
+      border: none; border-bottom: 1px solid rgba(0,0,0,0.2);
+      padding: 0.7rem 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; color: var(--black);
+      outline: none; transition: border-color 0.3s;
+      width: 100%;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-bottom-color: var(--gold); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group select { cursor: pointer; appearance: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c9a84c'/%3E%3C/svg%3E") no-repeat right 0.5rem center; }
+
+    /* ─── ATTENDANCE CHOICE ───────────────────────── */
+    .attendance-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    }
+    .attend-option { position: relative; }
+    .attend-option input[type="radio"] { position: absolute; opacity: 0; width: 0; }
+    .attend-label {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 1.5rem 1rem;
+      border: 1px solid rgba(0,0,0,0.15);
+      cursor: pointer; text-align: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .attend-label:hover { border-color: var(--gold); }
+    .attend-option input:checked + .attend-label {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+    .attend-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .attend-text { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
+
+    /* ─── DIETARY ─────────────────────────────────── */
+    .checkbox-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+    }
+    .checkbox-item { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; }
+    .checkbox-item input[type="checkbox"] {
+      width: 14px; height: 14px; accent-color: var(--gold); cursor: pointer;
+    }
+    .checkbox-item span { font-size: 0.75rem; letter-spacing: 0.05em; }
+
+    /* ─── SUBMIT ──────────────────────────────────── */
+    .submit-wrap { text-align: center; margin-top: 3rem; }
+    .btn-submit {
+      display: inline-block;
+      padding: 1.1rem 4rem;
+      background: var(--black);
+      color: var(--cream); border: none; cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      transition: background 0.3s, transform 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .btn-submit:hover { background: #1a1a1a; transform: translateY(-2px); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .submit-note {
+      margin-top: 1rem;
+      font-size: 0.6rem; color: #aaa; letter-spacing: 0.1em;
+    }
+
+    /* ─── STATUS MESSAGES ─────────────────────────── */
+    .status-msg {
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; line-height: 1.6;
+      display: none;
+    }
+    .status-msg.success {
+      background: rgba(39,174,96,0.08);
+      border-left: 3px solid var(--success);
+      color: var(--success); display: block;
+    }
+    .status-msg.error {
+      background: rgba(192,57,43,0.08);
+      border-left: 3px solid var(--error);
+      color: var(--error); display: block;
+    }
+
+    /* ─── SUCCESS STATE ───────────────────────────── */
+    #success-state {
+      display: none; text-align: center; padding: 5rem 2rem;
+    }
+    #success-state .success-icon {
+      font-size: 3rem; margin-bottom: 2rem; display: block;
+    }
+    #success-state h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem; margin-bottom: 1rem; color: var(--green);
+    }
+    #success-state p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: #666; line-height: 1.9; max-width: 500px; margin: 0 auto 2rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .attendance-grid { grid-template-columns: 1fr; }
+      .checkbox-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">← Back to Invitation</a>
+    <a href="#" style="color:var(--gold); pointer-events:none;">RSVP</a>
+  </nav>
+
+  <div class="rsvp-hero">
+    <p class="eyebrow">You Are Invited</p>
+    <h1>Kindly Reply</h1>
+    <p>We would be honoured to have you celebrate with us.<br/>Please complete your RSVP below.</p>
+    <div class="deadline">Respond by June 10th, 2026</div>
+  </div>
+
+  <div class="rsvp-container">
+
+    <div id="status-message" class="status-msg"></div>
+
+    <div id="rsvp-form-wrap">
+      <!-- NOT a <form> tag, using div + JS to submit -->
+
+      <!-- 1. PERSONAL INFO -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span>01</span> Your Information
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first-name">First Name *</label>
+            <input type="text" id="first-name" placeholder="Rosanna" required />
+          </div>
+          <div class="form-group">
+            <label for="last-name">Last Name *</label>
+            <input type="text" id="last-name" placeholder="Depaz" required />
+          </div>
+        </div>
+        <div class="form-row" style="margin-top:1.5rem;">
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" placeholder="your@email.com" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">WhatsApp Number</label>
+            <input type="tel" id="phone" placeholder="+501 000 0000" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. ATTENDANCE -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span>02</span> Will You Be Joining Us?
+        </div>
+        <div class="attendance-grid">
+          <div class="attend-option">
+            <input type="radio" name="attendance" id="att-yes" value="attending" />
+            <label class="attend-label" for="att-yes">
+              <span class="attend-icon">🥂</span>
+              <span class="attend-text">Accepts with Pleasure</span>
+            </label>
+          </div>
+          <div class="attend-option">
+            <input type="radio" name="attendance" id="att-maybe" value="maybe" />
+            <label class="attend-label" for="att-maybe">
+              <span class="attend-icon">🤔</span>
+              <span class="attend-text">Still Deciding</span>
+            </label>
+          </div>
+          <div class="attend-option">
+            <input type="radio" name="attendance" id="att-no" value="declined" />
+            <label class="attend-label" for="att-no">
+              <span class="attend-icon">💌</span>
+              <span class="attend-text">Declines with Regret</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. PLUS ONE -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span>03</span> Plus One
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="plus-one">Will you be bringing a guest?</label>
+            <select id="plus-one">
+              <option value="no">No, just me</option>
+              <option value="yes">Yes, I'll bring a guest</option>
+            </select>
+          </div>
+          <div class="form-group" id="plus-one-name-wrap" style="display:none;">
+            <label for="plus-one-name">Guest Name</label>
+            <input type="text" id="plus-one-name" placeholder="Guest's full name" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. MEAL & DIETARY -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span>04</span> Meal & Dietary
+        </div>
+        <div class="form-row" style="margin-bottom:1.5rem;">
+          <div class="form-group">
+            <label for="meal">Meal Preference</label>
+            <select id="meal">
+              <option value="">Select preference</option>
+              <option value="chicken">Chicken</option>
+              <option value="fish">Fish</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="vegan">Vegan</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label style="margin-bottom:0.8rem; display:block;">Dietary Requirements (select all that apply)</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item"><input type="checkbox" value="gluten-free" class="dietary" /><span>Gluten Free</span></label>
+            <label class="checkbox-item"><input type="checkbox" value="nut-allergy" class="dietary" /><span>Nut Allergy</span></label>
+            <label class="checkbox-item"><input type="checkbox" value="dairy-free" class="dietary" /><span>Dairy Free</span></label>
+            <label class="checkbox-item"><input type="checkbox" value="halal" class="dietary" /><span>Halal</span></label>
+            <label class="checkbox-item"><input type="checkbox" value="kosher" class="dietary" /><span>Kosher</span></label>
+            <label class="checkbox-item"><input type="checkbox" value="other" class="dietary" /><span>Other (note below)</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. NOTES & SONG -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span>05</span> A Little Extra
+        </div>
+        <div class="form-row single" style="margin-bottom:1.5rem;">
+          <div class="form-group">
+            <label for="song">Song Request for the Dance Floor 🎵</label>
+            <input type="text" id="song" placeholder="Song title — Artist" />
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="message">Message for the Couple</label>
+            <textarea id="message" placeholder="Share a wish, a memory, or your excitement…"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBMIT -->
+      <div class="submit-wrap">
+        <button class="btn-submit" id="submit-btn" onclick="submitRSVP()">
+          Send My RSVP
+        </button>
+        <p class="submit-note">Your response will be saved securely and shared with Rosanna &amp; Andrew.</p>
+      </div>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div id="success-state">
+      <span class="success-icon">✦</span>
+      <h2>Thank You!</h2>
+      <p id="success-text">
+        Your RSVP has been received. We are so looking forward to celebrating with you in Belize!
+      </p>
+      <a href="index.html" style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); text-decoration:none;">
+        ← Return to Invitation
+      </a>
+    </div>
+
+  </div>
+
+  <footer style="background:var(--black);color:var(--ivory);text-align:center;padding:2rem;font-size:0.6rem;letter-spacing:0.2em;opacity:0.8;">
+    Rosanna &amp; Andrew · July 4, 2026 · Belize ✦
+  </footer>
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    // ─────────────────────────────────────────────────────────
+    // CONFIGURATION — update with your Supabase project details
+    // ─────────────────────────────────────────────────────────
+    const SUPABASE_URL = 'https://hyalpsznjfuhpamzruyg.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_EsTDh8GbuyYRkVCq7jAtSg_9JUhJCTw';
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ─── Plus One Toggle ──────────────────────────────────────
+    document.getElementById('plus-one').addEventListener('change', function() {
+      document.getElementById('plus-one-name-wrap').style.display =
+        this.value === 'yes' ? 'flex' : 'none';
+    });
+
+    // ─── Submit RSVP ──────────────────────────────────────────
+    async function submitRSVP() {
+      const btn = document.getElementById('submit-btn');
+      const statusEl = document.getElementById('status-message');
+      statusEl.className = 'status-msg';
+      statusEl.style.display = 'none';
+
+      // Collect values
+      const firstName = document.getElementById('first-name').value.trim();
+      const lastName  = document.getElementById('last-name').value.trim();
+      const email     = document.getElementById('email').value.trim();
+      const phone     = document.getElementById('phone').value.trim();
+      const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
+      const plusOne   = document.getElementById('plus-one').value;
+      const plusOneName = document.getElementById('plus-one-name').value.trim();
+      const meal      = document.getElementById('meal').value;
+      const dietary   = [...document.querySelectorAll('.dietary:checked')].map(c => c.value).join(', ');
+      const song      = document.getElementById('song').value.trim();
+      const message   = document.getElementById('message').value.trim();
+
+      // Validate required
+      if (!firstName || !lastName) {
+        showStatus('error', 'Please enter your full name.');
+        return;
+      }
+      if (!email) {
+        showStatus('error', 'Please enter your email address.');
+        return;
+      }
+      if (!attendance) {
+        showStatus('error', 'Please let us know if you\'ll be attending.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      try {
+        const { error } = await supabase.from('rsvps').insert([{
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          phone: phone || null,
+          attendance,
+          plus_one: plusOne === 'yes',
+          plus_one_name: plusOneName || null,
+          meal_preference: meal || null,
+          dietary_requirements: dietary || null,
+          song_request: song || null,
+          message: message || null,
+          opened_at: new Date().toISOString(),
+          created_at: new Date().toISOString()
+        }]);
+
+        if (error) throw error;
+
+        // Show success
+        document.getElementById('rsvp-form-wrap').style.display = 'none';
+        const ss = document.getElementById('success-state');
+        ss.style.display = 'block';
+
+        const msgs = {
+          attending: `We are beyond excited to celebrate with you, ${firstName}! See you in Belize! 🥂`,
+          maybe: `Thank you, ${firstName}! We understand — we hope you can make it. We'll keep your spot warm.`,
+          declined: `We'll miss you dearly, ${firstName}. Thank you for letting us know, and we'll be thinking of you. 💌`
+        };
+        document.getElementById('success-text').textContent = msgs[attendance] || msgs.attending;
+
+      } catch (err) {
+        console.error(err);
+        showStatus('error', 'Something went wrong. Please try again or contact us directly.');
+        btn.disabled = false;
+        btn.textContent = 'Send My RSVP';
+      }
+    }
+
+    function showStatus(type, msg) {
+      const el = document.getElementById('status-message');
+      el.className = `status-msg ${type}`;
+      el.textContent = msg;
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rosanna & Andrew — July 4th, 2026 · Belize</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0d0d0d;
+      --ivory: #f5f0e8;
+      --champagne: #d4b896;
+      --blush: #e8c4b8;
+      --green: #3a5c3f;
+      --gold: #c9a84c;
+      --cream: #faf7f2;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: center; gap: 3rem;
+      padding: 1.4rem 2rem;
+      background: rgba(250,247,242,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+    }
+    nav a {
+      color: var(--black); text-decoration: none;
+      opacity: 0.7; transition: opacity 0.3s, color 0.3s;
+    }
+    nav a:hover { opacity: 1; color: var(--gold); }
+
+    /* ─── HERO ────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated background petals */
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(232,196,184,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(212,184,150,0.2) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(58,92,63,0.08) 0%, transparent 50%);
+      animation: auraShift 12s ease-in-out infinite alternate;
+    }
+    @keyframes auraShift {
+      0%   { transform: scale(1) rotate(0deg); }
+      100% { transform: scale(1.08) rotate(2deg); }
+    }
+
+    /* Floating decorative elements */
+    .petal {
+      position: absolute; pointer-events: none;
+      width: 8px; height: 12px;
+      border-radius: 50% 0 50% 0;
+      opacity: 0;
+      animation: petalFall linear infinite;
+    }
+    @keyframes petalFall {
+      0%   { transform: translateY(-20px) rotate(0deg) translateX(0); opacity: 0; }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(100vh) rotate(360deg) translateX(60px); opacity: 0; }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 2rem;
+      opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
+    }
+
+    .hero-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      line-height: 1.1;
+      color: var(--black);
+      position: relative; z-index: 1;
+      opacity: 0; animation: fadeUp 1.2s ease 0.7s forwards;
+    }
+
+    .hero-ampersand {
+      display: block;
+      font-size: clamp(2rem, 5vw, 4rem);
+      color: var(--gold);
+      margin: 0.3rem 0;
+      font-family: 'Great Vibes', cursive;
+      opacity: 0; animation: fadeUp 1.2s ease 1s forwards;
+    }
+
+    .hero-date {
+      margin-top: 2.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 300; font-style: italic;
+      color: var(--green); letter-spacing: 0.1em;
+      opacity: 0; animation: fadeUp 1s ease 1.4s forwards;
+    }
+
+    .hero-location {
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--black); opacity: 0;
+      margin-top: 0.6rem;
+      animation: fadeUp 1s ease 1.7s forwards;
+    }
+
+    .hero-divider {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 2.5rem auto; width: fit-content;
+      opacity: 0; animation: fadeUp 1s ease 2s forwards;
+    }
+    .hero-divider span { display: block; height: 1px; width: 80px; background: var(--gold); opacity: 0.5; }
+    .hero-divider i { color: var(--gold); font-size: 0.5rem; }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.9rem 3rem;
+      border: 1px solid var(--gold);
+      color: var(--black);
+      text-decoration: none;
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      position: relative; overflow: hidden;
+      opacity: 0; animation: fadeUp 1s ease 2.2s forwards;
+      transition: color 0.4s;
+    }
+    .hero-cta::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--gold); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease; z-index: -1;
+    }
+    .hero-cta:hover::before { transform: scaleX(1); }
+    .hero-cta:hover { color: var(--cream); }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      opacity: 0; animation: fadeUp 1s ease 3s forwards;
+    }
+    .scroll-hint span { font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.5; }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 1; transform: scaleY(1); }
+      50% { opacity: 0.4; transform: scaleY(0.6); }
+    }
+
+    /* ─── SECTION SHARED ──────────────────────────── */
+    section { padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+    .section-eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem; text-align: center;
+    }
+
+    .section-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      text-align: center; margin-bottom: 3rem;
+      color: var(--black);
+    }
+
+    /* ─── PHOTO GALLERY ───────────────────────────── */
+    #gallery {
+      background: var(--black);
+      max-width: 100%; padding: 5rem 2rem;
+    }
+    #gallery .section-eyebrow { color: var(--champagne); }
+    #gallery .section-title { color: var(--ivory); }
+
+    .gallery-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1rem;
+    }
+
+    .photo-frame {
+      position: relative; overflow: hidden;
+      background: #1a1a1a;
+      cursor: pointer;
+    }
+
+    /* Decorative border overlay on each photo */
+    .photo-frame::after {
+      content: '';
+      position: absolute; inset: 8px;
+      border: 1px solid rgba(201,168,76,0.3);
+      pointer-events: none;
+      transition: border-color 0.4s;
+    }
+    .photo-frame:hover::after { border-color: rgba(201,168,76,0.8); }
+
+    .photo-frame.large { grid-column: 1 / 2; grid-row: 1 / 3; }
+    .photo-frame.tall  { grid-column: 3 / 4; grid-row: 1 / 3; }
+
+    .photo-inner {
+      width: 100%; padding-bottom: 125%;
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .photo-frame.large .photo-inner,
+    .photo-frame.tall  .photo-inner { padding-bottom: 0; height: 100%; min-height: 400px; }
+
+    /* PHOTO PLACEHOLDER — swap src with real PNG */
+    .photo-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #1c1c1c 0%, #2a2a2a 100%);
+      transition: transform 0.7s ease;
+    }
+    .photo-frame:hover .photo-placeholder { transform: scale(1.04); }
+
+    .photo-placeholder img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s ease;
+    }
+    .photo-frame:hover .photo-placeholder img { transform: scale(1.04); }
+
+    /* Placeholder before real images added */
+    .photo-placeholder-text {
+      color: rgba(201,168,76,0.4);
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      text-align: center; padding: 1rem;
+    }
+    .photo-placeholder-icon {
+      width: 40px; height: 40px;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem; font-size: 1.2rem;
+    }
+
+    /* Caption slide-up */
+    .photo-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem 1rem 1rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      color: var(--ivory);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem; font-style: italic;
+      transform: translateY(100%); transition: transform 0.4s ease;
+    }
+    .photo-frame:hover .photo-caption { transform: translateY(0); }
+
+    /* ─── OUR STORY ───────────────────────────────── */
+    #story {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+
+    .story-text { }
+    .story-text .section-eyebrow { text-align: left; }
+    .story-text .section-title { text-align: left; font-size: clamp(2rem, 4vw, 3.5rem); margin-bottom: 2rem; }
+
+    .story-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; line-height: 2;
+      color: #3a3a3a;
+    }
+    .story-body p + p { margin-top: 1.2rem; }
+
+    .story-signature {
+      margin-top: 2.5rem;
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.2rem; color: var(--gold);
+    }
+
+    .story-visual {
+      position: relative;
+    }
+    .story-img-wrap {
+      position: relative; padding-bottom: 130%;
+      background: var(--champagne);
+      overflow: hidden;
+    }
+    .story-img-wrap::before {
+      content: '';
+      position: absolute; inset: -2px;
+      border: 1px solid var(--gold);
+      z-index: 2; pointer-events: none;
+    }
+    .story-img-accent {
+      position: absolute; bottom: -1.5rem; right: -1.5rem;
+      width: 70%; padding-bottom: 70%;
+      border: 1px solid var(--champagne);
+      z-index: -1;
+    }
+
+    .story-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--blush) 0%, var(--champagne) 100%);
+    }
+    .story-placeholder-text {
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(0,0,0,0.4); text-align: center; padding: 1rem;
+    }
+
+    /* ─── DETAILS ─────────────────────────────────── */
+    #details {
+      background: var(--black); max-width: 100%;
+      padding: 6rem 2rem;
+    }
+    .details-inner { max-width: 1100px; margin: 0 auto; }
+    #details .section-eyebrow { color: var(--champagne); }
+    #details .section-title { color: var(--ivory); }
+
+    .details-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-top: 4rem;
+    }
+
+    .detail-card {
+      background: #111; padding: 3rem 2rem;
+      text-align: center; position: relative;
+      transition: background 0.4s;
+    }
+    .detail-card:hover { background: #1a1a1a; }
+
+    .detail-card::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 40px; background: var(--gold); opacity: 0.4;
+    }
+
+    .detail-icon {
+      font-size: 1.5rem; margin-bottom: 1.5rem; display: block;
+      color: var(--gold);
+    }
+
+    .detail-label {
+      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--champagne); margin-bottom: 1rem;
+    }
+
+    .detail-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; color: var(--ivory); line-height: 1.6;
+    }
+
+    .detail-sub {
+      font-size: 0.75rem; color: rgba(245,240,232,0.5);
+      margin-top: 0.5rem; letter-spacing: 0.1em;
+    }
+
+    /* ─── COUNTDOWN ───────────────────────────────── */
+    #countdown {
+      text-align: center; padding: 5rem 2rem;
+      background: var(--ivory);
+      border-top: 1px solid rgba(201,168,76,0.2);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+    .countdown-wrapper {
+      display: flex; justify-content: center; gap: 3rem;
+      margin-top: 3rem; flex-wrap: wrap;
+    }
+    .count-block { text-align: center; }
+    .count-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 300; line-height: 1;
+      color: var(--black);
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .count-number.flip { animation: flipNum 0.4s ease; }
+    @keyframes flipNum {
+      0%  { transform: translateY(-10px); opacity: 0; }
+      100%{ transform: translateY(0); opacity: 1; }
+    }
+    .count-label {
+      font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-top: 0.5rem;
+    }
+    .count-sep {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem; color: var(--champagne); line-height: 1.3;
+      align-self: center; margin-top: -0.5rem;
+    }
+
+    /* ─── RSVP CTA ────────────────────────────────── */
+    #rsvp-cta {
+      text-align: center; padding: 6rem 2rem;
+    }
+    .rsvp-box {
+      max-width: 600px; margin: 0 auto;
+      border: 1px solid var(--gold);
+      padding: 4rem 3rem;
+      position: relative;
+    }
+    .rsvp-box::before, .rsvp-box::after {
+      content: '';
+      position: absolute;
+      width: 20px; height: 20px;
+    }
+    .rsvp-box::before { top: -1px; left: -1px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+    .rsvp-box::after  { bottom: -1px; right: -1px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+
+    .rsvp-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; line-height: 1.9;
+      color: #5a5a5a; margin-bottom: 2.5rem;
+    }
+
+    .btn-gold {
+      display: inline-block;
+      padding: 1rem 3.5rem;
+      background: var(--gold);
+      color: var(--cream); text-decoration: none;
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      transition: background 0.3s, transform 0.2s;
+      border: none; cursor: pointer;
+    }
+    .btn-gold:hover { background: #a8863a; transform: translateY(-2px); }
+
+    /* ─── FOOTER ──────────────────────────────────── */
+    footer {
+      background: var(--black); color: var(--ivory);
+      text-align: center; padding: 3rem 2rem;
+    }
+    footer .footer-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5rem; margin-bottom: 1rem;
+      color: var(--champagne);
+    }
+    footer p { font-size: 0.6rem; letter-spacing: 0.2em; opacity: 0.4; }
+
+    /* ─── ANIMATIONS ──────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Stagger children */
+    .stagger .reveal:nth-child(1) { transition-delay: 0.1s; }
+    .stagger .reveal:nth-child(2) { transition-delay: 0.25s; }
+    .stagger .reveal:nth-child(3) { transition-delay: 0.4s; }
+    .stagger .reveal:nth-child(4) { transition-delay: 0.55s; }
+
+    /* ─── RESPONSIVE ──────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { gap: 1.5rem; }
+      #story { grid-template-columns: 1fr; gap: 3rem; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .photo-frame.large, .photo-frame.tall { grid-column: auto; grid-row: auto; }
+      .details-grid { grid-template-columns: 1fr; }
+      .countdown-wrapper { gap: 1.5rem; }
+      .count-sep { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#story">Our Story</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#details">Details</a>
+    <a href="rsvp.html">RSVP</a>
+  </nav>
+
+  <!-- FLOATING PETALS -->
+  <div id="petals-container" aria-hidden="true"></div>
+
+  <!-- ─── HERO ─────────────────────────────────────── -->
+  <section id="hero">
+    <p class="hero-eyebrow">Together with their families</p>
+
+    <h1 class="hero-names">
+      Rosanna Vanessa Depaz
+      <span class="hero-ampersand">&amp;</span>
+      Andrew Denton Haylock
+    </h1>
+
+    <p class="hero-date">Request the pleasure of your company to celebrate their wedding</p>
+
+    <div class="hero-divider">
+      <span></span>
+      <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="2" fill="#c9a84c"/></svg>
+      <span></span>
+    </div>
+
+    <p class="hero-date" style="font-style: normal; font-size: clamp(1.1rem,2.5vw,1.5rem); font-weight: 400;">
+      Saturday, the Fourth of July
+    </p>
+    <p class="hero-location" style="opacity: 0; animation: fadeUp 1s ease 1.9s forwards;">
+      Two Thousand Twenty-Six
+    </p>
+    <p class="hero-location" style="opacity: 0; animation: fadeUp 1s ease 2.1s forwards; color: var(--green);">
+      ✦ &nbsp; Belize &nbsp; ✦
+    </p>
+
+    <a href="rsvp.html" class="hero-cta">Kindly Reply</a>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ─── COUNTDOWN ─────────────────────────────────── -->
+  <div id="countdown">
+    <p class="section-eyebrow">Days Until We Say I Do</p>
+    <div class="countdown-wrapper">
+      <div class="count-block">
+        <span class="count-number" id="cd-days">—</span>
+        <div class="count-label">Days</div>
+      </div>
+      <div class="count-sep">·</div>
+      <div class="count-block">
+        <span class="count-number" id="cd-hours">—</span>
+        <div class="count-label">Hours</div>
+      </div>
+      <div class="count-sep">·</div>
+      <div class="count-block">
+        <span class="count-number" id="cd-mins">—</span>
+        <div class="count-label">Minutes</div>
+      </div>
+      <div class="count-sep">·</div>
+      <div class="count-block">
+        <span class="count-number" id="cd-secs">—</span>
+        <div class="count-label">Seconds</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── PHOTO GALLERY ─────────────────────────────── -->
+  <div id="gallery">
+    <p class="section-eyebrow reveal">Our Moments</p>
+    <h2 class="section-title reveal" style="color: var(--ivory);">A Love Story in Frames</h2>
+
+    <div class="gallery-grid stagger">
+
+      <div class="photo-frame large reveal">
+        <div class="photo-inner">
+          <div class="photo-placeholder">
+            <!-- REPLACE: <img src="photos/photo1.png" alt="Rosanna & Andrew"> -->
+            <div class="photo-placeholder-icon">✦</div>
+            <div class="photo-placeholder-text">Portrait Photo<br/>photo1.png</div>
+          </div>
+          <div class="photo-caption">Together forever begins here</div>
+        </div>
+      </div>
+
+      <div class="photo-frame reveal">
+        <div class="photo-inner">
+          <div class="photo-placeholder">
+            <!-- REPLACE: <img src="photos/photo2.png" alt=""> -->
+            <div class="photo-placeholder-icon">✦</div>
+            <div class="photo-placeholder-text">Couple Photo<br/>photo2.png</div>
+          </div>
+          <div class="photo-caption">A glance that says everything</div>
+        </div>
+      </div>
+
+      <div class="photo-frame tall reveal">
+        <div class="photo-inner">
+          <div class="photo-placeholder">
+            <!-- REPLACE: <img src="photos/photo3.png" alt=""> -->
+            <div class="photo-placeholder-icon">✦</div>
+            <div class="photo-placeholder-text">Portrait Photo<br/>photo3.png</div>
+          </div>
+          <div class="photo-caption">Two hearts, one story</div>
+        </div>
+      </div>
+
+      <div class="photo-frame reveal">
+        <div class="photo-inner">
+          <div class="photo-placeholder">
+            <!-- REPLACE: <img src="photos/photo4.png" alt=""> -->
+            <div class="photo-placeholder-icon">✦</div>
+            <div class="photo-placeholder-text">Couple Photo<br/>photo4.png</div>
+          </div>
+          <div class="photo-caption">The moments we'll treasure</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── OUR STORY ─────────────────────────────────── -->
+  <section id="story">
+    <div class="story-text">
+      <p class="section-eyebrow reveal">How It All Began</p>
+      <h2 class="section-title reveal">Our Story</h2>
+      <div class="story-body reveal">
+        <p>
+          Some stories begin quietly — a shared glance, a conversation that stretches on longer than intended. Ours began exactly like that. Rosanna and Andrew found each other in the most unexpected of ways, and from that first moment, something extraordinary unfolded.
+        </p>
+        <p>
+          Through laughter and adventures, through quiet evenings and the kind of joy that fills every room — we built something beautiful. And now, surrounded by the people we love most, we're ready to begin the greatest chapter yet.
+        </p>
+        <p>
+          On the Fourth of July, 2026, beneath the skies of Belize, we will make it official. We would be honoured to have you with us.
+        </p>
+      </div>
+      <div class="story-signature reveal">Rosanna &amp; Andrew</div>
+    </div>
+
+    <div class="story-visual reveal">
+      <div class="story-img-wrap">
+        <div class="story-placeholder">
+          <!-- REPLACE: <img src="photos/story.png" alt="Rosanna and Andrew"> -->
+          <div class="photo-placeholder-icon" style="border-color: rgba(0,0,0,0.2);">✦</div>
+          <div class="story-placeholder-text">Story Photo<br/>story.png</div>
+        </div>
+      </div>
+      <div class="story-img-accent"></div>
+    </div>
+  </section>
+
+  <!-- ─── DETAILS ───────────────────────────────────── -->
+  <div id="details">
+    <div class="details-inner">
+      <p class="section-eyebrow reveal">What You Need to Know</p>
+      <h2 class="section-title reveal" style="color: var(--ivory);">Wedding Details</h2>
+
+      <div class="details-grid stagger">
+        <div class="detail-card reveal">
+          <span class="detail-icon">◈</span>
+          <div class="detail-label">The Ceremony</div>
+          <div class="detail-value">Saturday<br/>4th July, 2026</div>
+          <div class="detail-sub">4:00 PM · Ceremony Begins</div>
+        </div>
+        <div class="detail-card reveal">
+          <span class="detail-icon">◈</span>
+          <div class="detail-label">The Venue</div>
+          <div class="detail-value">Belize<br/>Venue Name</div>
+          <div class="detail-sub">Address · City, Belize</div>
+        </div>
+        <div class="detail-card reveal">
+          <span class="detail-icon">◈</span>
+          <div class="detail-label">Dress Code</div>
+          <div class="detail-value">Black Tie<br/>Elegance</div>
+          <div class="detail-sub">Black · Ivory · Champagne</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── RSVP CTA ───────────────────────────────────── -->
+  <section id="rsvp-cta">
+    <div class="rsvp-box reveal">
+      <p class="section-eyebrow">You Are Cordially Invited</p>
+      <h2 class="section-title" style="font-size: 2.5rem; margin-bottom: 1.5rem;">Kindly Reply</h2>
+      <p class="rsvp-text">
+        Please let us know if you'll be joining us to celebrate.<br/>
+        We kindly ask that you respond by <strong>June 10th, 2026</strong>.
+      </p>
+      <a href="rsvp.html" class="btn-gold">RSVP Now</a>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────── -->
+  <footer>
+    <div class="footer-names">Rosanna &amp; Andrew</div>
+    <p>Saturday, the Fourth of July · Two Thousand Twenty-Six · Belize</p>
+    <p style="margin-top: 1rem;">With love ✦</p>
+  </footer>
+
+  <script>
+    // ── Floating Petals ──────────────────────────────
+    const container = document.getElementById('petals-container');
+    const colors = ['#e8c4b8','#d4b896','#c9a84c','#f0e0d6'];
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.style.cssText = `
+        left: ${Math.random()*100}%;
+        top: ${Math.random()*100}vh;
+        background: ${colors[Math.floor(Math.random()*colors.length)]};
+        animation-duration: ${8 + Math.random()*14}s;
+        animation-delay: ${Math.random()*12}s;
+        width: ${6+Math.random()*8}px;
+        height: ${10+Math.random()*10}px;
+        transform: rotate(${Math.random()*360}deg);
+      `;
+      container.appendChild(p);
+    }
+
+    // ── Countdown ────────────────────────────────────
+    const wedding = new Date('2026-07-04T16:00:00');
+    function updateCountdown() {
+      const now = new Date();
+      const diff = wedding - now;
+      if (diff <= 0) {
+        document.querySelector('.countdown-wrapper').innerHTML =
+          '<p style="font-family:\'Great Vibes\',cursive;font-size:3rem;color:var(--gold)">Today is the Day! 🎉</p>';
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+
+      const set = (id, val) => {
+        const el = document.getElementById(id);
+        const str = String(val).padStart(2,'0');
+        if (el.textContent !== str) {
+          el.classList.remove('flip');
+          void el.offsetWidth;
+          el.classList.add('flip');
+          el.textContent = str;
+        }
+      };
+      set('cd-days',  d);
+      set('cd-hours', h);
+      set('cd-mins',  m);
+      set('cd-secs',  s);
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // ── Scroll Reveal ─────────────────────────────────
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
