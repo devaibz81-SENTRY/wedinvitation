@@ -47,6 +47,7 @@ export const updateFromRsvp = mutation({
     email: v.string(),
     phone: v.optional(v.string()),
     attendance: v.union(v.literal("attending"), v.literal("declined"), v.literal("later")),
+    guest_type: v.optional(v.string()),
     message: v.optional(v.string()),
     submitted_at: v.string(),
   },
@@ -71,6 +72,24 @@ export const updateFromRsvp = mutation({
         attendance: args.attendance,
         message: args.message,
         submitted_at: args.submitted_at,
+        updated_at: now,
+      });
+    } else {
+      const normalizedGuestType =
+        args.guest_type === "couple" || args.guest_type === "family"
+          ? args.guest_type
+          : "single";
+      targetId = await ctx.db.insert("guests", {
+        first_name: args.first_name,
+        last_name: args.last_name,
+        guest_type: normalizedGuestType,
+        max_party: 1,
+        phone: args.phone,
+        email: args.email,
+        attendance: args.attendance,
+        message: args.message,
+        submitted_at: args.submitted_at,
+        created_at: now,
         updated_at: now,
       });
     }

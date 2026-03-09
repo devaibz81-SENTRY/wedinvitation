@@ -181,6 +181,7 @@ http.route({
       email: body.email,
       phone: body.phone || undefined,
       attendance: body.attendance,
+      guest_type: body.guest_type || undefined,
       message: body.message || undefined,
       submitted_at: body.submitted_at || new Date().toISOString(),
     });
@@ -190,4 +191,3 @@ http.route({
 });
 
 export default http;
-
