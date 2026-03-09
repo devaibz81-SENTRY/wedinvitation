@@ -518,9 +518,10 @@ Rosanna and Andrew</textarea>
 
     // â”€â”€â”€ WHATSAPP BUILDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function generatePersonalLink(g) {
-      if(!g || !g.first_name) return `${WEDDING_URL}/rsvp.html`;
+      const base = String(WEDDING_URL || '').replace(/\/+$/, '');
+      if(!g || !g.first_name) return `${base}/`;
       const p = new URLSearchParams({ id:g._id || g.id || '', name:`${g.first_name} ${g.last_name}`, type:g.guest_type||'single', max:g.max_party||1, due:g.deadline||'' });
-      return `${WEDDING_URL}/rsvp.html?${p.toString()}`;
+      return `${base}/?${p.toString()}`;
     }
 
     function getGuestKey(g) {

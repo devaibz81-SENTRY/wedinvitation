@@ -940,8 +940,16 @@
     <p style="margin-top: 1rem;">With love</p>
   </footer>
 
-  <script>
-    // ── Floating Petals ──────────────────────────────
+    <script>
+    // Carry guest params from invitation URL into RSVP links.
+    const guestQuery = window.location.search || '';
+    if (guestQuery) {
+      document.querySelectorAll('a[href="rsvp.html"]').forEach((link) => {
+        link.href = `rsvp.html${guestQuery}`;
+      });
+    }
+
+    // Floating Petals
     const container = document.getElementById('petals-container');
     const colors = ['#e8c4b8','#d4b896','#c9a84c','#f0e0d6'];
     for (let i = 0; i < 18; i++) {
