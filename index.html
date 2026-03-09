@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rosanna & Andrew — July 4th, 2026 · Belize</title>
+  <title>Rosanna & Andrew - July 4th, 2026 - Belize</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet" />
@@ -26,7 +26,8 @@
       background: var(--cream);
       color: var(--black);
       font-family: 'Montserrat', sans-serif;
-      font-weight: 300;
+      font-weight: 400;
+      line-height: 1.55;
       overflow-x: hidden;
     }
 
@@ -38,11 +39,12 @@
       background: rgba(250,247,242,0.88);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(201,168,76,0.2);
-      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
     }
     nav a {
       color: var(--black); text-decoration: none;
-      opacity: 0.7; transition: opacity 0.3s, color 0.3s;
+      opacity: 0.9; transition: opacity 0.3s, color 0.3s;
+      font-weight: 500;
     }
     nav a:hover { opacity: 1; color: var(--gold); }
 
@@ -88,8 +90,9 @@
     }
 
     .hero-eyebrow {
-      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 2rem;
+      font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: #8d6f2f; margin-bottom: 2rem;
+      font-weight: 500;
       opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
     }
 
@@ -114,15 +117,16 @@
     .hero-date {
       margin-top: 2.5rem;
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1rem, 2.5vw, 1.4rem);
-      font-weight: 300; font-style: italic;
-      color: var(--green); letter-spacing: 0.1em;
+      font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+      font-weight: 500; font-style: italic;
+      color: #2d4c32; letter-spacing: 0.09em;
       opacity: 0; animation: fadeUp 1s ease 1.4s forwards;
     }
 
     .hero-location {
-      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--black); opacity: 0;
+      font-weight: 500;
       margin-top: 0.6rem;
       animation: fadeUp 1s ease 1.7s forwards;
     }
@@ -132,8 +136,33 @@
       margin: 2.5rem auto; width: fit-content;
       opacity: 0; animation: fadeUp 1s ease 2s forwards;
     }
-    .hero-divider span { display: block; height: 1px; width: 80px; background: var(--gold); opacity: 0.5; }
+    .hero-divider span { display: block; height: 1px; width: 80px; background: var(--gold); opacity: 0.72; }
     .hero-divider i { color: var(--gold); font-size: 0.5rem; }
+
+    .hero-flourish {
+      width: min(360px, 82vw);
+      height: 34px;
+      display: block;
+      margin: 0.25rem auto 0.9rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.35s forwards;
+    }
+    .hero-flourish path {
+      fill: none;
+      stroke: var(--gold);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-dasharray: 220;
+      stroke-dashoffset: 220;
+      animation: flourishDraw 2.2s ease 1.6s forwards, flourishGlow 3.4s ease-in-out 3.8s infinite;
+    }
+    @keyframes flourishDraw {
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes flourishGlow {
+      0%, 100% { opacity: 0.65; }
+      50% { opacity: 1; }
+    }
 
     .hero-cta {
       display: inline-block;
@@ -142,7 +171,8 @@
       border: 1px solid var(--gold);
       color: var(--black);
       text-decoration: none;
-      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase;
+      font-weight: 600;
       position: relative; overflow: hidden;
       opacity: 0; animation: fadeUp 1s ease 2.2s forwards;
       transition: color 0.4s;
@@ -161,7 +191,13 @@
       display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
       opacity: 0; animation: fadeUp 1s ease 3s forwards;
     }
-    .scroll-hint span { font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.5; }
+    .scroll-hint span {
+      font-size: 0.64rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      font-weight: 500;
+    }
     .scroll-line {
       width: 1px; height: 50px;
       background: linear-gradient(to bottom, var(--gold), transparent);
@@ -176,8 +212,9 @@
     section { padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; }
 
     .section-eyebrow {
-      font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1rem; text-align: center;
+      font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: #8d6f2f; margin-bottom: 1rem; text-align: center;
+      font-weight: 600;
     }
 
     .section-title {
@@ -230,7 +267,7 @@
     .photo-frame.large .photo-inner,
     .photo-frame.tall  .photo-inner { padding-bottom: 0; height: 100%; min-height: 400px; }
 
-    /* PHOTO PLACEHOLDER — swap src with real PNG */
+    /* PHOTO PLACEHOLDER - swap src with real PNG */
     .photo-placeholder {
       position: absolute; inset: 0;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -249,16 +286,20 @@
 
     /* Placeholder before real images added */
     .photo-placeholder-text {
-      color: rgba(201,168,76,0.4);
-      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(201,168,76,0.78);
+      font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
       text-align: center; padding: 1rem;
+      font-weight: 500;
     }
     .photo-placeholder-icon {
       width: 40px; height: 40px;
       border: 1px solid rgba(201,168,76,0.3);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1rem; font-size: 1.2rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: rgba(201,168,76,0.92);
     }
 
     /* Caption slide-up */
@@ -322,9 +363,16 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       background: linear-gradient(135deg, var(--blush) 0%, var(--champagne) 100%);
     }
+    .story-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
     .story-placeholder-text {
-      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: rgba(0,0,0,0.4); text-align: center; padding: 1rem;
+      font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(0,0,0,0.64); text-align: center; padding: 1rem;
+      font-weight: 500;
     }
 
     /* ─── DETAILS ─────────────────────────────────── */
@@ -355,13 +403,24 @@
     }
 
     .detail-icon {
-      font-size: 1.5rem; margin-bottom: 1.5rem; display: block;
+      margin-bottom: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       color: var(--gold);
+    }
+    .detail-icon svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.7;
     }
 
     .detail-label {
-      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
       color: var(--champagne); margin-bottom: 1rem;
+      font-weight: 500;
     }
 
     .detail-value {
@@ -370,7 +429,7 @@
     }
 
     .detail-sub {
-      font-size: 0.75rem; color: rgba(245,240,232,0.5);
+      font-size: 0.85rem; color: rgba(245,240,232,0.78);
       margin-top: 0.5rem; letter-spacing: 0.1em;
     }
 
@@ -400,8 +459,9 @@
       100%{ transform: translateY(0); opacity: 1; }
     }
     .count-label {
-      font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
       color: var(--gold); margin-top: 0.5rem;
+      font-weight: 500;
     }
     .count-sep {
       font-family: 'Cormorant Garamond', serif;
@@ -430,7 +490,7 @@
     .rsvp-text {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.1rem; line-height: 1.9;
-      color: #5a5a5a; margin-bottom: 2.5rem;
+      color: #3d3831; margin-bottom: 2.5rem;
     }
 
     .btn-gold {
@@ -454,7 +514,7 @@
       font-size: 2.5rem; margin-bottom: 1rem;
       color: var(--champagne);
     }
-    footer p { font-size: 0.6rem; letter-spacing: 0.2em; opacity: 0.4; }
+    footer p { font-size: 0.72rem; letter-spacing: 0.14em; opacity: 0.72; }
 
     /* ─── ANIMATIONS ──────────────────────────────── */
     @keyframes fadeUp {
@@ -485,128 +545,9 @@
       .count-sep { display: none; }
     }
 
-    body.intro-active { overflow: hidden; }
-    #intro-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background:
-        radial-gradient(ellipse at top, rgba(232,196,184,0.55), transparent 50%),
-        radial-gradient(ellipse at bottom, rgba(212,184,150,0.45), transparent 55%),
-        #f6f1e8;
-      transition: opacity 0.45s ease, visibility 0.45s ease;
-    }
-    #intro-overlay.hide {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    .intro-wrap {
-      text-align: center;
-      padding: 2rem;
-      width: min(92vw, 640px);
-    }
-    .intro-kicker {
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1.2rem;
-    }
-    .intro-card {
-      perspective: 1400px;
-      margin: 0 auto 1.2rem;
-      width: min(86vw, 520px);
-      height: min(62vw, 320px);
-      min-height: 220px;
-    }
-    .intro-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 1s cubic-bezier(.2,.75,.18,1);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
-      border-radius: 6px;
-    }
-    #intro-overlay.opening .intro-card-inner { transform: rotateY(-165deg); }
-    .intro-face {
-      position: absolute;
-      inset: 0;
-      backface-visibility: hidden;
-      border-radius: 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(201,168,76,0.35);
-      padding: 1.2rem;
-    }
-    .intro-front {
-      background: linear-gradient(145deg, #faf5ed 0%, #f1e7d8 100%);
-      transform-origin: left center;
-    }
-    .intro-back {
-      background: #fffdf8;
-      transform: translateZ(-2px);
-      color: #4f4a43;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.1rem, 2vw, 1.45rem);
-      letter-spacing: 0.03em;
-      line-height: 1.6;
-    }
-    .intro-names {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(2.2rem, 5vw, 4rem);
-      color: #2b2520;
-      line-height: 1.1;
-    }
-    .intro-date {
-      margin-top: 0.8rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: #8d7758;
-    }
-    .intro-open-btn {
-      border: 1px solid var(--gold);
-      background: #fffdf8;
-      color: var(--black);
-      padding: 0.85rem 2rem;
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.2s ease;
-    }
-    .intro-open-btn:hover {
-      background: #f8efe2;
-      transform: translateY(-2px);
-    }
   </style>
 </head>
-<body class="intro-active">
-
-  <div id="intro-overlay" aria-label="Opening invitation card">
-    <div class="intro-wrap">
-      <p class="intro-kicker">You Are Invited</p>
-      <div class="intro-card">
-        <div class="intro-card-inner">
-          <div class="intro-face intro-front">
-            <p class="intro-names">Rosanna &amp; Andrew</p>
-            <p class="intro-date">July 4, 2026</p>
-          </div>
-          <div class="intro-face intro-back">
-            <p>Welcome to our wedding invitation</p>
-          </div>
-        </div>
-      </div>
-      <button id="open-invite" class="intro-open-btn" type="button">Open Invitation</button>
-    </div>
-  </div>
+<body>
 
   <!-- NAV -->
   <nav>
@@ -628,6 +569,10 @@
       <span class="hero-ampersand">&amp;</span>
       Andrew Denton Haylock
     </h1>
+    <svg class="hero-flourish" viewBox="0 0 360 34" aria-hidden="true" focusable="false">
+      <path d="M8 17c36-15 72-15 108 0s72 15 108 0 72-15 128 0"></path>
+      <path d="M160 17h40"></path>
+    </svg>
 
     <p class="hero-date">Request the pleasure of your company to celebrate their wedding</p>
 
@@ -644,7 +589,7 @@
       Two Thousand Twenty-Six
     </p>
     <p class="hero-location" style="opacity: 0; animation: fadeUp 1s ease 2.1s forwards; color: var(--green);">
-      ✦ &nbsp; Belize &nbsp; ✦
+      Belize
     </p>
 
     <a href="rsvp.html" class="hero-cta">Kindly Reply</a>
@@ -660,22 +605,22 @@
     <p class="section-eyebrow">Days Until We Say I Do</p>
     <div class="countdown-wrapper">
       <div class="count-block">
-        <span class="count-number" id="cd-days">—</span>
+        <span class="count-number" id="cd-days">--</span>
         <div class="count-label">Days</div>
       </div>
-      <div class="count-sep">·</div>
+      <div class="count-sep">:</div>
       <div class="count-block">
-        <span class="count-number" id="cd-hours">—</span>
+        <span class="count-number" id="cd-hours">--</span>
         <div class="count-label">Hours</div>
       </div>
-      <div class="count-sep">·</div>
+      <div class="count-sep">:</div>
       <div class="count-block">
-        <span class="count-number" id="cd-mins">—</span>
+        <span class="count-number" id="cd-mins">--</span>
         <div class="count-label">Minutes</div>
       </div>
-      <div class="count-sep">·</div>
+      <div class="count-sep">:</div>
       <div class="count-block">
-        <span class="count-number" id="cd-secs">—</span>
+        <span class="count-number" id="cd-secs">--</span>
         <div class="count-label">Seconds</div>
       </div>
     </div>
@@ -691,9 +636,7 @@
       <div class="photo-frame large reveal">
         <div class="photo-inner">
           <div class="photo-placeholder">
-            <!-- REPLACE: <img src="photos/photo1.png" alt="Rosanna & Andrew"> -->
-            <div class="photo-placeholder-icon">✦</div>
-            <div class="photo-placeholder-text">Portrait Photo<br/>photo1.png</div>
+            <img src="photos/photo1.gif" alt="Rosanna and Andrew portrait" loading="lazy" />
           </div>
           <div class="photo-caption">Together forever begins here</div>
         </div>
@@ -702,9 +645,7 @@
       <div class="photo-frame reveal">
         <div class="photo-inner">
           <div class="photo-placeholder">
-            <!-- REPLACE: <img src="photos/photo2.png" alt=""> -->
-            <div class="photo-placeholder-icon">✦</div>
-            <div class="photo-placeholder-text">Couple Photo<br/>photo2.png</div>
+            <img src="photos/photo2.gif" alt="Rosanna and Andrew candid" loading="lazy" />
           </div>
           <div class="photo-caption">A glance that says everything</div>
         </div>
@@ -713,9 +654,7 @@
       <div class="photo-frame tall reveal">
         <div class="photo-inner">
           <div class="photo-placeholder">
-            <!-- REPLACE: <img src="photos/photo3.png" alt=""> -->
-            <div class="photo-placeholder-icon">✦</div>
-            <div class="photo-placeholder-text">Portrait Photo<br/>photo3.png</div>
+            <img src="photos/photo3.gif" alt="Rosanna and Andrew portrait in motion" loading="lazy" />
           </div>
           <div class="photo-caption">Two hearts, one story</div>
         </div>
@@ -724,9 +663,7 @@
       <div class="photo-frame reveal">
         <div class="photo-inner">
           <div class="photo-placeholder">
-            <!-- REPLACE: <img src="photos/photo4.png" alt=""> -->
-            <div class="photo-placeholder-icon">✦</div>
-            <div class="photo-placeholder-text">Couple Photo<br/>photo4.png</div>
+            <img src="photos/photo4.gif" alt="Rosanna and Andrew moment" loading="lazy" />
           </div>
           <div class="photo-caption">The moments we'll treasure</div>
         </div>
@@ -742,10 +679,10 @@
       <h2 class="section-title reveal">Our Story</h2>
       <div class="story-body reveal">
         <p>
-          Some stories begin quietly — a shared glance, a conversation that stretches on longer than intended. Ours began exactly like that. Rosanna and Andrew found each other in the most unexpected of ways, and from that first moment, something extraordinary unfolded.
+          Some stories begin quietly - a shared glance, a conversation that stretches on longer than intended. Ours began exactly like that. Rosanna and Andrew found each other in the most unexpected of ways, and from that first moment, something extraordinary unfolded.
         </p>
         <p>
-          Through laughter and adventures, through quiet evenings and the kind of joy that fills every room — we built something beautiful. And now, surrounded by the people we love most, we're ready to begin the greatest chapter yet.
+          Through laughter and adventures, through quiet evenings and the kind of joy that fills every room - we built something beautiful. And now, surrounded by the people we love most, we're ready to begin the greatest chapter yet.
         </p>
         <p>
           On the Fourth of July, 2026, beneath the skies of Belize, we will make it official. We would be honoured to have you with us.
@@ -757,9 +694,7 @@
     <div class="story-visual reveal">
       <div class="story-img-wrap">
         <div class="story-placeholder">
-          <!-- REPLACE: <img src="photos/story.png" alt="Rosanna and Andrew"> -->
-          <div class="photo-placeholder-icon" style="border-color: rgba(0,0,0,0.2);">✦</div>
-          <div class="story-placeholder-text">Story Photo<br/>story.png</div>
+          <img src="photos/story.gif" alt="Rosanna and Andrew story photo" loading="lazy" />
         </div>
       </div>
       <div class="story-img-accent"></div>
@@ -774,22 +709,28 @@
 
       <div class="details-grid stagger">
         <div class="detail-card reveal">
-          <span class="detail-icon">◈</span>
+          <span class="detail-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M6.5 6.5l11 11M17.5 6.5l-11 11"></path></svg>
+          </span>
           <div class="detail-label">The Ceremony</div>
           <div class="detail-value">Saturday<br/>4th July, 2026</div>
-          <div class="detail-sub">4:00 PM · Ceremony Begins</div>
+          <div class="detail-sub">4:00 PM - Ceremony Begins</div>
         </div>
         <div class="detail-card reveal">
-          <span class="detail-icon">◈</span>
+          <span class="detail-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M6.5 6.5l11 11M17.5 6.5l-11 11"></path></svg>
+          </span>
           <div class="detail-label">The Venue</div>
           <div class="detail-value">Belize<br/>Venue Name</div>
-          <div class="detail-sub">Address · City, Belize</div>
+          <div class="detail-sub">Address - City, Belize</div>
         </div>
         <div class="detail-card reveal">
-          <span class="detail-icon">◈</span>
+          <span class="detail-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M6.5 6.5l11 11M17.5 6.5l-11 11"></path></svg>
+          </span>
           <div class="detail-label">Dress Code</div>
           <div class="detail-value">Black Tie<br/>Elegance</div>
-          <div class="detail-sub">Black · Ivory · Champagne</div>
+          <div class="detail-sub">Black - Ivory - Champagne</div>
         </div>
       </div>
     </div>
@@ -811,8 +752,8 @@
   <!-- ─── FOOTER ────────────────────────────────────── -->
   <footer>
     <div class="footer-names">Rosanna &amp; Andrew</div>
-    <p>Saturday, the Fourth of July · Two Thousand Twenty-Six · Belize</p>
-    <p style="margin-top: 1rem;">With love ✦</p>
+    <p>Saturday, the Fourth of July - Two Thousand Twenty-Six - Belize</p>
+    <p style="margin-top: 1rem;">With love</p>
   </footer>
 
   <script>
@@ -842,7 +783,7 @@
       const diff = wedding - now;
       if (diff <= 0) {
         document.querySelector('.countdown-wrapper').innerHTML =
-          '<p style="font-family:\'Great Vibes\',cursive;font-size:3rem;color:var(--gold)">Today is the Day! 🎉</p>';
+          '<p style="font-family:\'Great Vibes\',cursive;font-size:3rem;color:var(--gold)">Today is the Day!</p>';
         return;
       }
       const d = Math.floor(diff / 86400000);
@@ -879,26 +820,6 @@
       });
     }, { threshold: 0.15 });
     reveals.forEach(el => observer.observe(el));
-
-    // Intro card open animation
-    const introOverlay = document.getElementById('intro-overlay');
-    const openInviteBtn = document.getElementById('open-invite');
-    let introDone = false;
-
-    function openInvitation() {
-      if (!introOverlay || introDone) return;
-      introDone = true;
-      introOverlay.classList.add('opening');
-      setTimeout(() => introOverlay.classList.add('hide'), 850);
-      setTimeout(() => {
-        document.body.classList.remove('intro-active');
-      }, 1100);
-    }
-
-    openInviteBtn?.addEventListener('click', openInvitation);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') openInvitation();
-    });
   </script>
 </body>
 </html>

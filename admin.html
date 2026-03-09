@@ -66,17 +66,30 @@
     .pill-invited{background:rgba(149,165,166,0.1);color:#95a5a6;}
 
     /* WhatsApp Inbox Build */
-    .wa-builder { background: white; padding: 2rem; }
-    .wa-builder h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 1rem; }
+    .wa-builder { background: white; padding: 2rem; border: 1px solid #e8e2d8; box-shadow: 0 8px 22px rgba(13,13,13,0.04); }
+    .wa-builder h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; margin-bottom: 0.75rem; }
+    .wa-muted { font-size: 0.84rem; color: #5f5f5f; margin-bottom: 1.4rem; line-height: 1.55; }
+    .wa-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .wa-panel { border: 1px solid #ece6dc; background: #fcfbf9; padding: 1rem; }
+    .wa-panel h3 { font-size: 0.73rem; letter-spacing: 0.14em; text-transform: uppercase; color: #826837; margin-bottom: 0.9rem; }
+    .wa-panel small { color: #717171; font-size: 0.75rem; }
+    .wa-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.2rem; }
+    .wa-kpi { border: 1px solid #ece6dc; background: #fcfbf9; padding: 0.75rem 0.85rem; }
+    .wa-kpi strong { display: block; font-size: 1.3rem; font-family: 'Cormorant Garamond', serif; color: #1f1f1f; line-height: 1.1; }
+    .wa-kpi span { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em; color: #737373; }
     .wa-row { display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
-    .wa-row select { padding: 0.6rem; border: 1px solid #ddd; outline: none; min-width: 260px; }
+    .wa-row select, .wa-row input { padding: 0.64rem; border: 1px solid #ddd; outline: none; min-width: 260px; background: white; }
+    .wa-row select:focus, .wa-row input:focus { border-color: var(--gold); }
     .wa-template { width: 100%; min-height: 150px; padding: 1rem; border: 1px solid #ddd; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; line-height: 1.6; resize: vertical; margin-bottom: 1rem; }
-    .wa-vars { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .wa-vars { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
     .wa-var { padding: 0.3rem 0.7rem; background: #f5f5f5; font-size: 0.65rem; cursor: pointer; border: 1px solid #e0e0e0; }
     .wa-var:hover { background: var(--gold); color: white; }
     .wa-preview { background: #f0ede8; padding: 1rem; border-left: 3px solid #25D366; font-size: 0.82rem; white-space: pre-wrap; margin-bottom: 1rem; }
-    .action-btn { padding: 0.3rem 0.6rem; border: 1px solid #ddd; background: transparent; cursor: pointer; font-size: 0.65rem; }
-    .action-btn.wa { border-color: #25D366; color: #25D366; } .action-btn.wa:hover { background: #25D366; color: white; }
+    .wa-actions { display: flex; gap: 0.65rem; flex-wrap: wrap; }
+    .wa-person-info { font-size: 0.76rem; color: #505050; background: #fff; border: 1px solid #ece6dc; padding: 0.7rem 0.75rem; min-height: 44px; }
+    .action-btn { padding: 0.38rem 0.65rem; border: 1px solid #ddd; background: transparent; cursor: pointer; font-size: 0.65rem; }
+    .action-btn.wa { border-color: #25D366; color: #25D366; font-weight: 600; min-width: 96px; } .action-btn.wa:hover { background: #25D366; color: white; }
+    .table-actions { display: flex; gap: 0.4rem; align-items: center; }
 
     /* Modal */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 50; }
@@ -87,6 +100,17 @@
     .modal-group label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #aaa; display:block; margin-bottom: 0.4rem; }
     .modal-group input, .modal-group select { width: 100%; padding: 0.6rem; border: 1px solid #ddd; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; outline: none; }
     .modal-group input:focus, .modal-group select:focus { border-color: var(--gold); }
+
+    @media (max-width: 960px) {
+      .wa-kpis { grid-template-columns: repeat(2, 1fr); }
+      .wa-layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      #content { padding: 1rem; }
+      .wa-kpis { grid-template-columns: 1fr; }
+      .wa-row select, .wa-row input { min-width: 100%; width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -151,7 +175,7 @@
               <th>Status</th>
               <th>Contact</th>
               <th>Deadline</th>
-              <th>Action</th>
+              <th>WhatsApp</th>
             </tr>
           </thead>
           <tbody id="guests-tbody"><tr><td colspan="7" style="text-align:center;padding:3rem;">Loading data from Convex...</td></tr></tbody>
@@ -161,23 +185,42 @@
       <!-- WHATSAPP VIEW -->
       <div id="view-whatsapp" style="display:none;">
         <div class="wa-builder">
-          <h2>Personalised Invitations &amp; Reminders</h2>
-          <p style="font-size:0.8rem;color:#777;margin-bottom:1.5rem;">Send tailored WhatsApp messages. Unique RSVP links are generated automatically.</p>
+          <h2>WhatsApp Campaign Console</h2>
+          <p class="wa-muted">Send to groups or one guest at a time from a cleaner flow. Individual sends still use RSVP-aware messages automatically.</p>
 
-          <div style="margin-bottom:1.5rem;">
-            <label style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Select Group to Message</label><br>
-            <select id="wa-group" style="padding:0.6rem;margin-top:0.4rem;border:1px solid #ddd;outline:none;" onchange="updateWaPreview()">
-              <option value="all">All Guests (Initial Invite)</option>
-              <option value="invited">Not Responded Yet (Reminders)</option>
-              <option value="later">"Ask Later" / Waitlist (Follow-ups)</option>
-              <option value="attending">Attending (Event Updates)</option>
-            </select>
+          <div class="wa-kpis">
+            <div class="wa-kpi"><strong id="wa-kpi-phones">0</strong><span>With WhatsApp</span></div>
+            <div class="wa-kpi"><strong id="wa-kpi-invited">0</strong><span>Not Responded</span></div>
+            <div class="wa-kpi"><strong id="wa-kpi-later">0</strong><span>Ask Later</span></div>
+            <div class="wa-kpi"><strong id="wa-kpi-attending">0</strong><span>Attending</span></div>
           </div>
-          
-          <div class="wa-row">
-            <label style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Send to Individual</label>
-            <select id="wa-person"></select>
-            <button class="btn-sm primary" onclick="sendOneWA()">Open WhatsApp for Person</button>
+
+          <div class="wa-layout">
+            <div class="wa-panel">
+              <h3>Group Send</h3>
+              <div class="wa-row" style="margin-bottom:0.6rem;">
+                <select id="wa-group" onchange="updateWaPreview()">
+                  <option value="all">All Guests (Initial Invite)</option>
+                  <option value="invited">Not Responded Yet (Reminders)</option>
+                  <option value="later">Ask Later / Waitlist (Follow-ups)</option>
+                  <option value="attending">Attending (Event Updates)</option>
+                </select>
+                <button class="btn-sm primary" onclick="sendMassWA()">Open WhatsApp for Group</button>
+              </div>
+              <small>Opens a WhatsApp tab per matching guest with a saved phone number.</small>
+            </div>
+
+            <div class="wa-panel">
+              <h3>Send to Individual</h3>
+              <div class="wa-row" style="margin-bottom:0.6rem;">
+                <input id="wa-person-search" type="text" placeholder="Search by name or phone..." oninput="filterWaPeople()" />
+              </div>
+              <div class="wa-row" style="margin-bottom:0.6rem;">
+                <select id="wa-person" onchange="showSelectedPersonMeta()"></select>
+                <button class="btn-sm primary" onclick="sendOneWA()">Open WhatsApp for Person</button>
+              </div>
+              <div id="wa-person-meta" class="wa-person-info">Select a person to view details.</div>
+            </div>
           </div>
 
           <div class="wa-vars">
@@ -194,7 +237,7 @@ You are cordially invited to the wedding of *Rosanna Vanessa Depaz* and *Andrew 
 
 We've reserved an RSVP specifically for you as a {{type}}. Please let us know if you can make it by {{deadline}}.
 
-Tap the link below to view your personal invitation and respond:
+Tap the link below to view the invitation and respond:
 {{link}}
 
 With love,
@@ -203,8 +246,7 @@ Rosanna and Andrew</textarea>
           <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Live Preview (First match)</div>
           <div class="wa-preview" id="wa-preview">Loading preview...</div>
 
-          <div style="display:flex;gap:1rem;margin-top:1.5rem;">
-            <button class="btn-sm primary" onclick="sendMassWA()">Open WhatsApp for Group</button>
+          <div class="wa-actions" style="margin-top:1.3rem;">
             <button class="btn-sm" onclick="copyWA()">Copy Message</button>
           </div>
         </div>
@@ -264,6 +306,7 @@ Rosanna and Andrew</textarea>
     const LIVE_REFRESH_MS = 12000;
     let guests = [];
     let currentFilter = 'all';
+    let waPersonQuery = '';
     let adminToken = localStorage.getItem(SESSION_KEY) || '';
     let refreshTimer = null;
 
@@ -411,10 +454,8 @@ Rosanna and Andrew</textarea>
         const st = g.attendance || 'invited';
         const pClass = { attending:'pill-attending', declined:'pill-declined', later:'pill-later', invited:'pill-invited' }[st];
         const pLabel = { attending:'Yes', declined:'No', later:'Ask Later', invited:'Invited' }[st];
-
-        const link = generatePersonalLink(g);
-        const waMsg = encodeURIComponent(buildText(g));
-        const phone = g.phone ? g.phone.replace(/\s/g,'') : '';
+        const key = getGuestKey(g);
+        const hasPhone = !!normalizeWaPhone(g.phone);
 
         return `<tr>
           <td><strong>${g.first_name} ${g.last_name}</strong></td>
@@ -423,9 +464,8 @@ Rosanna and Andrew</textarea>
           <td><span class="status-pill ${pClass}">${pLabel}</span></td>
           <td>${g.phone||'-'}</td>
           <td style="font-size:0.75rem">${g.deadline ? new Date(g.deadline).toLocaleDateString() : '-'}</td>
-          <td><div style="display:flex;gap:0.4rem;">
-            <button class="action-btn" onclick="navigator.clipboard.writeText('${link}');alert('Copied link!')">Copy URL</button>
-            ${phone ? `<button class="action-btn wa" onclick="window.open('https://wa.me/${phone}?text=${waMsg}','_blank')">WA</button>` : ''}
+          <td><div class="table-actions">
+            ${hasPhone ? `<button class="action-btn wa" onclick="sendQuickWA('${key}')" title="Send individualized WhatsApp message">WhatsApp</button>` : `<span style="font-size:0.7rem;color:#999;">No phone</span>`}
           </div></td>
         </tr>`;
       }).join('');
@@ -480,6 +520,65 @@ Rosanna and Andrew</textarea>
       return `${WEDDING_URL}/rsvp.html?${p.toString()}`;
     }
 
+    function getGuestKey(g) {
+      return encodeURIComponent(String(g?._id || g?.id || `${g?.first_name || ''}-${g?.last_name || ''}-${g?.phone || ''}`));
+    }
+
+    function findGuestByKey(key) {
+      return guests.find(g => getGuestKey(g) === key);
+    }
+
+    function normalizeWaPhone(phone) {
+      return String(phone || '').replace(/[^\d]/g, '');
+    }
+
+    function getGuestsForTarget(tgt, requirePhone = false) {
+      const list = guests.filter(g => (
+        tgt === 'all'
+          ? true
+          : tgt === 'invited'
+            ? (!g.attendance || g.attendance === 'invited')
+            : g.attendance === tgt
+      ));
+      return requirePhone ? list.filter(g => normalizeWaPhone(g.phone)) : list;
+    }
+
+    function openGuestWhatsApp(g) {
+      if (!g) return false;
+      const phone = normalizeWaPhone(g.phone);
+      if (!phone) return false;
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(buildPersonalizedText(g))}`, '_blank');
+      return true;
+    }
+
+    function buildPersonalizedText(g) {
+      let msg = buildText(g);
+      if (!g) return msg;
+
+      const firstName = String(g.first_name || '').trim();
+      if (firstName && !msg.toLowerCase().includes(firstName.toLowerCase())) {
+        msg = `Hi ${firstName},\n\n${msg}`;
+      }
+
+      const link = generatePersonalLink(g);
+      if (link && !msg.includes(link)) {
+        msg = `${msg}\n\nRSVP link:\n${link}`;
+      }
+
+      return msg;
+    }
+
+    function sendQuickWA(key) {
+      const person = findGuestByKey(key);
+      if (!person) {
+        alert('Could not find this guest.');
+        return;
+      }
+      if (!openGuestWhatsApp(person)) {
+        alert('No valid WhatsApp number for this guest.');
+      }
+    }
+
     function buildText(g) {
       const tmpl = document.getElementById('wa-text').value;
       if(!g) return tmpl;
@@ -492,28 +591,80 @@ Rosanna and Andrew</textarea>
 
     function updateWaPreview() {
       const tgt = document.getElementById('wa-group').value;
-      const list = guests.filter(g => tgt==='all' ? true : tgt==='invited' ? (!g.attendance || g.attendance==='invited') : g.attendance === tgt);
+      const list = getGuestsForTarget(tgt, false);
       const sample = list[0];
       document.getElementById('wa-preview').textContent = sample ? buildText(sample) : "No guests match this filter.";
       populateWaPeople();
+      updateWaMetrics();
     }
 
     function populateWaPeople() {
       const sel = document.getElementById('wa-person');
-      const people = guests.filter(g => g.phone && g.first_name);
+      const keepValue = sel.value;
+      const q = waPersonQuery.trim().toLowerCase();
+      const people = guests
+        .filter(g => normalizeWaPhone(g.phone) && g.first_name)
+        .filter(g => {
+          if (!q) return true;
+          const name = `${g.first_name || ''} ${g.last_name || ''}`.trim().toLowerCase();
+          const phone = String(g.phone || '').toLowerCase();
+          return name.includes(q) || phone.includes(q);
+        });
+
       sel.innerHTML = people.length
-        ? people.map((g, i) => `<option value="${i}">${g.first_name} ${g.last_name || ''} - ${g.phone}</option>`).join('')
-        : '<option value="">No guests with phone</option>';
+        ? people.map((g) => `<option value="${getGuestKey(g)}">${g.first_name} ${g.last_name || ''} - ${g.phone}</option>`).join('')
+        : '<option value="">No matching guests with WhatsApp number</option>';
+
+      if (people.length && keepValue && people.some(g => getGuestKey(g) === keepValue)) {
+        sel.value = keepValue;
+      }
+
+      showSelectedPersonMeta();
+    }
+
+    function filterWaPeople() {
+      waPersonQuery = document.getElementById('wa-person-search').value || '';
+      populateWaPeople();
+    }
+
+    function showSelectedPersonMeta() {
+      const box = document.getElementById('wa-person-meta');
+      const key = document.getElementById('wa-person').value;
+      if (!key) {
+        box.textContent = 'Select a person to view details.';
+        return;
+      }
+      const person = findGuestByKey(key);
+      if (!person) {
+        box.textContent = 'Could not load selected guest details.';
+        return;
+      }
+      const statusMap = { attending: 'Attending', declined: 'Declined', later: 'Ask Later', invited: 'Invited' };
+      const status = statusMap[person.attendance || 'invited'] || 'Invited';
+      const due = person.deadline ? new Date(person.deadline).toLocaleDateString() : 'Not set';
+      box.textContent = `${person.first_name} ${person.last_name || ''} | ${person.guest_type || 'single'} | ${status} | RSVP deadline: ${due}`;
+    }
+
+    function updateWaMetrics() {
+      const withPhone = guests.filter(g => normalizeWaPhone(g.phone)).length;
+      const invitedWithPhone = getGuestsForTarget('invited', true).length;
+      const laterWithPhone = getGuestsForTarget('later', true).length;
+      const attendingWithPhone = getGuestsForTarget('attending', true).length;
+
+      document.getElementById('wa-kpi-phones').textContent = withPhone;
+      document.getElementById('wa-kpi-invited').textContent = invitedWithPhone;
+      document.getElementById('wa-kpi-later').textContent = laterWithPhone;
+      document.getElementById('wa-kpi-attending').textContent = attendingWithPhone;
     }
 
     function sendOneWA() {
       const sel = document.getElementById('wa-person');
       if (!sel || !sel.value) { alert('Select a guest first.'); return; }
-      const idx = Number(sel.value);
-      const person = guests.filter(g => g.phone && g.first_name)[idx];
+      const person = findGuestByKey(sel.value);
       if (!person) { alert('Could not find selected guest.'); return; }
-      const phone = person.phone.replace(/\s/g,'');
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(buildText(person))}`, '_blank');
+      if (!openGuestWhatsApp(person)) {
+        alert('No valid WhatsApp number for selected guest.');
+      }
     }
 
     function insertVar(v) {
@@ -530,12 +681,12 @@ Rosanna and Andrew</textarea>
 
     function sendMassWA() {
       const tgt = document.getElementById('wa-group').value;
-      const list = guests.filter(g => (tgt==='all' ? true : tgt==='invited' ? (!g.attendance || g.attendance==='invited') : g.attendance === tgt) && g.phone);
+      const list = getGuestsForTarget(tgt, true);
       if(!list.length) { alert('No guests with phones match this filter.'); return; }
       if(!confirm(`Deploy WhatsApp msg to ${list.length} guest(s)?`)) return;
 
       list.forEach((g,i) => {
-        setTimeout(()=>{ window.open(`https://wa.me/${g.phone.replace(/\s/g,'')}?text=${encodeURIComponent(buildText(g))}`, '_blank'); }, i*800);
+        setTimeout(() => { openGuestWhatsApp(g); }, i * 800);
       });
     }
   </script>
