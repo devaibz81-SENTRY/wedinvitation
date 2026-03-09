@@ -652,6 +652,39 @@
       opacity: 0;
       transform: translateY(10px);
     }
+    .music-toggle {
+      position: fixed;
+      right: 1rem;
+      top: 1rem;
+      z-index: 3200;
+      border: 1px solid rgba(201,168,76,0.7);
+      background: rgba(255, 253, 248, 0.92);
+      color: #2b2520;
+      padding: 0.58rem 0.95rem;
+      font-size: 0.66rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+      transition: background 0.25s ease, transform 0.2s ease, opacity 0.2s ease;
+    }
+    .music-toggle.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .music-toggle:hover {
+      background: #f4e6cc;
+      transform: translateY(-1px);
+    }
+    body.intro-active .music-toggle {
+      top: auto;
+      bottom: 1rem;
+    }
     @media (prefers-reduced-motion: reduce) {
       .intro-card-inner,
       #intro-overlay,
@@ -694,6 +727,11 @@
       <button id="open-invitation" class="intro-open-btn" type="button">Open Invitation</button>
     </div>
   </div>
+
+  <audio id="bg-music" preload="auto" loop>
+    <source src="audio/marry-you.mp3" type="audio/mpeg" />
+  </audio>
+  <button id="music-toggle" class="music-toggle" type="button" aria-label="Mute or unmute background music">Mute</button>
 
   <!-- NAV -->
   <nav>
@@ -966,21 +1004,57 @@
       });
     }, { threshold: 0.15 });
     reveals.forEach(el => observer.observe(el));
-    // Intro card reveal
+    // Intro card reveal + music
     const introOverlay = document.getElementById('intro-overlay');
     const introCard = document.getElementById('intro-card');
     const openInvitationBtn = document.getElementById('open-invitation');
+    const bgMusic = document.getElementById('bg-music');
+    const musicToggle = document.getElementById('music-toggle');
     let introOpened = false;
+
+    function syncMusicUi() {
+      if (!musicToggle || !bgMusic) return;
+      const isPlaying = !bgMusic.paused;
+      musicToggle.classList.toggle('is-visible', isPlaying);
+      musicToggle.textContent = bgMusic.muted ? 'Unmute' : 'Mute';
+    }
+
+    async function startMusic() {
+      if (!bgMusic) return false;
+      try {
+        await bgMusic.play();
+        syncMusicUi();
+        return true;
+      } catch {
+        syncMusicUi();
+        return false;
+      }
+    }
+
+    function toggleMute() {
+      if (!bgMusic) return;
+      bgMusic.muted = !bgMusic.muted;
+      syncMusicUi();
+    }
 
     function openInvitation() {
       if (!introOverlay || introOpened) return;
       introOpened = true;
+      startMusic();
       introOverlay.classList.add('opening');
       setTimeout(() => {
         introOverlay.classList.add('is-hidden');
         document.body.classList.remove('intro-active');
       }, 1050);
     }
+
+    // Best effort autoplay on load; browsers may block without interaction.
+    startMusic();
+    musicToggle?.addEventListener('click', toggleMute);
+    bgMusic?.addEventListener('play', syncMusicUi);
+    bgMusic?.addEventListener('pause', syncMusicUi);
+    bgMusic?.addEventListener('volumechange', syncMusicUi);
+    syncMusicUi();
 
     introCard?.addEventListener('click', openInvitation);
     openInvitationBtn?.addEventListener('click', openInvitation);
