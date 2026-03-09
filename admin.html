@@ -235,11 +235,11 @@
           <!-- Default Template Box -->
           <textarea id="wa-text" class="wa-template" oninput="updateWaPreview()">Hi {{name}},
 
-You are cordially invited to the wedding of *Rosanna Vanessa Depaz* and *Andrew Denton Haylock*.
+You are cordially invited to celebrate the wedding of Rosanna Vanessa Depaz and Andrew Denton Haylock.
 
-We've reserved an RSVP specifically for you as a {{type}}. Please let us know if you can make it by {{deadline}}.
+We have reserved your RSVP as a {{type}} invitation. Kindly reply by {{deadline}}.
 
-Tap the link below to view the invitation and respond:
+Open your invitation and respond here:
 {{link}}
 
 With love,
@@ -519,9 +519,9 @@ Rosanna and Andrew</textarea>
     // â”€â”€â”€ WHATSAPP BUILDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function generatePersonalLink(g) {
       const base = String(WEDDING_URL || '').replace(/\/+$/, '');
-      if(!g || !g.first_name) return `${base}/rsvp.html`;
+      if(!g || !g.first_name) return `${base}/`;
       const p = new URLSearchParams({ id:g._id || g.id || '', name:`${g.first_name} ${g.last_name}`, type:g.guest_type||'single', max:g.max_party||1, due:g.deadline||'' });
-      return `${base}/rsvp.html?${p.toString()}`;
+      return `${base}/?${p.toString()}`;
     }
 
     function getGuestKey(g) {
@@ -569,7 +569,7 @@ Rosanna and Andrew</textarea>
         msg = `${msg}\n\nRSVP link:\n${link}`;
       }
 
-      return msg;
+      return tidyMessage(msg);
     }
 
     function sendQuickWA(key) {
@@ -615,14 +615,37 @@ Rosanna and Andrew</textarea>
       }
     }
 
+    function tidyMessage(message) {
+      return String(message || '')
+        .replace(/\r\n/g, '\n')
+        .replace(/[ \t]+\n/g, '\n')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    }
+
+    function formatGuestType(guestType) {
+      const type = String(guestType || 'single').toLowerCase();
+      if (type === 'single') return 'single guest';
+      if (type === 'couple') return 'couple';
+      if (type === 'family') return 'family';
+      return type;
+    }
+
+    function formatDeadline(deadline) {
+      if (!deadline) return 'June 10, 2026';
+      const date = new Date(deadline);
+      if (Number.isNaN(date.getTime())) return String(deadline);
+      return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    }
+
     function buildText(g) {
       const tmpl = document.getElementById('wa-text').value;
-      if(!g) return tmpl;
-      return tmpl
+      if(!g) return tidyMessage(tmpl);
+      return tidyMessage(tmpl
         .replace(/{{name}}/g, g.first_name || 'Guest')
-        .replace(/{{type}}/g, g.guest_type || 'single')
-        .replace(/{{deadline}}/g, g.deadline ? new Date(g.deadline).toLocaleDateString() : 'June 10th')
-        .replace(/{{link}}/g, generatePersonalLink(g));
+        .replace(/{{type}}/g, formatGuestType(g.guest_type))
+        .replace(/{{deadline}}/g, formatDeadline(g.deadline))
+        .replace(/{{link}}/g, generatePersonalLink(g)));
     }
 
     function updateWaPreview() {
