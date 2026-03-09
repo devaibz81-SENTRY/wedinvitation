@@ -533,6 +533,132 @@
     .stagger .reveal:nth-child(2) { transition-delay: 0.25s; }
     .stagger .reveal:nth-child(3) { transition-delay: 0.4s; }
     .stagger .reveal:nth-child(4) { transition-delay: 0.55s; }
+    /* Intro card opener */
+    body.intro-active {
+      overflow: hidden;
+    }
+    body.intro-active > *:not(#intro-overlay) {
+      filter: blur(7px);
+      opacity: 0.28;
+      transform: scale(1.01);
+      pointer-events: none;
+      user-select: none;
+      transition: filter 0.45s ease, opacity 0.45s ease, transform 0.45s ease;
+    }
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: grid;
+      place-items: center;
+      padding: 1.5rem;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(232,196,184,0.55), transparent 42%),
+        radial-gradient(circle at 80% 80%, rgba(212,184,150,0.48), transparent 44%),
+        #f6f1e8;
+      transition: opacity 0.55s ease, visibility 0.55s ease;
+    }
+    #intro-overlay.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .intro-stage {
+      width: min(92vw, 560px);
+      text-align: center;
+    }
+    .intro-kicker {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #8d6f2f;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .intro-card {
+      width: min(90vw, 540px);
+      aspect-ratio: 16 / 10;
+      margin: 0 auto 1rem;
+      perspective: 1800px;
+      cursor: pointer;
+    }
+    .intro-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 1.2s cubic-bezier(.2,.76,.15,1);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    #intro-overlay.opening .intro-card-inner {
+      transform: rotateY(-168deg);
+    }
+    .intro-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+    }
+    .intro-front {
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, #fbf4e9 0%, #f2e5d0 100%);
+      border: 1px solid rgba(201,168,76,0.45);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .intro-front h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+      color: #2b2520;
+      margin-bottom: 0.6rem;
+      line-height: 1.1;
+    }
+    .intro-front p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: #5b4f40;
+      letter-spacing: 0.03em;
+    }
+    .intro-back {
+      transform: rotateY(180deg);
+      border: 1px solid rgba(201,168,76,0.45);
+      background: #111;
+    }
+    .intro-back img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .intro-open-btn {
+      border: 1px solid var(--gold);
+      background: #fffdf8;
+      color: var(--black);
+      padding: 0.88rem 2.2rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, opacity 0.3s ease;
+    }
+    .intro-open-btn:hover {
+      background: #f8efe2;
+      transform: translateY(-2px);
+    }
+    #intro-overlay.opening .intro-open-btn {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .intro-card-inner,
+      #intro-overlay,
+      body.intro-active > *:not(#intro-overlay) {
+        transition: none !important;
+      }
+    }
 
     /* ─── RESPONSIVE ──────────────────────────────── */
     @media (max-width: 768px) {
@@ -547,7 +673,27 @@
 
   </style>
 </head>
-<body>
+<body class="intro-active">
+
+  <div id="intro-overlay" aria-label="Open invitation card animation">
+    <div class="intro-stage">
+      <p class="intro-kicker">Rosanna and Andrew</p>
+      <div class="intro-card" id="intro-card" role="button" tabindex="0" aria-label="Open invitation">
+        <div class="intro-card-inner">
+          <div class="intro-face intro-front">
+            <div>
+              <h2>Open The Card</h2>
+              <p>July 4, 2026 - Belize</p>
+            </div>
+          </div>
+          <div class="intro-face intro-back">
+            <img src="photos/story.gif" alt="Rosanna and Andrew reveal photo" />
+          </div>
+        </div>
+      </div>
+      <button id="open-invitation" class="intro-open-btn" type="button">Open Invitation</button>
+    </div>
+  </div>
 
   <!-- NAV -->
   <nav>
@@ -820,6 +966,30 @@
       });
     }, { threshold: 0.15 });
     reveals.forEach(el => observer.observe(el));
+    // Intro card reveal
+    const introOverlay = document.getElementById('intro-overlay');
+    const introCard = document.getElementById('intro-card');
+    const openInvitationBtn = document.getElementById('open-invitation');
+    let introOpened = false;
+
+    function openInvitation() {
+      if (!introOverlay || introOpened) return;
+      introOpened = true;
+      introOverlay.classList.add('opening');
+      setTimeout(() => {
+        introOverlay.classList.add('is-hidden');
+        document.body.classList.remove('intro-active');
+      }, 1050);
+    }
+
+    introCard?.addEventListener('click', openInvitation);
+    openInvitationBtn?.addEventListener('click', openInvitation);
+    introCard?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openInvitation();
+      }
+    });
   </script>
 </body>
 </html>
