@@ -307,6 +307,15 @@
   </footer>
 
   <script>
+    // Legacy link handling:
+    // If someone lands directly on /rsvp with a guest id, send them to intro card first.
+    const entryUrl = new URL(window.location.href);
+    const entryParams = new URLSearchParams(entryUrl.search);
+    if (entryParams.get('id') && entryParams.get('opened') !== '1') {
+      const redirectUrl = new URL('index.html', entryUrl);
+      redirectUrl.search = entryParams.toString();
+      window.location.replace(redirectUrl.toString());
+    }
     // â”€â”€â”€ Convex Config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
 
@@ -710,6 +719,7 @@
   </script>
 </body>
 </html>
+
 
 
 

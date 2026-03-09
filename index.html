@@ -993,10 +993,13 @@
 
     <script>
     // Carry guest params from invitation URL into RSVP links.
-    const guestQuery = window.location.search || '';
-    if (guestQuery) {
+    // Mark as opened=1 so direct /rsvp legacy links can be redirected to intro first.
+    const guestParams = new URLSearchParams(window.location.search || '');
+    if (guestParams.toString()) {
+      guestParams.set('opened', '1');
+      const rsvpQuery = `?${guestParams.toString()}`;
       document.querySelectorAll('a[href="rsvp.html"]').forEach((link) => {
-        link.href = `rsvp.html${guestQuery}`;
+        link.href = `rsvp.html${rsvpQuery}`;
       });
     }
 
