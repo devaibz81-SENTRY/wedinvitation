@@ -8,6 +8,28 @@ const attendanceValidator = v.union(
   v.literal("later")
 );
 
+const rsvpAttendanceValidator = v.union(
+  v.literal("attending"),
+  v.literal("declined"),
+  v.literal("later")
+);
+
+function normalizeWhitespace(value: string) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
+
+function makeNameKey(firstName: string, lastName: string) {
+  return `${normalizeWhitespace(firstName)} ${normalizeWhitespace(lastName)}`.trim();
+}
+
+function normalizePhone(phone?: string) {
+  const digits = String(phone || "").replace(/[^\d]/g, "");
+  return digits.length ? digits : undefined;
+}
+
 export const list = internalQuery({
   args: {},
   handler: async (ctx) => {
@@ -29,13 +51,61 @@ export const add = internalMutation({
   },
   handler: async (ctx, args) => {
     const now = new Date().toISOString();
+    const nameKey = makeNameKey(args.first_name, args.last_name);
+    const phoneKey = normalizePhone(args.phone);
+
+    let existing = null;
+    let dedupedBy: "phone" | "name" | null = null;
+
+    if (phoneKey) {
+      existing = await ctx.db
+        .query("guests")
+        .withIndex("by_phone_key", (q) => q.eq("phone_key", phoneKey))
+        .first();
+      if (existing) dedupedBy = "phone";
+    }
+
+    if (!existing) {
+      existing = await ctx.db
+        .query("guests")
+        .withIndex("by_name_key", (q) => q.eq("name_key", nameKey))
+        .first();
+      if (existing) dedupedBy = "name";
+    }
+
+    if (existing) {
+      const requestedAttendance = args.attendance ?? "invited";
+      const nextAttendance =
+        existing.attendance !== "invited" && requestedAttendance === "invited"
+          ? existing.attendance
+          : requestedAttendance;
+
+      await ctx.db.patch(existing._id, {
+        first_name: args.first_name,
+        last_name: args.last_name,
+        name_key: nameKey,
+        guest_type: args.guest_type,
+        max_party: args.max_party,
+        phone: args.phone,
+        phone_key: phoneKey,
+        email: args.email,
+        deadline: args.deadline,
+        attendance: nextAttendance,
+        updated_at: now,
+      });
+
+      return { id: existing._id, updated: true, dedupedBy };
+    }
+
     const id = await ctx.db.insert("guests", {
       ...args,
+      name_key: nameKey,
+      phone_key: phoneKey,
       attendance: args.attendance ?? "invited",
       created_at: now,
       updated_at: now,
     });
-    return { id };
+    return { id, created: true };
   },
 });
 
@@ -46,55 +116,115 @@ export const updateFromRsvp = internalMutation({
     last_name: v.string(),
     email: v.string(),
     phone: v.optional(v.string()),
-    attendance: v.union(v.literal("attending"), v.literal("declined"), v.literal("later")),
+    attendance: rsvpAttendanceValidator,
     guest_type: v.optional(v.string()),
     message: v.optional(v.string()),
     submitted_at: v.string(),
   },
   handler: async (ctx, args) => {
     const now = new Date().toISOString();
-    let targetId = args.guestId;
+    const submittedNameKey = makeNameKey(args.first_name, args.last_name);
+    const submittedPhoneKey = normalizePhone(args.phone);
 
-    if (!targetId) {
-      const maybeByEmail = await ctx.db
+    const logGateQuery = async (reason: "name_mismatch" | "guest_not_found" | "ambiguous_name", expectedName?: string) => {
+      await ctx.db.insert("rsvp_gate_queries", {
+        guest_id: args.guestId,
+        submitted_first_name: args.first_name,
+        submitted_last_name: args.last_name,
+        submitted_email: args.email || undefined,
+        submitted_phone: args.phone,
+        attendance: args.attendance,
+        reason,
+        expected_name: expectedName,
+        created_at: now,
+        status: "open",
+      });
+    };
+
+    let targetGuest = args.guestId ? await ctx.db.get(args.guestId) : null;
+
+    if (args.guestId && !targetGuest) {
+      await logGateQuery("guest_not_found");
+      return { guestId: null, rejected: true, reason: "guest_not_found" };
+    }
+
+    if (!targetGuest && submittedPhoneKey) {
+      targetGuest = await ctx.db
+        .query("guests")
+        .withIndex("by_phone_key", (q) => q.eq("phone_key", submittedPhoneKey))
+        .first();
+    }
+
+    if (!targetGuest && args.email) {
+      targetGuest = await ctx.db
         .query("guests")
         .withIndex("by_email", (q) => q.eq("email", args.email))
         .first();
-      targetId = maybeByEmail?._id;
     }
 
-    if (targetId) {
-      await ctx.db.patch(targetId, {
-        first_name: args.first_name,
-        last_name: args.last_name,
-        email: args.email,
-        phone: args.phone,
-        attendance: args.attendance,
-        message: args.message,
-        submitted_at: args.submitted_at,
-        updated_at: now,
-      });
-    } else {
-      const normalizedGuestType =
-        args.guest_type === "couple" || args.guest_type === "family"
-          ? args.guest_type
-          : "single";
-      targetId = await ctx.db.insert("guests", {
-        first_name: args.first_name,
-        last_name: args.last_name,
-        guest_type: normalizedGuestType,
-        max_party: 1,
-        phone: args.phone,
-        email: args.email,
-        attendance: args.attendance,
-        message: args.message,
-        submitted_at: args.submitted_at,
-        created_at: now,
-        updated_at: now,
-      });
+    if (!targetGuest) {
+      const sameNameGuests = await ctx.db
+        .query("guests")
+        .withIndex("by_name_key", (q) => q.eq("name_key", submittedNameKey))
+        .collect();
+      if (sameNameGuests.length === 1) {
+        targetGuest = sameNameGuests[0];
+      } else if (sameNameGuests.length > 1) {
+        await logGateQuery("ambiguous_name");
+        return { guestId: null, rejected: true, reason: "ambiguous_name" };
+      }
     }
 
-    return { guestId: targetId ?? null };
+    if (!targetGuest) {
+      await logGateQuery("guest_not_found");
+      return { guestId: null, rejected: true, reason: "guest_not_found" };
+    }
+
+    const expectedNameKey = targetGuest.name_key ?? makeNameKey(targetGuest.first_name, targetGuest.last_name);
+    const expectedName = `${targetGuest.first_name} ${targetGuest.last_name}`.trim();
+    if (expectedNameKey !== submittedNameKey) {
+      await logGateQuery("name_mismatch", expectedName);
+      return {
+        guestId: null,
+        rejected: true,
+        reason: "name_mismatch",
+        expectedName,
+      };
+    }
+
+    const nextPhone = args.phone ?? targetGuest.phone;
+    const nextPhoneKey = normalizePhone(nextPhone);
+    const nextEmail = targetGuest.email ?? args.email;
+
+    await ctx.db.patch(targetGuest._id, {
+      first_name: targetGuest.first_name,
+      last_name: targetGuest.last_name,
+      name_key: expectedNameKey,
+      email: nextEmail,
+      phone: nextPhone,
+      phone_key: nextPhoneKey,
+      attendance: args.attendance,
+      message: args.message,
+      submitted_at: args.submitted_at,
+      updated_at: now,
+    });
+
+    return { guestId: targetGuest._id, rejected: false };
+  },
+});
+
+export const listGateQueries = internalQuery({
+  args: {
+    status: v.optional(v.union(v.literal("open"), v.literal("resolved"))),
+  },
+  handler: async (ctx, args) => {
+    const rows = args.status
+      ? await ctx.db
+          .query("rsvp_gate_queries")
+          .withIndex("by_status", (q) => q.eq("status", args.status!))
+          .collect()
+      : await ctx.db.query("rsvp_gate_queries").collect();
+    return rows.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
   },
 });
 

@@ -148,6 +148,30 @@ http.route({
 });
 
 http.route({
+  path: "/api/rsvp-queries",
+  method: "OPTIONS",
+  handler: httpAction(async () => noContent()),
+});
+
+http.route({
+  path: "/api/rsvp-queries",
+  method: "GET",
+  handler: httpAction(async (ctx, request) => {
+    if (!(await requireAdmin(ctx, request))) {
+      return json({ ok: false, error: "Unauthorized" }, 401);
+    }
+    const url = new URL(request.url);
+    const statusParam = url.searchParams.get("status");
+    const status =
+      statusParam === "open" || statusParam === "resolved"
+        ? statusParam
+        : undefined;
+    const rows = await ctx.runQuery(internal.guests.listGateQueries, { status });
+    return json(rows);
+  }),
+});
+
+http.route({
   path: "/api/guest/delete",
   method: "OPTIONS",
   handler: httpAction(async () => noContent()),
@@ -190,8 +214,44 @@ http.route({
 
     const guestId = body.guest_id ? (body.guest_id as Id<"guests">) : undefined;
 
+    const guestResult = await ctx.runMutation(internal.guests.updateFromRsvp, {
+      guestId,
+      first_name: body.first_name,
+      last_name: body.last_name,
+      email: body.email,
+      phone: body.phone || undefined,
+      attendance: body.attendance,
+      guest_type: body.guest_type || undefined,
+      message: body.message || undefined,
+      submitted_at: body.submitted_at || new Date().toISOString(),
+    });
+
+    if (guestResult?.rejected) {
+      const code = String(guestResult.reason || "guest_not_found");
+      const expectedName = guestResult.expectedName || undefined;
+      const errorByCode: Record<string, string> = {
+        name_mismatch: expectedName
+          ? `Name mismatch for this invite. Expected ${expectedName}.`
+          : "Name mismatch for this invite.",
+        guest_not_found:
+          "Name is not on the guest list for this invite. Contact the event manager.",
+        ambiguous_name:
+          "Multiple guests match this name. Contact the event manager to verify your invite.",
+      };
+      return json(
+        {
+          ok: false,
+          code,
+          expectedName,
+          error: errorByCode[code] || "RSVP could not be validated.",
+        },
+        403
+      );
+    }
+
+    const resolvedGuestId = (guestResult?.guestId as Id<"guests"> | null) ?? guestId ?? null;
     const rsvpResult = await ctx.runMutation(internal.rsvps.submit, {
-      guest_id: guestId,
+      guest_id: resolvedGuestId ?? undefined,
       first_name: body.first_name,
       last_name: body.last_name,
       email: body.email,
@@ -202,18 +262,6 @@ http.route({
       meal_preference: body.meal_preference || undefined,
       dietary_requirements: body.dietary_requirements || undefined,
       song_request: body.song_request || undefined,
-      message: body.message || undefined,
-      submitted_at: body.submitted_at || new Date().toISOString(),
-    });
-
-    const guestResult = await ctx.runMutation(internal.guests.updateFromRsvp, {
-      guestId,
-      first_name: body.first_name,
-      last_name: body.last_name,
-      email: body.email,
-      phone: body.phone || undefined,
-      attendance: body.attendance,
-      guest_type: body.guest_type || undefined,
       message: body.message || undefined,
       submitted_at: body.submitted_at || new Date().toISOString(),
     });

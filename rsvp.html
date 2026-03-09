@@ -444,7 +444,7 @@
           lt.textContent = `No worries, ${firstName} - we completely understand. We'll reach out closer to June 10th. We hope you can make it.`;
           document.getElementById('later-state').style.display = 'block';
         }).catch((err) => {
-          showStatus('error', err.message || 'Unable to submit RSVP right now.');
+          showStatus('error', formatRsvpError(err));
           btn.textContent = 'Send My RSVP';
           btn.disabled = false;
         });
@@ -511,7 +511,7 @@
         };
         document.getElementById('success-text').textContent = msgs[attendance] || msgs.attending;
       }).catch((err) => {
-        showStatus('error', err.message || 'Unable to submit RSVP right now.');
+        showStatus('error', formatRsvpError(err));
         btn.textContent = 'Send My RSVP';
         btn.disabled = false;
       });
@@ -523,11 +523,35 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      if (!res.ok) {
-        const detail = await res.text();
-        throw new Error(detail || 'Submit failed');
+      const raw = await res.text();
+      let parsed = null;
+      try {
+        parsed = raw ? JSON.parse(raw) : null;
+      } catch {
+        parsed = null;
       }
-      return res.json();
+      if (!res.ok) {
+        const error = new Error(parsed?.error || raw || 'Submit failed');
+        error.code = parsed?.code || 'submit_failed';
+        error.expectedName = parsed?.expectedName || undefined;
+        throw error;
+      }
+      return parsed ?? {};
+    }
+
+    function formatRsvpError(err) {
+      const code = err?.code || '';
+      if (code === 'name_mismatch') {
+        const expected = err?.expectedName ? ` Expected name: ${err.expectedName}.` : '';
+        return `Name does not match this invite.${expected} Contact the event manager if this is incorrect.`;
+      }
+      if (code === 'guest_not_found') {
+        return 'This name is not on the guest list for this invite. Contact the event manager to verify your RSVP.';
+      }
+      if (code === 'ambiguous_name') {
+        return 'Multiple guests match this name. Contact the event manager so we can confirm the correct invite.';
+      }
+      return err?.message || 'Unable to submit RSVP right now.';
     }
 
     function attendanceLabel(status) {
