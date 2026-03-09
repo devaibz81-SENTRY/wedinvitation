@@ -484,9 +484,129 @@
       .countdown-wrapper { gap: 1.5rem; }
       .count-sep { display: none; }
     }
+
+    body.intro-active { overflow: hidden; }
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(ellipse at top, rgba(232,196,184,0.55), transparent 50%),
+        radial-gradient(ellipse at bottom, rgba(212,184,150,0.45), transparent 55%),
+        #f6f1e8;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
+    }
+    #intro-overlay.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .intro-wrap {
+      text-align: center;
+      padding: 2rem;
+      width: min(92vw, 640px);
+    }
+    .intro-kicker {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+    .intro-card {
+      perspective: 1400px;
+      margin: 0 auto 1.2rem;
+      width: min(86vw, 520px);
+      height: min(62vw, 320px);
+      min-height: 220px;
+    }
+    .intro-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 1s cubic-bezier(.2,.75,.18,1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+      border-radius: 6px;
+    }
+    #intro-overlay.opening .intro-card-inner { transform: rotateY(-165deg); }
+    .intro-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(201,168,76,0.35);
+      padding: 1.2rem;
+    }
+    .intro-front {
+      background: linear-gradient(145deg, #faf5ed 0%, #f1e7d8 100%);
+      transform-origin: left center;
+    }
+    .intro-back {
+      background: #fffdf8;
+      transform: translateZ(-2px);
+      color: #4f4a43;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2vw, 1.45rem);
+      letter-spacing: 0.03em;
+      line-height: 1.6;
+    }
+    .intro-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      color: #2b2520;
+      line-height: 1.1;
+    }
+    .intro-date {
+      margin-top: 0.8rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #8d7758;
+    }
+    .intro-open-btn {
+      border: 1px solid var(--gold);
+      background: #fffdf8;
+      color: var(--black);
+      padding: 0.85rem 2rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .intro-open-btn:hover {
+      background: #f8efe2;
+      transform: translateY(-2px);
+    }
   </style>
 </head>
-<body>
+<body class="intro-active">
+
+  <div id="intro-overlay" aria-label="Opening invitation card">
+    <div class="intro-wrap">
+      <p class="intro-kicker">You Are Invited</p>
+      <div class="intro-card">
+        <div class="intro-card-inner">
+          <div class="intro-face intro-front">
+            <p class="intro-names">Rosanna &amp; Andrew</p>
+            <p class="intro-date">July 4, 2026</p>
+          </div>
+          <div class="intro-face intro-back">
+            <p>Welcome to our wedding invitation</p>
+          </div>
+        </div>
+      </div>
+      <button id="open-invite" class="intro-open-btn" type="button">Open Invitation</button>
+    </div>
+  </div>
 
   <!-- NAV -->
   <nav>
@@ -759,6 +879,26 @@
       });
     }, { threshold: 0.15 });
     reveals.forEach(el => observer.observe(el));
+
+    // Intro card open animation
+    const introOverlay = document.getElementById('intro-overlay');
+    const openInviteBtn = document.getElementById('open-invite');
+    let introDone = false;
+
+    function openInvitation() {
+      if (!introOverlay || introDone) return;
+      introDone = true;
+      introOverlay.classList.add('opening');
+      setTimeout(() => introOverlay.classList.add('hide'), 850);
+      setTimeout(() => {
+        document.body.classList.remove('intro-active');
+      }, 1100);
+    }
+
+    openInviteBtn?.addEventListener('click', openInvitation);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') openInvitation();
+    });
   </script>
 </body>
 </html>
