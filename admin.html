@@ -122,7 +122,7 @@
           <div class="stat-card green"><div class="stat-label">Attending</div><div class="stat-num" id="st-attending">0</div></div>
           <div class="stat-card red"><div class="stat-label">Declined</div><div class="stat-num" id="st-declined">0</div></div>
           <div class="stat-card yellow"><div class="stat-label">Ask Later (Waitlist)</div><div class="stat-num" id="st-later">0</div></div>
-          <div class="stat-card blue"><div class="stat-label">Total Invited</div><div class="stat-num" id="st-total">0</div></div>
+          <div class="stat-card blue"><div class="stat-label">Total Invited Seats</div><div class="stat-num" id="st-total">0</div></div>
         </div>
 
         <div class="filter-bar">
@@ -351,7 +351,8 @@ Rosanna and Andrew</textarea>
       const att = guests.filter(g => g.attendance === 'attending').length;
       const dec = guests.filter(g => g.attendance === 'declined').length;
       const lat = guests.filter(g => g.attendance === 'later').length;
-      document.getElementById('st-total').textContent = guests.length;
+      const totalSeats = guests.reduce((sum, g) => sum + (Number(g.max_party) || 1), 0);
+      document.getElementById('st-total').textContent = totalSeats;
       document.getElementById('st-attending').textContent = att;
       document.getElementById('st-declined').textContent = dec;
       document.getElementById('st-later').textContent = lat;
