@@ -97,3 +97,28 @@ export const updateFromRsvp = mutation({
     return { guestId: targetId ?? null };
   },
 });
+
+export const remove = mutation({
+  args: {
+    guestId: v.id("guests"),
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db.get(args.guestId);
+    if (!existing) {
+      return { deleted: false };
+    }
+
+    // Clean up linked RSVPs for this guest to keep admin data consistent.
+    const rsvps = await ctx.db.query("rsvps").collect();
+    let removedRsvps = 0;
+    for (const rsvp of rsvps) {
+      if (rsvp.guest_id === args.guestId) {
+        await ctx.db.delete(rsvp._id);
+        removedRsvps += 1;
+      }
+    }
+
+    await ctx.db.delete(args.guestId);
+    return { deleted: true, removedRsvps };
+  },
+});

@@ -145,6 +145,35 @@ http.route({
 });
 
 http.route({
+  path: "/api/guest/delete",
+  method: "OPTIONS",
+  handler: httpAction(async () => noContent()),
+});
+
+http.route({
+  path: "/api/guest/delete",
+  method: "POST",
+  handler: httpAction(async (ctx, request) => {
+    if (!(await requireAdmin(ctx, request))) {
+      return json({ ok: false, error: "Unauthorized" }, 401);
+    }
+
+    const body = await request.json();
+    const guestId = body.guestId as Id<"guests"> | undefined;
+    if (!guestId) {
+      return json({ ok: false, error: "guestId is required" }, 400);
+    }
+
+    const result = await ctx.runMutation(api.guests.remove, { guestId });
+    if (!result.deleted) {
+      return json({ ok: false, error: "Guest not found" }, 404);
+    }
+
+    return json({ ok: true, ...result });
+  }),
+});
+
+http.route({
   path: "/api/rsvp",
   method: "OPTIONS",
   handler: httpAction(async () => noContent()),

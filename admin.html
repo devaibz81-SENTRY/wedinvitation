@@ -89,6 +89,8 @@
     .wa-person-info { font-size: 0.76rem; color: #505050; background: #fff; border: 1px solid #ece6dc; padding: 0.7rem 0.75rem; min-height: 44px; }
     .action-btn { padding: 0.38rem 0.65rem; border: 1px solid #ddd; background: transparent; cursor: pointer; font-size: 0.65rem; }
     .action-btn.wa { border-color: #25D366; color: #25D366; font-weight: 600; min-width: 96px; } .action-btn.wa:hover { background: #25D366; color: white; }
+    .action-btn.danger { border-color: #e74c3c; color: #e74c3c; font-weight: 600; }
+    .action-btn.danger:hover { background: #e74c3c; color: #fff; }
     .table-actions { display: flex; gap: 0.4rem; align-items: center; }
 
     /* Modal */
@@ -175,7 +177,7 @@
               <th>Status</th>
               <th>Contact</th>
               <th>Deadline</th>
-              <th>WhatsApp</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody id="guests-tbody"><tr><td colspan="7" style="text-align:center;padding:3rem;">Loading data from Convex...</td></tr></tbody>
@@ -466,6 +468,7 @@ Rosanna and Andrew</textarea>
           <td style="font-size:0.75rem">${g.deadline ? new Date(g.deadline).toLocaleDateString() : '-'}</td>
           <td><div class="table-actions">
             ${hasPhone ? `<button class="action-btn wa" onclick="sendQuickWA('${key}')" title="Send individualized WhatsApp message">WhatsApp</button>` : `<span style="font-size:0.7rem;color:#999;">No phone</span>`}
+            <button class="action-btn danger" onclick="deleteGuest('${key}')">Delete</button>
           </div></td>
         </tr>`;
       }).join('');
@@ -576,6 +579,38 @@ Rosanna and Andrew</textarea>
       }
       if (!openGuestWhatsApp(person)) {
         alert('No valid WhatsApp number for this guest.');
+      }
+    }
+
+    async function deleteGuest(key) {
+      const guest = findGuestByKey(key);
+      if (!guest) {
+        alert('Could not find this guest.');
+        return;
+      }
+
+      const name = `${guest.first_name || ''} ${guest.last_name || ''}`.trim();
+      const confirmed = confirm(`Delete ${name || 'this guest'}?\nThis will remove the guest and linked RSVPs.`);
+      if (!confirmed) return;
+
+      try {
+        const guestId = guest._id || guest.id;
+        const res = await fetch(`${CONVEX_HTTP_URL}/api/guest/delete`, {
+          method: 'POST',
+          headers: authHeaders({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify({ guestId })
+        });
+
+        if (res.status === 401) {
+          await logout();
+          throw new Error('Session expired. Please log in again.');
+        }
+        if (!res.ok) throw new Error(await res.text());
+
+        await fetchGuests({ showLoading: false });
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        alert(`Delete failed: ${msg}`);
       }
     }
 
