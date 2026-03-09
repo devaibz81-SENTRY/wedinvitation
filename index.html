@@ -298,8 +298,7 @@
       transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
     }
     .photo-placeholder img.is-loaded,
-    .story-placeholder img.is-loaded,
-    .intro-back img.is-loaded {
+    .story-placeholder img.is-loaded {
       opacity: 1;
       transform: translateY(0) scale(1);
       filter: saturate(1);
@@ -607,27 +606,33 @@
       aspect-ratio: 16 / 10;
       margin: 0 auto 1rem;
       perspective: 1800px;
+      transform-style: preserve-3d;
       cursor: pointer;
     }
     .intro-card-inner {
       position: relative;
       width: 100%;
       height: 100%;
+      transform: rotateY(0deg);
+      -webkit-transform-style: preserve-3d;
       transform-style: preserve-3d;
       transition: transform 1.2s cubic-bezier(.2,.76,.15,1);
+      will-change: transform;
       box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
       border-radius: 12px;
       overflow: hidden;
     }
     #intro-overlay.opening .intro-card-inner {
-      transform: rotateY(-168deg);
+      transform: rotateY(-180deg);
     }
     .intro-face {
       position: absolute;
       inset: 0;
+      -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
     }
     .intro-front {
+      transform: rotateY(0deg);
       display: grid;
       place-items: center;
       background: linear-gradient(145deg, #fbf4e9 0%, #f2e5d0 100%);
@@ -659,10 +664,10 @@
       object-fit: cover;
       display: block;
       object-position: center center;
-      opacity: 0;
-      transform: translateY(16px) scale(1.02);
-      filter: saturate(0.9);
-      transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
+      opacity: 1;
+      transform: none;
+      filter: none;
+      transition: none;
     }
     .intro-open-btn {
       border: 1px solid var(--gold);
@@ -771,7 +776,7 @@
             </div>
           </div>
           <div class="intro-face intro-back">
-            <img src="photos/story.gif" alt="Rosanna and Andrew reveal photo" />
+            <img src="photos/story.gif" alt="Rosanna and Andrew reveal photo" fetchpriority="high" />
           </div>
         </div>
       </div>
@@ -1070,7 +1075,7 @@
     // Staggered media loading reveal for hosted photos.
     function setupMediaLoading() {
       const mediaItems = Array.from(document.querySelectorAll(
-        '.photo-placeholder img, .story-placeholder img, .intro-back img'
+        '.photo-placeholder img, .story-placeholder img'
       ));
       mediaItems.forEach((img, index) => {
         img.style.transitionDelay = `${Math.min(index * 110, 660)}ms`;
@@ -1126,7 +1131,7 @@
       setTimeout(() => {
         introOverlay.classList.add('is-hidden');
         document.body.classList.remove('intro-active');
-      }, 1050);
+      }, 1700);
     }
 
     // Best effort autoplay on load; browsers may block without interaction.
