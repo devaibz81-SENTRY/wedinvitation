@@ -1,7 +1,7 @@
-﻿import { mutation } from "./_generated/server";
+import { internalMutation } from "./_generated/server";
 import { v } from "convex/values";
 
-export const submit = mutation({
+export const submit = internalMutation({
   args: {
     guest_id: v.optional(v.id("guests")),
     first_name: v.string(),

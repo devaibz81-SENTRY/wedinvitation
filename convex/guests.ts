@@ -1,4 +1,4 @@
-﻿import { query, mutation } from "./_generated/server";
+import { internalQuery, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
 
 const attendanceValidator = v.union(
@@ -8,7 +8,7 @@ const attendanceValidator = v.union(
   v.literal("later")
 );
 
-export const list = query({
+export const list = internalQuery({
   args: {},
   handler: async (ctx) => {
     const guests = await ctx.db.query("guests").collect();
@@ -16,7 +16,7 @@ export const list = query({
   },
 });
 
-export const add = mutation({
+export const add = internalMutation({
   args: {
     first_name: v.string(),
     last_name: v.string(),
@@ -39,7 +39,7 @@ export const add = mutation({
   },
 });
 
-export const updateFromRsvp = mutation({
+export const updateFromRsvp = internalMutation({
   args: {
     guestId: v.optional(v.id("guests")),
     first_name: v.string(),
@@ -98,7 +98,7 @@ export const updateFromRsvp = mutation({
   },
 });
 
-export const remove = mutation({
+export const remove = internalMutation({
   args: {
     guestId: v.id("guests"),
   },

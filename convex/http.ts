@@ -1,5 +1,5 @@
 import { httpRouter } from "convex/server";
-import { api } from "./_generated/api";
+import { internal } from "./_generated/api";
 import { httpAction } from "./_generated/server";
 import { Id } from "./_generated/dataModel";
 
@@ -36,7 +36,7 @@ function getBearerToken(request: Request) {
 async function requireAdmin(ctx: any, request: Request) {
   const token = getBearerToken(request);
   if (!token) return false;
-  const session = await ctx.runQuery(api.admin.validateSession, { token });
+  const session = await ctx.runQuery(internal.admin.validateSession, { token });
   return session.ok === true;
 }
 
@@ -52,13 +52,16 @@ http.route({
   handler: httpAction(async (ctx, request) => {
     const body = await request.json();
     const password = String(body.password ?? "");
-    const expectedPassword = process.env.ADMIN_PASSWORD ?? "admin";
+    const expectedPassword = process.env.ADMIN_PASSWORD;
+    if (!expectedPassword) {
+      return json({ ok: false, error: "Admin auth is not configured" }, 500);
+    }
     if (!password || password !== expectedPassword) {
       return json({ ok: false, error: "Invalid password" }, 401);
     }
 
     const token = crypto.randomUUID();
-    const created = await ctx.runMutation(api.admin.createSession, { token });
+    const created = await ctx.runMutation(internal.admin.createSession, { token });
     return json({ ok: true, token, expiresAt: created.expiresAt });
   }),
 });
@@ -75,7 +78,7 @@ http.route({
   handler: httpAction(async (ctx, request) => {
     const token = getBearerToken(request);
     if (!token) return json({ ok: false }, 401);
-    const session = await ctx.runQuery(api.admin.validateSession, { token });
+    const session = await ctx.runQuery(internal.admin.validateSession, { token });
     if (!session.ok) return json({ ok: false }, 401);
     return json({ ok: true, expiresAt: session.expiresAt });
   }),
@@ -93,7 +96,7 @@ http.route({
   handler: httpAction(async (ctx, request) => {
     const token = getBearerToken(request);
     if (!token) return json({ ok: false }, 401);
-    await ctx.runMutation(api.admin.revokeSession, { token });
+    await ctx.runMutation(internal.admin.revokeSession, { token });
     return json({ ok: true });
   }),
 });
@@ -111,7 +114,7 @@ http.route({
     if (!(await requireAdmin(ctx, request))) {
       return json({ ok: false, error: "Unauthorized" }, 401);
     }
-    const rows = await ctx.runQuery(api.guests.list, {});
+    const rows = await ctx.runQuery(internal.guests.list, {});
     return json(rows);
   }),
 });
@@ -130,7 +133,7 @@ http.route({
       return json({ ok: false, error: "Unauthorized" }, 401);
     }
     const body = await request.json();
-    const result = await ctx.runMutation(api.guests.add, {
+    const result = await ctx.runMutation(internal.guests.add, {
       first_name: body.first_name,
       last_name: body.last_name,
       guest_type: body.guest_type,
@@ -164,7 +167,7 @@ http.route({
       return json({ ok: false, error: "guestId is required" }, 400);
     }
 
-    const result = await ctx.runMutation(api.guests.remove, { guestId });
+    const result = await ctx.runMutation(internal.guests.remove, { guestId });
     if (!result.deleted) {
       return json({ ok: false, error: "Guest not found" }, 404);
     }
@@ -187,7 +190,7 @@ http.route({
 
     const guestId = body.guest_id ? (body.guest_id as Id<"guests">) : undefined;
 
-    const rsvpResult = await ctx.runMutation(api.rsvps.submit, {
+    const rsvpResult = await ctx.runMutation(internal.rsvps.submit, {
       guest_id: guestId,
       first_name: body.first_name,
       last_name: body.last_name,
@@ -203,7 +206,7 @@ http.route({
       submitted_at: body.submitted_at || new Date().toISOString(),
     });
 
-    const guestResult = await ctx.runMutation(api.guests.updateFromRsvp, {
+    const guestResult = await ctx.runMutation(internal.guests.updateFromRsvp, {
       guestId,
       first_name: body.first_name,
       last_name: body.last_name,

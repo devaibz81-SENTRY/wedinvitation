@@ -1,9 +1,9 @@
-import { mutation, query } from "./_generated/server";
+import { internalMutation, internalQuery } from "./_generated/server";
 import { v } from "convex/values";
 
 const SESSION_TTL_MS = 1000 * 60 * 60 * 12;
 
-export const createSession = mutation({
+export const createSession = internalMutation({
   args: {
     token: v.string(),
   },
@@ -22,7 +22,7 @@ export const createSession = mutation({
   },
 });
 
-export const validateSession = query({
+export const validateSession = internalQuery({
   args: {
     token: v.string(),
   },
@@ -38,7 +38,7 @@ export const validateSession = query({
   },
 });
 
-export const revokeSession = mutation({
+export const revokeSession = internalMutation({
   args: {
     token: v.string(),
   },
@@ -54,4 +54,3 @@ export const revokeSession = mutation({
     return { ok: true };
   },
 });
-
