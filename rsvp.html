@@ -480,6 +480,7 @@
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
+      const partyNames = getPartyNames();
       const song = document.getElementById('song').value.trim();
       const message = document.getElementById('message').value.trim();
       const submittedAt = new Date().toISOString();
@@ -492,7 +493,7 @@
         phone: phone || undefined,
         attendance,
         guest_type: GUEST_TYPE,
-        party_names: getPartyNames() || undefined,
+        party_names: partyNames || undefined,
         song_request: song || undefined,
         message: message || undefined,
         submitted_at: submittedAt
@@ -501,7 +502,8 @@
           first_name: firstName,
           last_name: lastName,
           attendance,
-          submitted_at: submittedAt
+          submitted_at: submittedAt,
+          party_names: partyNames || undefined
         });
         document.getElementById('rsvp-form-wrap').style.display = 'none';
         document.getElementById('success-state').style.display = 'block';
@@ -569,11 +571,39 @@
       return map[type] || 'Single';
     }
 
+    function parsePartyNames(value) {
+      return String(value || '')
+        .split(',')
+        .map((name) => name.trim())
+        .filter(Boolean);
+    }
+
+    function dedupeNames(names) {
+      const seen = new Set();
+      const out = [];
+      for (const item of names) {
+        const name = String(item || '').trim();
+        if (!name) continue;
+        const key = name.toLowerCase();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push(name);
+      }
+      return out;
+    }
+
     function makeCardData(input = {}) {
       const first = String(input.first_name || document.getElementById('first-name')?.value || '').trim();
       const last = String(input.last_name || document.getElementById('last-name')?.value || '').trim();
+      const primaryName = `${first} ${last}`.trim() || 'Guest';
+      const partySource = input.party_names != null ? input.party_names : getPartyNames();
+      const partyNamesRaw = String(partySource || '').trim();
+      const partyNames = parsePartyNames(partyNamesRaw);
+      const guestNames = dedupeNames([primaryName, ...partyNames]);
       return {
-        fullName: `${first} ${last}`.trim() || 'Guest',
+        fullName: primaryName,
+        partyNames: partyNamesRaw || undefined,
+        guestNames,
         attendance: input.attendance || document.querySelector('input[name="attendance"]:checked')?.value || 'invited',
         guestType: GUEST_TYPE || 'single',
         maxParty: Number.isFinite(MAX_PARTY) ? MAX_PARTY : 1,
@@ -599,33 +629,86 @@
       });
     }
 
+    function drawRoundedRectPath(ctx, x, y, width, height, radius) {
+      const r = Math.max(0, Math.min(radius, width / 2, height / 2));
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + width - r, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+      ctx.lineTo(x + width, y + height - r);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+      ctx.lineTo(x + r, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function fitText(ctx, text, maxWidth) {
+      const source = String(text || '');
+      if (!source) return '';
+      if (ctx.measureText(source).width <= maxWidth) return source;
+      let trimmed = source;
+      while (trimmed.length > 3 && ctx.measureText(`${trimmed}...`).width > maxWidth) {
+        trimmed = trimmed.slice(0, -1);
+      }
+      return `${trimmed}...`;
+    }
+
+    function drawFittedScriptName(ctx, text, x, y, maxWidth, startSize = 64, minSize = 40) {
+      let size = startSize;
+      while (size > minSize) {
+        ctx.font = `${size}px "Great Vibes", "Times New Roman", serif`;
+        if (ctx.measureText(text).width <= maxWidth) break;
+        size -= 2;
+      }
+      ctx.fillText(text, x, y);
+      return size;
+    }
+
     async function drawProofCardCanvas(card) {
       const canvas = document.createElement('canvas');
-      const w = 1400, h = 900;
+      const w = 1600;
+      const h = 980;
       canvas.width = w;
       canvas.height = h;
       const ctx = canvas.getContext('2d');
 
-      const bg = ctx.createLinearGradient(0, 0, w, h);
-      bg.addColorStop(0, '#f7f1e8');
-      bg.addColorStop(1, '#ece2d3');
-      ctx.fillStyle = bg;
+      const topGlow = ctx.createLinearGradient(0, 0, w, h);
+      topGlow.addColorStop(0, '#f8f2e7');
+      topGlow.addColorStop(1, '#ecdfcc');
+      ctx.fillStyle = topGlow;
       ctx.fillRect(0, 0, w, h);
 
-      // Decorative frame
+      // Soft decorative circles.
+      ctx.fillStyle = 'rgba(201, 168, 76, 0.08)';
+      ctx.beginPath();
+      ctx.arc(180, 170, 140, 0, Math.PI * 2);
+      ctx.arc(510, 78, 62, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(138, 111, 47, 0.08)';
+      ctx.beginPath();
+      ctx.arc(w - 180, h - 180, 180, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Decorative frame.
       ctx.strokeStyle = '#c9a84c';
       ctx.lineWidth = 3;
-      ctx.strokeRect(26, 26, w - 52, h - 52);
+      ctx.strokeRect(24, 24, w - 48, h - 48);
       ctx.lineWidth = 1;
       ctx.strokeRect(44, 44, w - 88, h - 88);
 
       // Right-side photo panel.
-      const photoX = Math.round(w * 0.6);
-      const photoW = w - photoX - 44;
-      const photoY = 44;
-      const photoH = h - 88;
+      const photoX = 980;
+      const photoY = 74;
+      const photoW = 560;
+      const photoH = h - 148;
+      drawRoundedRectPath(ctx, photoX, photoY, photoW, photoH, 26);
+      ctx.save();
+      ctx.clip();
       try {
-        const photo = await loadImage('photos/story.gif');
+        const photo = await loadImage('photos/photo2.gif');
         const ratio = Math.max(photoW / photo.width, photoH / photo.height);
         const drawW = photo.width * ratio;
         const drawH = photo.height * ratio;
@@ -636,52 +719,98 @@
         ctx.fillStyle = '#d9c4a2';
         ctx.fillRect(photoX, photoY, photoW, photoH);
       }
+      ctx.restore();
 
-      const shade = ctx.createLinearGradient(photoX - 120, 0, w, 0);
-      shade.addColorStop(0, 'rgba(236,226,211,1)');
-      shade.addColorStop(1, 'rgba(236,226,211,0)');
-      ctx.fillStyle = shade;
-      ctx.fillRect(photoX - 140, 0, w, h);
+      drawRoundedRectPath(ctx, photoX, photoY, photoW, photoH, 26);
+      ctx.strokeStyle = 'rgba(201,168,76,0.7)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
 
+      const leftX = 92;
+      const leftWidth = 840;
+      const statusMap = {
+        attending: { bg: '#e7f6ec', border: '#2f855a', text: '#1f5f40' },
+        declined: { bg: '#fdeaea', border: '#c0392b', text: '#8f2b20' },
+        later: { bg: '#fdf3e5', border: '#d68c00', text: '#8b5e00' },
+      };
+      const statusStyle = statusMap[card.attendance] || statusMap.later;
+      const guestNames = Array.isArray(card.guestNames) && card.guestNames.length
+        ? card.guestNames
+        : [card.fullName];
+
+      // Header.
       ctx.fillStyle = '#8d6f2f';
-      ctx.font = '600 22px Montserrat, sans-serif';
-      ctx.letterSpacing = '0';
-      ctx.fillText('WEDDING INVITATION PROOF', 86, 110);
+      ctx.font = '600 20px Montserrat, sans-serif';
+      ctx.fillText('RSVP CONFIRMATION CARD', leftX, 110);
 
       ctx.fillStyle = '#1f1b16';
-      ctx.font = '52px "Great Vibes", "Times New Roman", serif';
-      ctx.fillText('Rosanna & Andrew', 86, 182);
+      ctx.font = '72px "Great Vibes", "Times New Roman", serif';
+      ctx.fillText('Rosanna & Andrew', leftX, 196);
 
       ctx.fillStyle = '#33483b';
-      ctx.font = 'italic 36px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText(EVENT_DATE_TEXT, 86, 232);
+      ctx.font = 'italic 32px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText(EVENT_DATE_TEXT, leftX, 244);
+      ctx.font = '600 20px Montserrat, sans-serif';
+      ctx.fillText(EVENT_LOCATION_TEXT, leftX, 280);
 
+      // Guest names block.
       ctx.fillStyle = '#1f1b16';
-      ctx.font = '600 24px Montserrat, sans-serif';
-      ctx.fillText('Guest', 86, 320);
-      ctx.font = '700 38px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText(card.fullName, 86, 368);
+      ctx.font = '600 22px Montserrat, sans-serif';
+      ctx.fillText(guestNames.length > 1 ? 'Guests' : 'Guest', leftX, 340);
 
-      ctx.font = '600 24px Montserrat, sans-serif';
-      ctx.fillText('RSVP Status', 86, 440);
-      ctx.font = '700 32px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText(attendanceLabel(card.attendance), 86, 486);
+      let namesY = 408;
+      const maxNameWidth = leftWidth - 48;
+      const displayNames = guestNames.slice(0, 4);
+      for (const name of displayNames) {
+        ctx.fillStyle = '#2a2420';
+        const usedSize = drawFittedScriptName(ctx, name, leftX, namesY, maxNameWidth, 62, 38);
+        namesY += usedSize + 16;
+      }
+      if (guestNames.length > displayNames.length) {
+        ctx.fillStyle = '#6b5a3a';
+        ctx.font = '500 18px Montserrat, sans-serif';
+        ctx.fillText(`+${guestNames.length - displayNames.length} more`, leftX, namesY + 4);
+        namesY += 24;
+      }
 
-      ctx.font = '600 24px Montserrat, sans-serif';
-      ctx.fillText('Invite Type', 86, 548);
-      ctx.font = '700 30px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText(`${guestTypeLabel(card.guestType)} - Up to ${card.maxParty}`, 86, 592);
+      // RSVP status pill.
+      const statusY = namesY + 16;
+      const statusW = leftWidth - 30;
+      const statusH = 60;
+      drawRoundedRectPath(ctx, leftX, statusY, statusW, statusH, 16);
+      ctx.fillStyle = statusStyle.bg;
+      ctx.fill();
+      ctx.strokeStyle = statusStyle.border;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
 
-      ctx.font = '500 22px Montserrat, sans-serif';
-      ctx.fillStyle = '#4f4a42';
-      ctx.fillText(`Event Location: ${EVENT_LOCATION_TEXT}`, 86, 656);
-      ctx.fillText(`Validated: ${new Date(card.submittedAt).toLocaleString()}`, 86, 692);
-      ctx.fillText(`Reference: ${String(card.guestId).slice(-8).toUpperCase()}`, 86, 728);
+      ctx.fillStyle = statusStyle.text;
+      ctx.font = '700 24px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText(attendanceLabel(card.attendance), leftX + 20, statusY + 38);
+
+      // Detail rows.
+      let rowY = statusY + 98;
+      const rowGap = 42;
+      const valueX = leftX + 190;
+      const valueWidth = leftWidth - 220;
+      const addRow = (label, value) => {
+        ctx.fillStyle = '#8d6f2f';
+        ctx.font = '600 17px Montserrat, sans-serif';
+        ctx.fillText(label, leftX, rowY);
+        ctx.fillStyle = '#2b2520';
+        ctx.font = '600 21px "Cormorant Garamond", Georgia, serif';
+        ctx.fillText(fitText(ctx, value, valueWidth), valueX, rowY);
+        rowY += rowGap;
+      };
+
+      addRow('Invite Type', `${guestTypeLabel(card.guestType)} - Up to ${card.maxParty}`);
+      addRow('Validated', new Date(card.submittedAt).toLocaleString());
+      addRow('Reference', String(card.guestId).slice(-8).toUpperCase());
 
       ctx.fillStyle = '#6b5a3a';
-      ctx.font = '500 18px Montserrat, sans-serif';
-      ctx.fillText(COUPLE_NAMES, 86, 802);
-      ctx.fillText('Please present this card with your RSVP confirmation.', 86, 834);
+      ctx.font = '500 17px Montserrat, sans-serif';
+      ctx.fillText(COUPLE_NAMES, leftX, h - 96);
+      ctx.fillText('Please present this card with your RSVP confirmation.', leftX, h - 64);
 
       return canvas;
     }
