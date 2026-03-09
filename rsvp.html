@@ -82,6 +82,15 @@
     .success-checkmark svg { width: 40px; height: 40px; stroke: white; stroke-width: 3; fill: none; stroke-dasharray: 100; stroke-dashoffset: 100; animation: checkmark 0.6s ease-out 0.5s forwards; }
     #success-state h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; margin-bottom: 1rem; color: var(--green); }
     #success-state p { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #666; line-height: 1.9; max-width: 500px; margin: 0 auto 2rem; }
+    .proof-actions { display:flex; flex-direction:column; align-items:center; gap:0.9rem; margin:1.2rem 0 1.6rem; }
+    .btn-proof {
+      display:inline-block; border:1px solid var(--gold); background:var(--gold); color:white;
+      padding:0.9rem 1.8rem; text-decoration:none; cursor:pointer;
+      font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase; font-weight:600;
+      transition:background 0.25s ease, transform 0.2s ease;
+    }
+    .btn-proof:hover { background:#a8863a; transform:translateY(-1px); }
+    .proof-note { font-size:0.72rem; color:#777; letter-spacing:0.04em; }
 
     /* â”€â”€â”€ LATER STATE â”€â”€â”€ */
     #later-state { display: none; text-align: center; padding: 5rem 2rem; animation: fadeInScale 0.8s ease-out; }
@@ -241,6 +250,10 @@
       </div>
       <h2>You're All Set!</h2>
       <p id="success-text">Your RSVP has been received. We are so looking forward to celebrating with you in Belize!</p>
+      <div class="proof-actions">
+        <button type="button" class="btn-proof" onclick="downloadProofCard()">Download Invite Card (JPEG)</button>
+        <p class="proof-note">Includes your name, RSVP status, and event details.</p>
+      </div>
       <a href="/" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">&lt;- Return to Invitation</a>
     </div>
 
@@ -249,6 +262,10 @@
       <span class="later-icon">Later</span>
       <h2>We'll Check Back!</h2>
       <p id="later-text">No worries - we completely understand. We'll reach out closer to the date. We hope you can make it.</p>
+      <div class="proof-actions">
+        <button type="button" class="btn-proof" onclick="downloadProofCard()">Download RSVP Card (JPEG)</button>
+        <p class="proof-note">Your card will show your current RSVP status as Ask Me Again Later.</p>
+      </div>
       <a href="/" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">&lt;- Return to Invitation</a>
     </div>
 
@@ -283,6 +300,10 @@
     const MAX_PARTY  = parseInt(getParam('max') || '1', 10);
     const DEADLINE   = getParam('due')  || '2026-06-10';
     const PERS_NOTE  = getParam('msg')  || '';
+    const EVENT_DATE_TEXT = 'Saturday, July 4, 2026';
+    const EVENT_LOCATION_TEXT = 'Belize';
+    const COUPLE_NAMES = 'Rosanna Vanessa Depaz & Andrew Denton Haylock';
+    let lastSubmittedCardData = null;
 
     // Format deadline nicely
     function fmtDeadline(iso) {
@@ -402,6 +423,12 @@
         btn.textContent = 'Sending...';
         btn.disabled = true;
         postRsvp(payload).then(() => {
+          lastSubmittedCardData = makeCardData({
+            first_name: firstName,
+            last_name: lastName,
+            attendance: 'later',
+            submitted_at: payload.submitted_at
+          });
           document.getElementById('rsvp-form-wrap').style.display = 'none';
           const lt = document.getElementById('later-text');
           lt.textContent = `No worries, ${firstName} - we completely understand. We'll reach out closer to June 10th. We hope you can make it.`;
@@ -448,6 +475,7 @@
       const meal = document.getElementById('meal').value;
       const song = document.getElementById('song').value.trim();
       const message = document.getElementById('message').value.trim();
+      const submittedAt = new Date().toISOString();
 
       postRsvp({
         guest_id: GUEST_ID || undefined,
@@ -461,8 +489,14 @@
         meal_preference: meal || undefined,
         song_request: song || undefined,
         message: message || undefined,
-        submitted_at: new Date().toISOString()
+        submitted_at: submittedAt
       }).then(() => {
+        lastSubmittedCardData = makeCardData({
+          first_name: firstName,
+          last_name: lastName,
+          attendance,
+          submitted_at: submittedAt
+        });
         document.getElementById('rsvp-form-wrap').style.display = 'none';
         document.getElementById('success-state').style.display = 'block';
         const msgs = {
@@ -488,6 +522,163 @@
         throw new Error(detail || 'Submit failed');
       }
       return res.json();
+    }
+
+    function attendanceLabel(status) {
+      const map = {
+        attending: 'Accepts with Pleasure',
+        declined: 'Declines with Regret',
+        later: 'Ask Me Again Later',
+        invited: 'Invited'
+      };
+      return map[status] || String(status || 'Invited');
+    }
+
+    function guestTypeLabel(type) {
+      const map = { single: 'Single', couple: 'Couple', family: 'Family' };
+      return map[type] || 'Single';
+    }
+
+    function makeCardData(input = {}) {
+      const first = String(input.first_name || document.getElementById('first-name')?.value || '').trim();
+      const last = String(input.last_name || document.getElementById('last-name')?.value || '').trim();
+      return {
+        fullName: `${first} ${last}`.trim() || 'Guest',
+        attendance: input.attendance || document.querySelector('input[name="attendance"]:checked')?.value || 'invited',
+        guestType: GUEST_TYPE || 'single',
+        maxParty: Number.isFinite(MAX_PARTY) ? MAX_PARTY : 1,
+        submittedAt: input.submitted_at || new Date().toISOString(),
+        guestId: GUEST_ID || 'guest',
+      };
+    }
+
+    function fileSafe(value) {
+      return String(value || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 40) || 'guest';
+    }
+
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+      });
+    }
+
+    async function drawProofCardCanvas(card) {
+      const canvas = document.createElement('canvas');
+      const w = 1400, h = 900;
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+
+      const bg = ctx.createLinearGradient(0, 0, w, h);
+      bg.addColorStop(0, '#f7f1e8');
+      bg.addColorStop(1, '#ece2d3');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // Decorative frame
+      ctx.strokeStyle = '#c9a84c';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(26, 26, w - 52, h - 52);
+      ctx.lineWidth = 1;
+      ctx.strokeRect(44, 44, w - 88, h - 88);
+
+      // Right-side photo panel.
+      const photoX = Math.round(w * 0.6);
+      const photoW = w - photoX - 44;
+      const photoY = 44;
+      const photoH = h - 88;
+      try {
+        const photo = await loadImage('photos/story.gif');
+        const ratio = Math.max(photoW / photo.width, photoH / photo.height);
+        const drawW = photo.width * ratio;
+        const drawH = photo.height * ratio;
+        const dx = photoX + (photoW - drawW) / 2;
+        const dy = photoY + (photoH - drawH) / 2;
+        ctx.drawImage(photo, dx, dy, drawW, drawH);
+      } catch {
+        ctx.fillStyle = '#d9c4a2';
+        ctx.fillRect(photoX, photoY, photoW, photoH);
+      }
+
+      const shade = ctx.createLinearGradient(photoX - 120, 0, w, 0);
+      shade.addColorStop(0, 'rgba(236,226,211,1)');
+      shade.addColorStop(1, 'rgba(236,226,211,0)');
+      ctx.fillStyle = shade;
+      ctx.fillRect(photoX - 140, 0, w, h);
+
+      ctx.fillStyle = '#8d6f2f';
+      ctx.font = '600 22px Montserrat, sans-serif';
+      ctx.letterSpacing = '0';
+      ctx.fillText('WEDDING INVITATION PROOF', 86, 110);
+
+      ctx.fillStyle = '#1f1b16';
+      ctx.font = '52px "Great Vibes", "Times New Roman", serif';
+      ctx.fillText('Rosanna & Andrew', 86, 182);
+
+      ctx.fillStyle = '#33483b';
+      ctx.font = 'italic 36px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText(EVENT_DATE_TEXT, 86, 232);
+
+      ctx.fillStyle = '#1f1b16';
+      ctx.font = '600 24px Montserrat, sans-serif';
+      ctx.fillText('Guest', 86, 320);
+      ctx.font = '700 38px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText(card.fullName, 86, 368);
+
+      ctx.font = '600 24px Montserrat, sans-serif';
+      ctx.fillText('RSVP Status', 86, 440);
+      ctx.font = '700 32px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText(attendanceLabel(card.attendance), 86, 486);
+
+      ctx.font = '600 24px Montserrat, sans-serif';
+      ctx.fillText('Invite Type', 86, 548);
+      ctx.font = '700 30px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText(`${guestTypeLabel(card.guestType)} - Up to ${card.maxParty}`, 86, 592);
+
+      ctx.font = '500 22px Montserrat, sans-serif';
+      ctx.fillStyle = '#4f4a42';
+      ctx.fillText(`Event Location: ${EVENT_LOCATION_TEXT}`, 86, 656);
+      ctx.fillText(`Validated: ${new Date(card.submittedAt).toLocaleString()}`, 86, 692);
+      ctx.fillText(`Reference: ${String(card.guestId).slice(-8).toUpperCase()}`, 86, 728);
+
+      ctx.fillStyle = '#6b5a3a';
+      ctx.font = '500 18px Montserrat, sans-serif';
+      ctx.fillText(COUPLE_NAMES, 86, 802);
+      ctx.fillText('Please present this card with your RSVP confirmation.', 86, 834);
+
+      return canvas;
+    }
+
+    async function downloadProofCard() {
+      try {
+        const card = lastSubmittedCardData || makeCardData();
+        if (!card.fullName || !card.attendance) {
+          showStatus('error', 'Please complete RSVP details before downloading your card.');
+          return;
+        }
+
+        if (document.fonts?.ready) {
+          await document.fonts.ready;
+        }
+
+        const canvas = await drawProofCardCanvas(card);
+        const url = canvas.toDataURL('image/jpeg', 0.92);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `rsvp-card-${fileSafe(card.fullName)}.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch (err) {
+        showStatus('error', 'Could not generate card right now. Please try again.');
+      }
     }
 
     function showStatus(type, msg) {
