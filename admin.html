@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin â€” R&A Wedding Management</title>
+  <title>Admin - R&A Wedding Management</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
@@ -89,7 +89,7 @@
   <!-- Login -->
   <div id="login-overlay">
     <div class="login-box">
-      <h2>Wedding Admin</h2><p>Rosanna &amp; Andrew Â· 2026</p>
+      <h2>Wedding Admin</h2><p>Rosanna &amp; Andrew - 2026</p>
       <input type="password" id="admin-pass" class="login-input" placeholder="Enter Password" onkeydown="if(event.key==='Enter') doLogin()" />
       <button class="login-btn" onclick="doLogin()">Enter</button>
       <p id="login-err" style="color:#e74c3c;display:none;margin-top:1rem;">Incorrect password.</p>
@@ -109,7 +109,7 @@
     <div class="top-bar">
       <h1 id="view-title" style="font-size:1.1rem;font-weight:400;">Guest Management</h1>
       <div class="top-bar-actions">
-        <button class="btn-sm" onclick="fetchGuests()">âŸ³ Refresh</button>
+        <button class="btn-sm" onclick="fetchGuests()">Refresh</button>
         <button class="btn-sm primary" onclick="openAddGuest()">+ Add Guest / Family</button>
         <button class="btn-sm" onclick="logout()">Logout</button>
       </div>
@@ -175,16 +175,17 @@
           </div>
 
           <!-- Default Template Box -->
-          <textarea id="wa-text" class="wa-template" oninput="updateWaPreview()">Hi {{name}}! ðŸŒ¿
+          <textarea id="wa-text" class="wa-template" oninput="updateWaPreview()">Hi {{name}},
 
-You are cordially invited to the wedding of *Rosanna Vanessa Depaz* & *Andrew Denton Haylock* ðŸ¥‚
+You are cordially invited to the wedding of *Rosanna Vanessa Depaz* and *Andrew Denton Haylock*.
 
 We've reserved an RSVP specifically for you as a {{type}}. Please let us know if you can make it by {{deadline}}.
 
 Tap the link below to view your personal invitation and respond:
-ðŸ‘‰ {{link}}
+{{link}}
 
-With love, Rosanna & Andrew âœ¦</textarea>
+With love,
+Rosanna and Andrew</textarea>
 
           <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Live Preview (First match)</div>
           <div class="wa-preview" id="wa-preview">Loading preview...</div>
@@ -245,7 +246,7 @@ With love, Rosanna & Andrew âœ¦</textarea>
 
   <script>
     const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
-    const WEDDING_URL     = 'https://wedding-invitation1-seven.vercel.app';
+    const WEDDING_URL     = 'https://wedinvitation-ruddy.vercel.app';
     const SESSION_KEY     = 'ra_admin_token';
     let guests = [];
     let currentFilter = 'all';
@@ -370,7 +371,7 @@ With love, Rosanna & Andrew âœ¦</textarea>
       tbody.innerHTML = filtered.map(g => {
         const st = g.attendance || 'invited';
         const pClass = { attending:'pill-attending', declined:'pill-declined', later:'pill-later', invited:'pill-invited' }[st];
-        const pLabel = { attending:'âœ“ Yes', declined:'âœ— No', later:'ðŸ”” Ask Later', invited:'âœ‰ Invited' }[st];
+        const pLabel = { attending:'Yes', declined:'No', later:'Ask Later', invited:'Invited' }[st];
 
         const link = generatePersonalLink(g);
         const waMsg = encodeURIComponent(buildText(g));
@@ -381,8 +382,8 @@ With love, Rosanna & Andrew âœ¦</textarea>
           <td style="text-transform:capitalize">${g.guest_type || 'Single'}</td>
           <td>${g.max_party || 1} allowed</td>
           <td><span class="status-pill ${pClass}">${pLabel}</span></td>
-          <td>${g.phone||'â€”'}</td>
-          <td style="font-size:0.75rem">${g.deadline ? new Date(g.deadline).toLocaleDateString() : 'â€”'}</td>
+          <td>${g.phone||'-'}</td>
+          <td style="font-size:0.75rem">${g.deadline ? new Date(g.deadline).toLocaleDateString() : '-'}</td>
           <td><div style="display:flex;gap:0.4rem;">
             <button class="action-btn" onclick="navigator.clipboard.writeText('${link}');alert('Copied link!')">Copy URL</button>
             ${phone ? `<button class="action-btn wa" onclick="window.open('https://wa.me/${phone}?text=${waMsg}','_blank')">WA</button>` : ''}
