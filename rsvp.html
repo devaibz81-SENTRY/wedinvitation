@@ -13,21 +13,21 @@
       --cream: #faf7f2; --error: #c0392b; --success: #27ae60;
     }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--cream); color: var(--black); font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 16px; min-height: 100vh; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
+    body { background: var(--cream); color: var(--black); font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 16px; min-height: 100vh; overflow-x: clip; }
 
-    nav { display: flex; justify-content: center; gap: 3rem; padding: 1.4rem 2rem; border-bottom: 1px solid rgba(201,168,76,0.2); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; }
-    nav a { color: var(--black); text-decoration: none; opacity: 0.6; transition: opacity 0.3s; }
-    nav a:hover { opacity: 1; color: var(--gold); }
+    nav { display: flex; justify-content: center; gap: 0.6rem; padding: 1rem 1rem; border-bottom: 1px solid rgba(201,168,76,0.2); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; flex-wrap: wrap; }
+    nav a { color: var(--black); text-decoration: none; opacity: 0.92; transition: opacity 0.3s, border-color 0.3s, color 0.3s; border: 1px solid rgba(201,168,76,0.25); border-radius: 999px; background: rgba(255,255,255,0.45); padding: 0.5rem 0.9rem; min-width: 110px; text-align: center; white-space: nowrap; }
+    nav a:hover { opacity: 1; color: var(--gold); border-color: var(--gold); }
 
     /* â”€â”€â”€ HERO â”€â”€â”€ */
     .rsvp-hero { text-align: center; padding: 5rem 2rem 3rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
     .rsvp-hero .eyebrow { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
     .rsvp-hero h1 { font-family: 'Great Vibes', cursive; font-size: clamp(3rem,7vw,6rem); margin-bottom: 1rem; }
-    .rsvp-hero p { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #666; line-height: 1.8; }
+    .rsvp-hero p { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #666; line-height: 1.8; text-wrap: balance; }
     .personal-greeting { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--black); margin-top: 1.5rem; }
     .personal-note { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #888; margin-top: 0.5rem; font-style: italic; }
-    .deadline { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1.5rem; padding: 0.5rem 2rem; border: 1px solid var(--gold); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+    .deadline { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1.5rem; padding: 0.5rem 2rem; border: 1px solid var(--gold); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); white-space: nowrap; max-width: 100%; }
 
     /* â”€â”€â”€ FORM â”€â”€â”€ */
     .rsvp-container { max-width: 700px; margin: 4rem auto; padding: 0 2rem 4rem; }
@@ -36,12 +36,12 @@
     .form-section:nth-child(3){animation-delay:.4s} .form-section:nth-child(4){animation-delay:.55s}
     .form-section:nth-child(5){animation-delay:.7s} .form-section:nth-child(6){animation-delay:.85s}
 
-    .form-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--black); margin-bottom: 1.5rem; padding-bottom: 0.7rem; border-bottom: 1px solid rgba(201,168,76,0.3); display: flex; align-items: center; gap: 0.8rem; }
+    .form-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--black); margin-bottom: 1.5rem; padding-bottom: 0.7rem; border-bottom: 1px solid rgba(201,168,76,0.3); display: flex; align-items: center; gap: 0.8rem; white-space: nowrap; }
     .form-section-title span { font-size: 0.9rem; color: var(--gold); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
     .form-row.single { grid-template-columns: 1fr; }
     .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
-    .form-group label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: #555; font-weight: 600; }
+    .form-group label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: #555; font-weight: 600; white-space: nowrap; }
     .form-group input, .form-group select, .form-group textarea { background: transparent; border: none; border-bottom: 1px solid rgba(0,0,0,0.3); padding: 0.8rem 0; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--black); font-weight: 500; outline: none; transition: border-color 0.3s; width: 100%; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-bottom-color: var(--gold); }
     .form-group textarea { resize: vertical; min-height: 80px; }
@@ -51,12 +51,12 @@
     .attendance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
     .attend-option { position: relative; }
     .attend-option input[type="radio"] { position: absolute; opacity: 0; width: 0; }
-    .attend-label { display: flex; flex-direction: column; align-items: center; padding: 1.5rem 1rem; border: 1px solid rgba(0,0,0,0.15); cursor: pointer; text-align: center; transition: border-color 0.3s, background 0.3s; }
+    .attend-label { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 118px; padding: 1.2rem 0.85rem; border: 1px solid rgba(0,0,0,0.15); cursor: pointer; text-align: center; transition: border-color 0.3s, background 0.3s; }
     .attend-label:hover { border-color: var(--gold); }
     .attend-option input:checked + .attend-label { border-color: var(--gold); background: rgba(201,168,76,0.08); }
     .attend-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
-    .attend-text { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
-    .attend-sub { font-size: 0.6rem; color: #999; margin-top: 0.3rem; font-style: italic; letter-spacing: 0; text-transform: none; font-family: 'Cormorant Garamond', serif; }
+    .attend-text { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; white-space: nowrap; }
+    .attend-sub { font-size: 0.67rem; color: #888; margin-top: 0.32rem; font-style: italic; letter-spacing: 0; text-transform: none; font-family: 'Cormorant Garamond', serif; white-space: nowrap; }
 
     /* â”€â”€â”€ PARTY MEMBERS â”€â”€â”€ */
     .party-member { background: rgba(201,168,76,0.05); border: 1px solid rgba(201,168,76,0.2); padding: 1rem 1.2rem; margin-bottom: 0.8rem; border-radius: 2px; }
@@ -64,7 +64,7 @@
 
     /* â”€â”€â”€ SUBMIT â”€â”€â”€ */
     .submit-wrap { text-align: center; margin-top: 3rem; }
-    .btn-submit { display: inline-block; padding: 1.3rem 5rem; background: var(--black); color: var(--cream); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; transition: background 0.3s, transform 0.2s; position: relative; overflow: hidden; }
+    .btn-submit { display: inline-block; width: min(100%, 420px); padding: 1.3rem 1.5rem; background: var(--black); color: var(--cream); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; transition: background 0.3s, transform 0.2s; position: relative; overflow: hidden; white-space: nowrap; }
     .btn-submit:hover { background: #1a1a1a; transform: translateY(-2px); }
     .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .submit-note { margin-top: 1rem; font-size: 0.7rem; color: #777; letter-spacing: 0.1em; }
@@ -113,6 +113,24 @@
     .btn-confirm:hover { background:#a8863a; }
 
     @media(max-width:600px) {
+      nav { gap: 0.45rem; padding: 0.8rem 0.6rem; }
+      nav a { min-width: 0; flex: 1 1 calc(50% - 0.45rem); max-width: 170px; padding: 0.5rem 0.45rem; font-size: 0.62rem; letter-spacing: 0.11em; white-space: nowrap; }
+      .rsvp-hero { padding: 4rem 1rem 2.5rem; }
+      .rsvp-container { padding: 0 1rem 3rem; }
+      .rsvp-hero p { font-size: 1rem; line-height: 1.65; }
+      .deadline { padding: 0.45rem 0.9rem; font-size: 0.58rem; letter-spacing: 0.1em; max-width: 100%; }
+      .form-section { margin-bottom: 2.2rem; }
+      .form-section-title { font-size: 1.2rem; margin-bottom: 1rem; gap: 0.45rem; }
+      .form-group label { font-size: 0.62rem; letter-spacing: 0.1em; }
+      .form-group input, .form-group select, .form-group textarea { font-size: 1rem; }
+      .attend-label { align-items: flex-start; text-align: left; min-height: 0; padding: 0.95rem 0.85rem; }
+      .attend-text { font-size: 0.62rem; letter-spacing: 0.1em; }
+      .attend-sub { font-size: 0.72rem; white-space: nowrap; }
+      .btn-submit { width: 100%; padding: 1rem 0.8rem; font-size: 0.72rem; letter-spacing: 0.14em; }
+      .confirm-actions { flex-direction: column; }
+      .confirm-actions button { width: 100%; }
+      #success-state, #later-state { padding: 3.5rem 1rem; }
+      #success-state h2, #later-state h2 { font-size: 2.35rem; }
       .form-row{grid-template-columns:1fr}
       .attendance-grid{grid-template-columns:1fr}
     }
@@ -120,7 +138,7 @@
 </head>
 <body>
   <nav>
-    <a href="index.html">&lt;- Back to Invitation</a>
+    <a href="index.html">Back</a>
     <a href="#" style="color:var(--gold);pointer-events:none;">RSVP</a>
   </nav>
 
@@ -173,22 +191,24 @@
             <input type="radio" name="attendance" id="att-yes" value="attending" onchange="onAttendanceChange()" />
             <label class="attend-label" for="att-yes">
               <span class="attend-icon">Yes</span>
-              <span class="attend-text">Accepts with Pleasure</span>
+              <span class="attend-text">Attending</span>
+              <span class="attend-sub">I will be there</span>
             </label>
           </div>
           <div class="attend-option">
             <input type="radio" name="attendance" id="att-later" value="later" onchange="onAttendanceChange()" />
             <label class="attend-label" for="att-later">
               <span class="attend-icon">Later</span>
-              <span class="attend-text">Ask Me Again Later</span>
-              <span class="attend-sub">I'll let you know soon</span>
+              <span class="attend-text">Ask Later</span>
+              <span class="attend-sub">Need more time</span>
             </label>
           </div>
           <div class="attend-option">
             <input type="radio" name="attendance" id="att-no" value="declined" onchange="onAttendanceChange()" />
             <label class="attend-label" for="att-no">
               <span class="attend-icon">No</span>
-              <span class="attend-text">Declines with Regret</span>
+              <span class="attend-text">Not Attending</span>
+              <span class="attend-sub">I cannot attend</span>
             </label>
           </div>
         </div>
@@ -249,7 +269,7 @@
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </div>
       <h2>You're All Set!</h2>
-      <p id="success-text">Your RSVP has been received. We are so looking forward to celebrating with you in Belize!</p>
+      <p id="success-text">Your RSVP has been received. We are so looking forward to celebrating with you at Gully Grill in Belize!</p>
       <div class="proof-actions">
         <button type="button" class="btn-proof" onclick="downloadProofCard()">Download Invite Card (JPEG)</button>
         <p class="proof-note">Includes your name, RSVP status, and event details.</p>
@@ -283,7 +303,7 @@
   </div>
 
   <footer style="background:var(--black);color:var(--ivory);text-align:center;padding:2rem;font-size:0.6rem;letter-spacing:0.2em;opacity:0.8;">
-    Rosanna &amp; Andrew - July 4, 2026 - Belize
+    Rosanna &amp; Andrew - July 4, 2026 - Gully Grill, Belize
   </footer>
 
   <script>
@@ -301,7 +321,7 @@
     const DEADLINE   = getParam('due')  || '2026-06-10';
     const PERS_NOTE  = getParam('msg')  || '';
     const EVENT_DATE_TEXT = 'Saturday, July 4, 2026';
-    const EVENT_LOCATION_TEXT = 'Belize';
+    const EVENT_LOCATION_TEXT = 'Gully Grill, Belize';
     const COUPLE_NAMES = 'Rosanna Vanessa Depaz & Andrew Denton Haylock';
     let lastSubmittedCardData = null;
 
@@ -500,7 +520,7 @@
         document.getElementById('rsvp-form-wrap').style.display = 'none';
         document.getElementById('success-state').style.display = 'block';
         const msgs = {
-          attending: `We are beyond excited to celebrate with you, ${firstName}! See you in Belize!`,
+          attending: `We are beyond excited to celebrate with you, ${firstName}! See you at Gully Grill!`,
           declined: `We'll miss you dearly, ${firstName}. Thank you for letting us know.`
         };
         document.getElementById('success-text').textContent = msgs[attendance] || msgs.attending;
