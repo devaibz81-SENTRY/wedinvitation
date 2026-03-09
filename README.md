@@ -204,3 +204,4 @@ The admin panel generates WhatsApp deep links (`wa.me`) for each guest.
 
 *Built with love for Rosanna Vanessa Depaz & Andrew Denton Haylock ✦*
 *Saturday, the Fourth of July · Two Thousand Twenty-Six · Belize*
+# invitation
