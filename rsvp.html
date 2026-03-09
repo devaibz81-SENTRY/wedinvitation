@@ -62,12 +62,6 @@
     .party-member { background: rgba(201,168,76,0.05); border: 1px solid rgba(201,168,76,0.2); padding: 1rem 1.2rem; margin-bottom: 0.8rem; border-radius: 2px; }
     .party-member-title { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
 
-    /* â”€â”€â”€ DIETARY â”€â”€â”€ */
-    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-    .checkbox-item { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; }
-    .checkbox-item input[type="checkbox"] { width: 14px; height: 14px; accent-color: var(--gold); cursor: pointer; }
-    .checkbox-item span { font-size: 0.75rem; letter-spacing: 0.05em; }
-
     /* â”€â”€â”€ SUBMIT â”€â”€â”€ */
     .submit-wrap { text-align: center; margin-top: 3rem; }
     .btn-submit { display: inline-block; padding: 1.3rem 5rem; background: var(--black); color: var(--cream); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; transition: background 0.3s, transform 0.2s; position: relative; overflow: hidden; }
@@ -112,7 +106,6 @@
     @media(max-width:600px) {
       .form-row{grid-template-columns:1fr}
       .attendance-grid{grid-template-columns:1fr}
-      .checkbox-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -198,9 +191,9 @@
         <div id="party-members-list"></div>
       </div>
 
-      <!-- 4. MEAL & DIETARY (shown only when attending) -->
+      <!-- 4. MEAL (shown only when attending) -->
       <div class="form-section" id="meal-section" style="display:none">
-        <div class="form-section-title"><span id="meal-num">04</span> Meal &amp; Dietary</div>
+        <div class="form-section-title"><span id="meal-num">04</span> Meal Preference</div>
         <div class="form-row" style="margin-bottom:1.5rem">
           <div class="form-group">
             <label for="meal">Meal Preference</label>
@@ -211,17 +204,6 @@
               <option value="vegetarian">Vegetarian</option>
               <option value="vegan">Vegan</option>
             </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label style="margin-bottom:0.8rem;display:block">Dietary Requirements (select all that apply)</label>
-          <div class="checkbox-grid">
-            <label class="checkbox-item"><input type="checkbox" value="gluten-free" class="dietary" /><span>Gluten Free</span></label>
-            <label class="checkbox-item"><input type="checkbox" value="nut-allergy" class="dietary" /><span>Nut Allergy</span></label>
-            <label class="checkbox-item"><input type="checkbox" value="dairy-free" class="dietary" /><span>Dairy Free</span></label>
-            <label class="checkbox-item"><input type="checkbox" value="halal" class="dietary" /><span>Halal</span></label>
-            <label class="checkbox-item"><input type="checkbox" value="kosher" class="dietary" /><span>Kosher</span></label>
-            <label class="checkbox-item"><input type="checkbox" value="other" class="dietary" /><span>Other (note below)</span></label>
           </div>
         </div>
       </div>
@@ -435,7 +417,6 @@
       // Show confirmation modal for attending/declined
       const party     = getPartyNames();
       const meal      = document.getElementById('meal').value;
-      const dietary   = [...document.querySelectorAll('.dietary:checked')].map(c => c.value).join(', ');
       const song      = document.getElementById('song').value.trim();
       const message   = document.getElementById('message').value.trim();
 
@@ -444,7 +425,6 @@
         <p><strong>Attending:</strong> ${attendance === 'attending' ? "Accepts with Pleasure" : "Declines with Regret"}</p>
         ${party ? `<p><strong>Party:</strong> ${party}</p>` : ''}
         ${meal  ? `<p><strong>Meal:</strong> ${meal}</p>` : ''}
-        ${dietary ? `<p><strong>Dietary:</strong> ${dietary}</p>` : ''}
         ${song  ? `<p><strong>Song:</strong> ${song}</p>` : ''}
         ${message ? `<p><strong>Message:</strong> ${message}</p>` : ''}
       `;
@@ -466,7 +446,6 @@
       const phone = document.getElementById('phone').value.trim();
       const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
       const meal = document.getElementById('meal').value;
-      const dietary = [...document.querySelectorAll('.dietary:checked')].map(c => c.value).join(', ');
       const song = document.getElementById('song').value.trim();
       const message = document.getElementById('message').value.trim();
 
@@ -480,7 +459,6 @@
         guest_type: GUEST_TYPE,
         party_names: getPartyNames() || undefined,
         meal_preference: meal || undefined,
-        dietary_requirements: dietary || undefined,
         song_request: song || undefined,
         message: message || undefined,
         submitted_at: new Date().toISOString()

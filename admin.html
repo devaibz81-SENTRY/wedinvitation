@@ -33,6 +33,8 @@
     /* Main Area */
     #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
     .top-bar { background: white; padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e0d8; }
+    .sync-indicator { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: #777; margin-top: 0.4rem; }
+    .sync-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #2ecc71; margin-right: 0.45rem; }
     .top-bar-actions { display: flex; gap: 1rem; }
     .btn-sm { padding: 0.5rem 1.2rem; border: 1px solid var(--gold); background: transparent; color: var(--black); cursor: pointer; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; transition: 0.2s; }
     .btn-sm:hover { background: var(--gold); color: white; }
@@ -66,6 +68,8 @@
     /* WhatsApp Inbox Build */
     .wa-builder { background: white; padding: 2rem; }
     .wa-builder h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 1rem; }
+    .wa-row { display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+    .wa-row select { padding: 0.6rem; border: 1px solid #ddd; outline: none; min-width: 260px; }
     .wa-template { width: 100%; min-height: 150px; padding: 1rem; border: 1px solid #ddd; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; line-height: 1.6; resize: vertical; margin-bottom: 1rem; }
     .wa-vars { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
     .wa-var { padding: 0.3rem 0.7rem; background: #f5f5f5; font-size: 0.65rem; cursor: pointer; border: 1px solid #e0e0e0; }
@@ -105,9 +109,12 @@
   </div>
 
   <!-- Main -->
-  <div id="main">
+    <div id="main">
     <div class="top-bar">
-      <h1 id="view-title" style="font-size:1.1rem;font-weight:400;">Guest Management</h1>
+      <div>
+        <h1 id="view-title" style="font-size:1.1rem;font-weight:400;">Guest Management</h1>
+        <div id="sync-indicator" class="sync-indicator"><span class="sync-dot"></span>Live Sync Active</div>
+      </div>
       <div class="top-bar-actions">
         <button class="btn-sm" onclick="fetchGuests()">Refresh</button>
         <button class="btn-sm primary" onclick="openAddGuest()">+ Add Guest / Family</button>
@@ -165,6 +172,12 @@
               <option value="later">"Ask Later" / Waitlist (Follow-ups)</option>
               <option value="attending">Attending (Event Updates)</option>
             </select>
+          </div>
+          
+          <div class="wa-row">
+            <label style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Send to Individual</label>
+            <select id="wa-person"></select>
+            <button class="btn-sm primary" onclick="sendOneWA()">Open WhatsApp for Person</button>
           </div>
 
           <div class="wa-vars">
@@ -248,9 +261,11 @@ Rosanna and Andrew</textarea>
     const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
     const WEDDING_URL     = 'https://wedinvitation-ruddy.vercel.app';
     const SESSION_KEY     = 'ra_admin_token';
+    const LIVE_REFRESH_MS = 12000;
     let guests = [];
     let currentFilter = 'all';
     let adminToken = localStorage.getItem(SESSION_KEY) || '';
+    let refreshTimer = null;
 
     async function doLogin() {
       const pass = document.getElementById('admin-pass').value;
@@ -267,12 +282,17 @@ Rosanna and Andrew</textarea>
         document.getElementById('login-overlay').classList.add('hidden');
         document.getElementById('login-err').style.display = 'none';
         await fetchGuests();
+        startLiveRefresh();
       } catch (err) {
         document.getElementById('login-err').style.display = 'block';
       }
     }
     
     async function logout() {
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+        refreshTimer = null;
+      }
       if (adminToken) {
         await fetch(`${CONVEX_HTTP_URL}/api/auth/logout`, {
           method: 'POST',
@@ -289,6 +309,7 @@ Rosanna and Andrew</textarea>
       if (adminToken && await hasValidSession()) {
         document.getElementById('login-overlay').classList.add('hidden');
         await fetchGuests();
+        startLiveRefresh();
       } else {
         adminToken = '';
         localStorage.removeItem(SESSION_KEY);
@@ -321,6 +342,14 @@ Rosanna and Andrew</textarea>
       updateWaPreview();
     }
 
+    function startLiveRefresh() {
+      if (refreshTimer) clearInterval(refreshTimer);
+      refreshTimer = setInterval(() => {
+        if (document.hidden) return;
+        fetchGuests({ showLoading: false });
+      }, LIVE_REFRESH_MS);
+    }
+
     function setFilter(f, btn) {
       currentFilter = f;
       document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
@@ -329,8 +358,10 @@ Rosanna and Andrew</textarea>
     }
 
     // â”€â”€â”€ DATA SYNC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    async function fetchGuests() {
-      document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">Syncing with Convex...</td></tr>`;
+    async function fetchGuests(opts = { showLoading: true }) {
+      if (opts.showLoading) {
+        document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">Syncing with Convex...</td></tr>`;
+      }
       try {
         const res = await fetch(`${CONVEX_HTTP_URL}/api/guests`, {
           headers: authHeaders()
@@ -341,10 +372,17 @@ Rosanna and Andrew</textarea>
         }
         if (!res.ok) throw new Error(await res.text());
         guests = await res.json();
-        updateStats(); renderTable(); updateWaPreview();
+        updateStats(); renderTable(); updateWaPreview(); updateSyncLabel();
       } catch (err) {
         document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;color:red;padding:2rem;">Error loading data from Convex.</td></tr>`;
       }
+    }
+
+    function updateSyncLabel() {
+      const el = document.getElementById('sync-indicator');
+      const now = new Date();
+      const t = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      el.innerHTML = `<span class="sync-dot"></span>Live Sync Active - Last update ${t}`;
     }
 
     function updateStats() {
@@ -457,6 +495,25 @@ Rosanna and Andrew</textarea>
       const list = guests.filter(g => tgt==='all' ? true : tgt==='invited' ? (!g.attendance || g.attendance==='invited') : g.attendance === tgt);
       const sample = list[0];
       document.getElementById('wa-preview').textContent = sample ? buildText(sample) : "No guests match this filter.";
+      populateWaPeople();
+    }
+
+    function populateWaPeople() {
+      const sel = document.getElementById('wa-person');
+      const people = guests.filter(g => g.phone && g.first_name);
+      sel.innerHTML = people.length
+        ? people.map((g, i) => `<option value="${i}">${g.first_name} ${g.last_name || ''} - ${g.phone}</option>`).join('')
+        : '<option value="">No guests with phone</option>';
+    }
+
+    function sendOneWA() {
+      const sel = document.getElementById('wa-person');
+      if (!sel || !sel.value) { alert('Select a guest first.'); return; }
+      const idx = Number(sel.value);
+      const person = guests.filter(g => g.phone && g.first_name)[idx];
+      if (!person) { alert('Could not find selected guest.'); return; }
+      const phone = person.phone.replace(/\s/g,'');
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(buildText(person))}`, '_blank');
     }
 
     function insertVar(v) {
