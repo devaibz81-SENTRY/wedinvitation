@@ -220,26 +220,9 @@
         <div id="party-members-list"></div>
       </div>
 
-      <!-- 4. MEAL (shown only when attending) -->
-      <div class="form-section" id="meal-section" style="display:none">
-        <div class="form-section-title"><span id="meal-num">04</span> Meal Preference</div>
-        <div class="form-row" style="margin-bottom:1.5rem">
-          <div class="form-group">
-            <label for="meal">Meal Preference</label>
-            <select id="meal">
-              <option value="">Select preference</option>
-              <option value="chicken">Chicken</option>
-              <option value="fish">Fish</option>
-              <option value="vegetarian">Vegetarian</option>
-              <option value="vegan">Vegan</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5. A LITTLE EXTRA -->
+      <!-- 4. A LITTLE EXTRA -->
       <div class="form-section" id="extras-section">
-        <div class="form-section-title"><span id="extras-num">05</span> A Little Extra</div>
+        <div class="form-section-title"><span id="extras-num">04</span> A Little Extra</div>
         <div class="form-row single" style="margin-bottom:1.5rem">
           <div class="form-group">
             <label for="song">Song Request for the Dance Floor</label>
@@ -397,15 +380,13 @@
     }
 
     function renumberSections(hasParty) {
-      document.getElementById('meal-num').textContent    = hasParty ? '04' : '03';
-      document.getElementById('extras-num').textContent  = hasParty ? '05' : '04';
+      document.getElementById('extras-num').textContent  = hasParty ? '04' : '03';
     }
 
     // â”€â”€â”€ Attendance change â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function onAttendanceChange() {
       const val = document.querySelector('input[name="attendance"]:checked')?.value;
       const showFull = val === 'attending';
-      document.getElementById('meal-section').style.display   = showFull ? 'block' : 'none';
       document.getElementById('party-section').style.display  = (showFull && GUEST_TYPE !== 'single' && MAX_PARTY > 1) ? 'block' : 'none';
     }
 
@@ -472,7 +453,6 @@
 
       // Show confirmation modal for attending/declined
       const party     = getPartyNames();
-      const meal      = document.getElementById('meal').value;
       const song      = document.getElementById('song').value.trim();
       const message   = document.getElementById('message').value.trim();
 
@@ -480,7 +460,6 @@
         <p><strong>Name:</strong> ${firstName} ${lastName}</p>
         <p><strong>Attending:</strong> ${attendance === 'attending' ? "Accepts with Pleasure" : "Declines with Regret"}</p>
         ${party ? `<p><strong>Party:</strong> ${party}</p>` : ''}
-        ${meal  ? `<p><strong>Meal:</strong> ${meal}</p>` : ''}
         ${song  ? `<p><strong>Song:</strong> ${song}</p>` : ''}
         ${message ? `<p><strong>Message:</strong> ${message}</p>` : ''}
       `;
@@ -501,7 +480,6 @@
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
-      const meal = document.getElementById('meal').value;
       const song = document.getElementById('song').value.trim();
       const message = document.getElementById('message').value.trim();
       const submittedAt = new Date().toISOString();
@@ -515,7 +493,6 @@
         attendance,
         guest_type: GUEST_TYPE,
         party_names: getPartyNames() || undefined,
-        meal_preference: meal || undefined,
         song_request: song || undefined,
         message: message || undefined,
         submitted_at: submittedAt
