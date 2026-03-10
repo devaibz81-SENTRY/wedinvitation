@@ -653,154 +653,171 @@
       margin-bottom: 1rem;
       font-weight: 600;
     }
+
+    /* Envelope Card Design */
     .intro-card {
       width: 100%;
       height: min(78vh, 640px);
       margin: 0 auto 1rem;
-      perspective: 1800px;
-      transform-style: preserve-3d;
+      perspective: 2000px;
       cursor: pointer;
-      transition: transform 0.45s ease;
+      transform-style: preserve-3d;
     }
-    .intro-card:hover {
-      transform: translateY(-6px);
-    }
+
     .intro-card-inner {
       position: relative;
       width: 100%;
       height: 100%;
-      transform: rotateY(0deg);
-      transform-origin: left center;
-      -webkit-transform-style: preserve-3d;
       transform-style: preserve-3d;
-      transition: transform 1.35s cubic-bezier(.2,.76,.15,1);
-      will-change: transform;
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
-      border-radius: 26px;
-      overflow: hidden;
-      border: 4px solid rgba(255, 255, 255, 0.85);
+      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     #intro-overlay.flipped .intro-card-inner {
-      transform: rotateY(-175deg);
+      transform: rotateY(-180deg);
     }
-    .intro-face {
+
+    .intro-card-front, .intro-card-back {
       position: absolute;
       inset: 0;
-      -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.35), 0 10px 30px rgba(0,0,0,0.2);
     }
-    .intro-front {
-      transform: rotateY(0deg);
+
+    /* Front - Envelope/Card style with photo */
+    .intro-card-front {
+      background: linear-gradient(145deg, #faf7f2 0%, #f0ebe0 100%);
+      border: 1px solid rgba(201,168,76,0.3);
       display: flex;
       flex-direction: column;
-      background: #fffdf8;
-      border: 1px solid rgba(201,168,76,0.25);
     }
-    .intro-front-photo {
-      position: relative;
-      height: 74%;
-      overflow: hidden;
-    }
-    .intro-front-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-      display: block;
-      transition: transform 0.95s ease;
-    }
-    .intro-card:hover .intro-front-photo img {
-      transform: scale(1.05);
-    }
-    .intro-front-gradient {
+
+    .intro-card-front::before {
+      content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.66), rgba(0,0,0,0.2) 48%, rgba(0,0,0,0));
+      inset: 8px;
+      border: 2px solid rgba(201,168,76,0.2);
+      border-radius: 4px;
+      pointer-events: none;
     }
-    .intro-front-copy {
+
+    .intro-envelope-flap {
       position: absolute;
+      top: 0;
       left: 0;
       right: 0;
-      bottom: 1.2rem;
-      text-align: center;
-      padding: 0 1.1rem;
+      height: 35%;
+      background: linear-gradient(180deg, #e8dfd0 0%, #d4c9b8 100%);
+      clip-path: polygon(0 0, 50% 100%, 100% 0);
+      transform-origin: top center;
+      transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 2;
     }
-    .intro-front-copy p {
-      font-size: 0.68rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: rgba(245, 240, 232, 0.9);
-      margin-bottom: 0.35rem;
-      font-weight: 600;
+
+    #intro-overlay.flipped .intro-envelope-flap {
+      transform: rotateX(-180deg);
     }
-    .intro-front-copy h2 {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
-      color: #fff;
-      line-height: 1.1;
-      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
-    }
-    .intro-front-cta {
-      height: 26%;
+
+    .intro-envelope-body {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #fffdf8;
-      border-top: 1px solid rgba(201,168,76,0.2);
-      color: #2b2520;
+      padding: 2rem;
+      padding-top: 40%;
       text-align: center;
     }
-    .intro-tap-badge {
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
+
+    .intro-invite-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: #2d2520;
+      font-style: italic;
       margin-bottom: 0.5rem;
-      border: 1px solid rgba(201,168,76,0.38);
-      background: rgba(245,240,232,0.9);
-      color: #8d6f2f;
-      font-size: 1.1rem;
-      animation: introPulseSoft 2s infinite ease-in-out;
     }
-    @keyframes introPulseSoft {
-      0%, 100% { transform: scale(1); opacity: 0.84; }
-      50% { transform: scale(1.08); opacity: 1; }
+
+    .intro-names-text {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.8rem;
+      color: #1a1a1a;
+      line-height: 1.2;
     }
-    .intro-front-cta span {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
+
+    .intro-date-text {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
+      color: #8d6f2f;
+      margin-top: 1rem;
+      font-weight: 600;
     }
-    .intro-back {
+
+    .intro-tap-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      animation: tapPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes tapPulse {
+      0%, 100% { opacity: 0.6; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
+    }
+
+    .intro-tap-hint span {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #8d6f2f;
+      font-weight: 600;
+    }
+
+    .intro-tap-icon {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(201,168,76,0.5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8d6f2f;
+      font-size: 1rem;
+    }
+
+    /* Back - Reveal photo */
+    .intro-card-back {
       transform: rotateY(180deg);
-      border: 1px solid rgba(201,168,76,0.25);
       background: #111;
     }
-    .intro-back img {
+
+    .intro-card-back img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
-      object-position: center center;
-      opacity: 1;
-      transform: none;
-      filter: none;
-      transition: none;
     }
-    .intro-back-caption {
+
+    .intro-back-overlay {
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 1.2rem;
-      text-align: center;
-      color: rgba(245,240,232,0.92);
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 3rem;
+    }
+
+    .intro-back-caption {
       font-family: 'Great Vibes', cursive;
-      font-size: 2.1rem;
-      letter-spacing: 0.02em;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+      font-size: 2.5rem;
+      color: #fff;
+      text-shadow: 0 2px 15px rgba(0,0,0,0.5);
     }
     .music-toggle {
       position: fixed;
@@ -846,25 +863,26 @@
     /* ─── RESPONSIVE ──────────────────────────────── */
     @media (max-width: 768px) {
       .intro-stage {
-        width: min(94vw, 390px);
+        width: min(94vw, 360px);
       }
       .intro-card {
-        height: min(72vh, 560px);
+        height: min(65vh, 520px);
       }
       .intro-kicker {
         font-size: 0.62rem;
         letter-spacing: 0.18em;
       }
-      .intro-front-copy p {
-        font-size: 0.58rem;
-        letter-spacing: 0.22em;
+      .intro-invite-text {
+        font-size: 1.1rem;
       }
-      .intro-front-copy h2 {
-        font-size: clamp(2rem, 8vw, 3rem);
+      .intro-names-text {
+        font-size: 2rem;
       }
-      .intro-front-cta span {
-        font-size: 0.62rem;
-        letter-spacing: 0.14em;
+      .intro-date-text {
+        font-size: 0.6rem;
+      }
+      .intro-tap-hint {
+        bottom: 1.5rem;
       }
       nav {
         gap: 0.45rem;
@@ -913,23 +931,23 @@
       <p class="intro-kicker">Rosanna and Andrew</p>
       <div class="intro-card" id="intro-card" role="button" tabindex="0" aria-label="Open invitation">
         <div class="intro-card-inner">
-          <div class="intro-face intro-front">
-            <div class="intro-front-photo">
-              <img src="photos/photo3.gif" alt="Rosanna and Andrew invitation cover photo" fetchpriority="high" />
-              <div class="intro-front-gradient"></div>
-              <div class="intro-front-copy">
-                <p>You Are Invited</p>
-                <h2>To Celebrate</h2>
-              </div>
+          <div class="intro-card-front">
+            <div class="intro-envelope-flap"></div>
+            <div class="intro-envelope-body">
+              <p class="intro-invite-text">You Are Invited</p>
+              <h2 class="intro-names-text">Rosanna &amp; Andrew</h2>
+              <p class="intro-date-text">July 4, 2026 • Belize</p>
             </div>
-            <div class="intro-front-cta">
-              <div class="intro-tap-badge" aria-hidden="true">&#9755;</div>
+            <div class="intro-tap-hint">
+              <div class="intro-tap-icon">&#9755;</div>
               <span>Tap To Open</span>
             </div>
           </div>
-          <div class="intro-face intro-back">
-            <img src="photos/story.gif" alt="Rosanna and Andrew reveal photo" fetchpriority="high" />
-            <div class="intro-back-caption">Rosanna &amp; Andrew</div>
+          <div class="intro-card-back">
+            <img src="photos/photo3.gif" alt="Rosanna and Andrew" fetchpriority="high" />
+            <div class="intro-back-overlay">
+              <div class="intro-back-caption">Rosanna &amp; Andrew</div>
+            </div>
           </div>
         </div>
       </div>
