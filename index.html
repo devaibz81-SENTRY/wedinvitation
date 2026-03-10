@@ -600,8 +600,50 @@
       pointer-events: none;
     }
     .intro-stage {
-      width: min(92vw, 560px);
+      position: relative;
+      width: min(94vw, 430px);
       text-align: center;
+      opacity: 0;
+      transform: translateY(90px) scale(0.92) rotateX(10deg);
+      animation: introFloatIn 1.15s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    @keyframes introFloatIn {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotateX(0deg);
+      }
+    }
+    #intro-overlay.opening .intro-stage {
+      opacity: 0;
+      transform: translateY(-36px) scale(0.96);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .intro-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(48px);
+      opacity: 0.34;
+      pointer-events: none;
+      animation: introBlobPulse 6s ease-in-out infinite;
+    }
+    .intro-blob.one {
+      width: 220px;
+      height: 220px;
+      left: -62px;
+      top: -42px;
+      background: rgba(232, 196, 184, 0.82);
+    }
+    .intro-blob.two {
+      width: 240px;
+      height: 240px;
+      right: -70px;
+      bottom: -58px;
+      background: rgba(212, 184, 150, 0.86);
+      animation-delay: 1.6s;
+    }
+    @keyframes introBlobPulse {
+      0%, 100% { transform: scale(1); opacity: 0.3; }
+      50% { transform: scale(1.08); opacity: 0.44; }
     }
     .intro-kicker {
       font-size: 0.72rem;
@@ -612,12 +654,16 @@
       font-weight: 600;
     }
     .intro-card {
-      width: min(90vw, 540px);
-      aspect-ratio: 16 / 10;
+      width: 100%;
+      height: min(78vh, 640px);
       margin: 0 auto 1rem;
       perspective: 1800px;
       transform-style: preserve-3d;
       cursor: pointer;
+      transition: transform 0.45s ease;
+    }
+    .intro-card:hover {
+      transform: translateY(-6px);
     }
     .intro-card-inner {
       position: relative;
@@ -630,8 +676,9 @@
       transition: transform 1.35s cubic-bezier(.2,.76,.15,1);
       will-change: transform;
       box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
-      border-radius: 12px;
+      border-radius: 26px;
       overflow: hidden;
+      border: 4px solid rgba(255, 255, 255, 0.85);
     }
     #intro-overlay.flipped .intro-card-inner {
       transform: rotateY(-175deg);
@@ -644,29 +691,92 @@
     }
     .intro-front {
       transform: rotateY(0deg);
-      display: grid;
-      place-items: center;
-      background: linear-gradient(145deg, #fbf4e9 0%, #f2e5d0 100%);
-      border: 1px solid rgba(201,168,76,0.45);
-      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      background: #fffdf8;
+      border: 1px solid rgba(201,168,76,0.25);
+    }
+    .intro-front-photo {
+      position: relative;
+      height: 74%;
+      overflow: hidden;
+    }
+    .intro-front-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      transition: transform 0.95s ease;
+    }
+    .intro-card:hover .intro-front-photo img {
+      transform: scale(1.05);
+    }
+    .intro-front-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.66), rgba(0,0,0,0.2) 48%, rgba(0,0,0,0));
+    }
+    .intro-front-copy {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 1.2rem;
+      text-align: center;
+      padding: 0 1.1rem;
+    }
+    .intro-front-copy p {
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.9);
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+    .intro-front-copy h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+      color: #fff;
+      line-height: 1.1;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+    }
+    .intro-front-cta {
+      height: 26%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fffdf8;
+      border-top: 1px solid rgba(201,168,76,0.2);
+      color: #2b2520;
       text-align: center;
     }
-    .intro-front h2 {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(2.1rem, 4.6vw, 3.4rem);
-      color: #2b2520;
-      margin-bottom: 0.6rem;
-      line-height: 1.1;
+    .intro-tap-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 0.5rem;
+      border: 1px solid rgba(201,168,76,0.38);
+      background: rgba(245,240,232,0.9);
+      color: #8d6f2f;
+      font-size: 1.1rem;
+      animation: introPulseSoft 2s infinite ease-in-out;
     }
-    .intro-front p {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1rem, 2vw, 1.3rem);
-      color: #5b4f40;
-      letter-spacing: 0.03em;
+    @keyframes introPulseSoft {
+      0%, 100% { transform: scale(1); opacity: 0.84; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+    .intro-front-cta span {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
     }
     .intro-back {
       transform: rotateY(180deg);
-      border: 1px solid rgba(201,168,76,0.45);
+      border: 1px solid rgba(201,168,76,0.25);
       background: #111;
     }
     .intro-back img {
@@ -680,34 +790,17 @@
       filter: none;
       transition: none;
     }
-    .intro-open-btn {
-      border: 1px solid var(--gold);
-      background: #fffdf8;
-      color: var(--black);
-      padding: 0.88rem 2.2rem;
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-weight: 600;
-      cursor: pointer;
-      opacity: 0.9;
-      transition: transform 0.2s ease, background 0.2s ease, opacity 0.3s ease;
-    }
-    .intro-open-btn.is-ready {
-      background: var(--gold);
-      border-color: var(--gold);
-      color: #fff;
-    }
-    .intro-open-btn.is-ready:hover {
-      background: #b89244;
-    }
-    .intro-open-btn:hover {
-      background: #f8efe2;
-      transform: translateY(-2px);
-    }
-    #intro-overlay.opening .intro-open-btn {
-      opacity: 0;
-      transform: translateY(10px);
+    .intro-back-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 1.2rem;
+      text-align: center;
+      color: rgba(245,240,232,0.92);
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.1rem;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
     }
     .music-toggle {
       position: fixed;
@@ -752,6 +845,27 @@
 
     /* ─── RESPONSIVE ──────────────────────────────── */
     @media (max-width: 768px) {
+      .intro-stage {
+        width: min(94vw, 390px);
+      }
+      .intro-card {
+        height: min(72vh, 560px);
+      }
+      .intro-kicker {
+        font-size: 0.62rem;
+        letter-spacing: 0.18em;
+      }
+      .intro-front-copy p {
+        font-size: 0.58rem;
+        letter-spacing: 0.22em;
+      }
+      .intro-front-copy h2 {
+        font-size: clamp(2rem, 8vw, 3rem);
+      }
+      .intro-front-cta span {
+        font-size: 0.62rem;
+        letter-spacing: 0.14em;
+      }
       nav {
         gap: 0.45rem;
         padding: 0.8rem 0.55rem;
@@ -772,9 +886,17 @@
       #story { grid-template-columns: 1fr; gap: 3rem; }
       .gallery-grid {
         grid-template-columns: 1fr;
-        grid-auto-rows: minmax(220px, auto);
+        grid-auto-rows: auto;
+      }
+      .photo-frame {
+        min-height: 200px;
+        max-height: 400px;
       }
       .photo-frame.large, .photo-frame.tall { grid-column: auto; grid-row: auto; }
+      .photo-inner {
+        min-height: 180px;
+        max-height: 380px;
+      }
       .details-grid { grid-template-columns: 1fr; }
       .countdown-wrapper { gap: 1.5rem; }
       .count-sep { display: none; }
@@ -786,26 +908,36 @@
 
   <div id="intro-overlay" aria-label="Open invitation card animation">
     <div class="intro-stage">
+      <div class="intro-blob one" aria-hidden="true"></div>
+      <div class="intro-blob two" aria-hidden="true"></div>
       <p class="intro-kicker">Rosanna and Andrew</p>
       <div class="intro-card" id="intro-card" role="button" tabindex="0" aria-label="Open invitation">
         <div class="intro-card-inner">
           <div class="intro-face intro-front">
-            <div>
-              <h2>Open The Card</h2>
-              <p>July 4, 2026 - Belize</p>
+            <div class="intro-front-photo">
+              <img src="photos/photo3.gif" alt="Rosanna and Andrew invitation cover photo" fetchpriority="high" />
+              <div class="intro-front-gradient"></div>
+              <div class="intro-front-copy">
+                <p>You Are Invited</p>
+                <h2>To Celebrate</h2>
+              </div>
+            </div>
+            <div class="intro-front-cta">
+              <div class="intro-tap-badge" aria-hidden="true">&#9755;</div>
+              <span>Tap To Open</span>
             </div>
           </div>
           <div class="intro-face intro-back">
-            <img src="photos/photo1.gif" alt="Rosanna and Andrew reveal photo" fetchpriority="high" />
+            <img src="photos/story.gif" alt="Rosanna and Andrew reveal photo" fetchpriority="high" />
+            <div class="intro-back-caption">Rosanna &amp; Andrew</div>
           </div>
         </div>
       </div>
-      <button id="open-invitation" class="intro-open-btn" type="button">Open Invitation</button>
     </div>
   </div>
 
   <audio id="bg-music" preload="auto" loop>
-    <source src="audio/marry-you.mp3" type="audio/mpeg" />
+    <source src="audio/Canon in D (Pachelbel's Canon) - Cello & Piano [BEST WEDDING VERSION]_01.mp3" type="audio/mpeg" />
   </audio>
   <button id="music-toggle" class="music-toggle" type="button" aria-label="Mute or unmute background music">Mute</button>
 
@@ -1113,7 +1245,6 @@
     // Intro card reveal + music
     const introOverlay = document.getElementById('intro-overlay');
     const introCard = document.getElementById('intro-card');
-    const openInvitationBtn = document.getElementById('open-invitation');
     const bgMusic = document.getElementById('bg-music');
     const musicToggle = document.getElementById('music-toggle');
     let introOpened = false;
@@ -1161,10 +1292,6 @@
       if (!introFlipped) {
         introFlipped = true;
         introOverlay.classList.add('flipped');
-        if (openInvitationBtn) {
-          openInvitationBtn.classList.add('is-ready');
-          openInvitationBtn.textContent = 'Enter Invitation';
-        }
         if (introFlipTimer) clearTimeout(introFlipTimer);
         introFlipTimer = setTimeout(() => {
           completeIntro();
@@ -1183,7 +1310,6 @@
     syncMusicUi();
 
     introCard?.addEventListener('click', openInvitation);
-    openInvitationBtn?.addEventListener('click', openInvitation);
     introCard?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
