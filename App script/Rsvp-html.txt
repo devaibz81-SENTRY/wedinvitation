@@ -258,7 +258,7 @@
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </div>
       <h2>You're All Set!</h2>
-      <p id="success-text">Your RSVP has been received. We are so looking forward to celebrating with you in Belize!</p>
+      <p id="success-text">Your RSVP has been received. We are so looking forward to celebrating with you in San Ignacio!</p>
       <a href="https://wedding-invitation1-rojq.vercel.app/" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">← Return to Invitation</a>
     </div>
 
@@ -284,7 +284,7 @@
   </div>
 
   <footer style="background:var(--black);color:var(--ivory);text-align:center;padding:2rem;font-size:0.6rem;letter-spacing:0.2em;opacity:0.8;">
-    Rosanna &amp; Andrew · July 4, 2026 · Belize ✦
+    Rosanna &amp; Andrew · July 4, 2026 · San Ignacio, Belize ✦
   </footer>
 
   <script>
