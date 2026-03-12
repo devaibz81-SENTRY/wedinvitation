@@ -1,126 +1,650 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin - R&A Wedding Management</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500&display=swap"
+    rel="stylesheet" />
   <style>
-    :root { --black:#0d0d0d; --ivory:#f5f0e8; --champagne:#d4b896; --gold:#c9a84c; --sidebar:#111; --attending:#2ecc71; --declined:#e74c3c; --later:#f39c12; --msg:#3498db; }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    body { display: flex; min-height: 100vh; background: #f0ede8; font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 16px; }
+    :root {
+      --black: #0d0d0d;
+      --ivory: #f5f0e8;
+      --champagne: #d4b896;
+      --gold: #c9a84c;
+      --sidebar: #111;
+      --attending: #2ecc71;
+      --declined: #e74c3c;
+      --later: #f39c12;
+      --msg: #3498db;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: #f0ede8;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+    }
 
     /* Login */
-    #login-overlay { position: fixed; inset: 0; z-index: 999; background: var(--black); display: flex; align-items: center; justify-content: center; }
-    #login-overlay.hidden { display: none; }
-    .login-box { text-align: center; padding: 3rem; border: 1px solid rgba(201,168,76,0.3); min-width: 320px; }
-    .login-box h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--ivory); margin-bottom: 0.5rem; }
-    .login-box p { font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 0.2em; margin-bottom: 2rem; }
-    .login-input { width: 100%; padding: 0.8rem 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.3); color: var(--ivory); font-family: 'Montserrat', sans-serif; outline: none; margin-bottom: 1rem; text-align: center; letter-spacing: 0.2em; }
-    .login-input:focus { border-color: var(--gold); }
-    .login-btn { width: 100%; padding: 0.9rem; background: var(--gold); border: none; color: var(--black); cursor: pointer; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; transition: background 0.3s; }
-    .login-btn:hover { background: #a8863a; }
+    #login-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #login-overlay.hidden {
+      display: none;
+    }
+
+    .login-box {
+      text-align: center;
+      padding: 3rem;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      min-width: 320px;
+    }
+
+    .login-box h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      color: var(--ivory);
+      margin-bottom: 0.5rem;
+    }
+
+    .login-box p {
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.2em;
+      margin-bottom: 2rem;
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      color: var(--ivory);
+      font-family: 'Montserrat', sans-serif;
+      outline: none;
+      margin-bottom: 1rem;
+      text-align: center;
+      letter-spacing: 0.2em;
+    }
+
+    .login-input:focus {
+      border-color: var(--gold);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--gold);
+      border: none;
+      color: var(--black);
+      cursor: pointer;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      transition: background 0.3s;
+    }
+
+    .login-btn:hover {
+      background: #a8863a;
+    }
 
     /* Sidebar */
-    #sidebar { width: 240px; background: var(--sidebar); display: flex; flex-direction: column; padding: 2rem 0; min-height: 100vh; flex-shrink: 0; }
-    .sidebar-brand { text-align: center; padding: 0 1.5rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .sidebar-brand .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--champagne); font-style: italic; }
-    .nav-label { font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 0 1.5rem; margin: 1.5rem 0 0.5rem; }
-    .nav-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 1.5rem; cursor: pointer; color: rgba(255,255,255,0.5); border-left: 2px solid transparent; font-size: 0.78rem; transition: 0.2s; }
-    .nav-item:hover, .nav-item.active { color: var(--gold); background: rgba(201,168,76,0.06); border-left-color: var(--gold); }
+    #sidebar {
+      width: 240px;
+      background: var(--sidebar);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 0;
+      min-height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      text-align: center;
+      padding: 0 1.5rem 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sidebar-brand .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--champagne);
+      font-style: italic;
+    }
+
+    .nav-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.25);
+      padding: 0 1.5rem;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.7rem 1.5rem;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.5);
+      border-left: 2px solid transparent;
+      font-size: 0.78rem;
+      transition: 0.2s;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      color: var(--gold);
+      background: rgba(201, 168, 76, 0.06);
+      border-left-color: var(--gold);
+    }
 
     /* Main Area */
-    #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-    .top-bar { background: white; padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e0d8; }
-    .sync-indicator { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: #777; margin-top: 0.4rem; }
-    .sync-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #2ecc71; margin-right: 0.45rem; }
-    .top-bar-actions { display: flex; gap: 1rem; }
-    .btn-sm { padding: 0.5rem 1.2rem; border: 1px solid var(--gold); background: transparent; color: var(--black); cursor: pointer; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; transition: 0.2s; }
-    .btn-sm:hover { background: var(--gold); color: white; }
-    .btn-sm.primary { background: var(--gold); color: white; }
-    #content { flex: 1; overflow-y: auto; padding: 2rem; }
+    #main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      background: white;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e5e0d8;
+    }
+
+    .sync-indicator {
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #777;
+      margin-top: 0.4rem;
+    }
+
+    .sync-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2ecc71;
+      margin-right: 0.45rem;
+    }
+
+    .top-bar-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1.2rem;
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--black);
+      cursor: pointer;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: 0.2s;
+    }
+
+    .btn-sm:hover {
+      background: var(--gold);
+      color: white;
+    }
+
+    .btn-sm.primary {
+      background: var(--gold);
+      color: white;
+    }
+
+    #content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+    }
 
     /* Stats Grid */
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
-    .stat-card { background: white; padding: 1.5rem; border-bottom: 3px solid transparent; }
-    .stat-card.green { border-color: var(--attending); } .stat-card.red { border-color: var(--declined); }
-    .stat-card.yellow { border-color: var(--later); } .stat-card.blue { border-color: var(--msg); }
-    .stat-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #999; margin-bottom: 0.5rem; }
-    .stat-num { font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--black); line-height: 1; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-bottom: 3px solid transparent;
+    }
+
+    .stat-card.green {
+      border-color: var(--attending);
+    }
+
+    .stat-card.red {
+      border-color: var(--declined);
+    }
+
+    .stat-card.yellow {
+      border-color: var(--later);
+    }
+
+    .stat-card.blue {
+      border-color: var(--msg);
+    }
+
+    .stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-num {
+      font-size: 2.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--black);
+      line-height: 1;
+    }
 
     /* Filters */
-    .filter-bar { background: white; padding: 1rem 1.5rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
-    .filter-btn { padding: 0.4rem 1rem; border: 1px solid #ddd; background: transparent; font-size: 0.65rem; cursor: pointer; border-radius: 2px; }
-    .filter-btn.active { background: var(--black); color: white; border-color: var(--black); }
-    .filter-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
+    .filter-bar {
+      background: white;
+      padding: 1rem 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .filter-btn {
+      padding: 0.4rem 1rem;
+      border: 1px solid #ddd;
+      background: transparent;
+      font-size: 0.65rem;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+
+    .filter-btn.active {
+      background: var(--black);
+      color: white;
+      border-color: var(--black);
+    }
+
+    .filter-btn:hover:not(.active) {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
 
     /* Tables */
-    table { width: 100%; border-collapse: collapse; background: white; }
-    th { padding: 0.8rem 1rem; text-align: left; font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: #aaa; background: #fafaf9; }
-    td { padding: 0.9rem 1rem; border-bottom: 1px solid #f8f5f0; font-size: 0.8rem; color: #333; }
-    .status-pill { display: inline-block; padding: 0.25rem 0.8rem; border-radius: 2px; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; }
-    .pill-attending{background:rgba(46,204,113,0.1);color:var(--attending);}
-    .pill-declined{background:rgba(231,76,60,0.1);color:var(--declined);}
-    .pill-later{background:rgba(243,156,18,0.1);color:var(--later);}
-    .pill-invited{background:rgba(149,165,166,0.1);color:#95a5a6;}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #aaa;
+      background: #fafaf9;
+    }
+
+    td {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid #f8f5f0;
+      font-size: 0.8rem;
+      color: #333;
+    }
+
+    .status-pill {
+      display: inline-block;
+      padding: 0.25rem 0.8rem;
+      border-radius: 2px;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .pill-attending {
+      background: rgba(46, 204, 113, 0.1);
+      color: var(--attending);
+    }
+
+    .pill-declined {
+      background: rgba(231, 76, 60, 0.1);
+      color: var(--declined);
+    }
+
+    .pill-later {
+      background: rgba(243, 156, 18, 0.1);
+      color: var(--later);
+    }
+
+    .pill-invited {
+      background: rgba(149, 165, 166, 0.1);
+      color: #95a5a6;
+    }
 
     /* WhatsApp Inbox Build */
-    .wa-builder { background: white; padding: 2rem; border: 1px solid #e8e2d8; box-shadow: 0 8px 22px rgba(13,13,13,0.04); }
-    .wa-builder h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; margin-bottom: 0.75rem; }
-    .wa-muted { font-size: 0.84rem; color: #5f5f5f; margin-bottom: 1.4rem; line-height: 1.55; }
-    .wa-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-    .wa-panel { border: 1px solid #ece6dc; background: #fcfbf9; padding: 1rem; }
-    .wa-panel h3 { font-size: 0.73rem; letter-spacing: 0.14em; text-transform: uppercase; color: #826837; margin-bottom: 0.9rem; }
-    .wa-panel small { color: #717171; font-size: 0.75rem; }
-    .wa-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.2rem; }
-    .wa-kpi { border: 1px solid #ece6dc; background: #fcfbf9; padding: 0.75rem 0.85rem; }
-    .wa-kpi strong { display: block; font-size: 1.3rem; font-family: 'Cormorant Garamond', serif; color: #1f1f1f; line-height: 1.1; }
-    .wa-kpi span { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em; color: #737373; }
-    .wa-row { display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
-    .wa-row select, .wa-row input { padding: 0.64rem; border: 1px solid #ddd; outline: none; min-width: 260px; background: white; }
-    .wa-row select:focus, .wa-row input:focus { border-color: var(--gold); }
-    .wa-template { width: 100%; min-height: 150px; padding: 1rem; border: 1px solid #ddd; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; line-height: 1.6; resize: vertical; margin-bottom: 1rem; }
-    .wa-vars { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
-    .wa-var { padding: 0.3rem 0.7rem; background: #f5f5f5; font-size: 0.65rem; cursor: pointer; border: 1px solid #e0e0e0; }
-    .wa-var:hover { background: var(--gold); color: white; }
-    .wa-preview { background: #f0ede8; padding: 1rem; border-left: 3px solid #25D366; font-size: 0.82rem; white-space: pre-wrap; margin-bottom: 1rem; }
-    .wa-actions { display: flex; gap: 0.65rem; flex-wrap: wrap; }
-    .wa-person-info { font-size: 0.76rem; color: #505050; background: #fff; border: 1px solid #ece6dc; padding: 0.7rem 0.75rem; min-height: 44px; }
-    .action-btn { padding: 0.38rem 0.65rem; border: 1px solid #ddd; background: transparent; cursor: pointer; font-size: 0.65rem; }
-    .action-btn.wa { border-color: #25D366; color: #25D366; font-weight: 600; min-width: 96px; } .action-btn.wa:hover { background: #25D366; color: white; }
-    .action-btn.danger { border-color: #e74c3c; color: #e74c3c; font-weight: 600; }
-    .action-btn.danger:hover { background: #e74c3c; color: #fff; }
-    .table-actions { display: flex; gap: 0.4rem; align-items: center; }
+    .wa-builder {
+      background: white;
+      padding: 2rem;
+      border: 1px solid #e8e2d8;
+      box-shadow: 0 8px 22px rgba(13, 13, 13, 0.04);
+    }
+
+    .wa-builder h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .wa-muted {
+      font-size: 0.84rem;
+      color: #5f5f5f;
+      margin-bottom: 1.4rem;
+      line-height: 1.55;
+    }
+
+    .wa-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .wa-panel {
+      border: 1px solid #ece6dc;
+      background: #fcfbf9;
+      padding: 1rem;
+    }
+
+    .wa-panel h3 {
+      font-size: 0.73rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #826837;
+      margin-bottom: 0.9rem;
+    }
+
+    .wa-panel small {
+      color: #717171;
+      font-size: 0.75rem;
+    }
+
+    .wa-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .wa-kpi {
+      border: 1px solid #ece6dc;
+      background: #fcfbf9;
+      padding: 0.75rem 0.85rem;
+    }
+
+    .wa-kpi strong {
+      display: block;
+      font-size: 1.3rem;
+      font-family: 'Cormorant Garamond', serif;
+      color: #1f1f1f;
+      line-height: 1.1;
+    }
+
+    .wa-kpi span {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #737373;
+    }
+
+    .wa-row {
+      display: flex;
+      gap: 0.7rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .wa-row select,
+    .wa-row input {
+      padding: 0.64rem;
+      border: 1px solid #ddd;
+      outline: none;
+      min-width: 260px;
+      background: white;
+    }
+
+    .wa-row select:focus,
+    .wa-row input:focus {
+      border-color: var(--gold);
+    }
+
+    .wa-template {
+      width: 100%;
+      min-height: 150px;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      resize: vertical;
+      margin-bottom: 1rem;
+    }
+
+    .wa-vars {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .wa-var {
+      padding: 0.3rem 0.7rem;
+      background: #f5f5f5;
+      font-size: 0.65rem;
+      cursor: pointer;
+      border: 1px solid #e0e0e0;
+    }
+
+    .wa-var:hover {
+      background: var(--gold);
+      color: white;
+    }
+
+    .wa-preview {
+      background: #f0ede8;
+      padding: 1rem;
+      border-left: 3px solid #25D366;
+      font-size: 0.82rem;
+      white-space: pre-wrap;
+      margin-bottom: 1rem;
+    }
+
+    .wa-actions {
+      display: flex;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .wa-person-info {
+      font-size: 0.76rem;
+      color: #505050;
+      background: #fff;
+      border: 1px solid #ece6dc;
+      padding: 0.7rem 0.75rem;
+      min-height: 44px;
+    }
+
+    .action-btn {
+      padding: 0.38rem 0.65rem;
+      border: 1px solid #ddd;
+      background: transparent;
+      cursor: pointer;
+      font-size: 0.65rem;
+    }
+
+    .action-btn.wa {
+      border-color: #25D366;
+      color: #25D366;
+      font-weight: 600;
+      min-width: 96px;
+    }
+
+    .action-btn.wa:hover {
+      background: #25D366;
+      color: white;
+    }
+
+    .action-btn.danger {
+      border-color: #e74c3c;
+      color: #e74c3c;
+      font-weight: 600;
+    }
+
+    .action-btn.danger:hover {
+      background: #e74c3c;
+      color: #fff;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+    }
 
     /* Modal */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 50; }
-    .modal-overlay.open { display: flex; }
-    .modal { background: white; padding: 2.5rem; width: 600px; max-height: 90vh; overflow-y: auto; }
-    .modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #eee; }
-    .modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-    .modal-group label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #aaa; display:block; margin-bottom: 0.4rem; }
-    .modal-group input, .modal-group select { width: 100%; padding: 0.6rem; border: 1px solid #ddd; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; outline: none; }
-    .modal-group input:focus, .modal-group select:focus { border-color: var(--gold); }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+      padding: 2.5rem;
+      width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .modal-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-group label {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #aaa;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .modal-group input,
+    .modal-group select {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #ddd;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .modal-group input:focus,
+    .modal-group select:focus {
+      border-color: var(--gold);
+    }
 
     @media (max-width: 960px) {
-      .wa-kpis { grid-template-columns: repeat(2, 1fr); }
-      .wa-layout { grid-template-columns: 1fr; }
+      .wa-kpis {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .wa-layout {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 620px) {
-      #content { padding: 1rem; }
-      .wa-kpis { grid-template-columns: 1fr; }
-      .wa-row select, .wa-row input { min-width: 100%; width: 100%; }
+      #content {
+        padding: 1rem;
+      }
+
+      .wa-kpis {
+        grid-template-columns: 1fr;
+      }
+
+      .wa-row select,
+      .wa-row input {
+        min-width: 100%;
+        width: 100%;
+      }
     }
   </style>
 </head>
+
 <body>
   <!-- Login -->
   <div id="login-overlay">
     <div class="login-box">
-      <h2>Wedding Admin</h2><p>Rosanna &amp; Andrew - 2026</p>
-      <input type="password" id="admin-pass" class="login-input" placeholder="Enter Password" onkeydown="if(event.key==='Enter') doLogin()" />
+      <h2>Wedding Admin</h2>
+      <p>Rosanna &amp; Andrew - 2026</p>
+      <input type="password" id="admin-pass" class="login-input" placeholder="Enter Password"
+        onkeydown="if(event.key==='Enter') doLogin()" />
       <button class="login-btn" onclick="doLogin()">Enter</button>
       <p id="login-err" style="color:#e74c3c;display:none;margin-top:1rem;">Incorrect password.</p>
     </div>
@@ -128,14 +652,16 @@
 
   <!-- Sidebar -->
   <div id="sidebar">
-    <div class="sidebar-brand"><div class="brand-name">Rosanna &amp; Andrew</div></div>
+    <div class="sidebar-brand">
+      <div class="brand-name">Rosanna &amp; Andrew</div>
+    </div>
     <div class="nav-label">Management</div>
     <div class="nav-item active" onclick="showView('guests')">Guests Data</div>
     <div class="nav-item" onclick="showView('whatsapp')">WhatsApp Inbox</div>
   </div>
 
   <!-- Main -->
-    <div id="main">
+  <div id="main">
     <div class="top-bar">
       <div>
         <h1 id="view-title" style="font-size:1.1rem;font-weight:400;">Guest Management</h1>
@@ -152,10 +678,22 @@
       <!-- GUEST LIST VIEW -->
       <div id="view-guests">
         <div class="stats-grid">
-          <div class="stat-card green"><div class="stat-label">Attending</div><div class="stat-num" id="st-attending">0</div></div>
-          <div class="stat-card red"><div class="stat-label">Declined</div><div class="stat-num" id="st-declined">0</div></div>
-          <div class="stat-card yellow"><div class="stat-label">Ask Later (Waitlist)</div><div class="stat-num" id="st-later">0</div></div>
-          <div class="stat-card blue"><div class="stat-label">Total Invited Seats</div><div class="stat-num" id="st-total">0</div></div>
+          <div class="stat-card green">
+            <div class="stat-label">Attending</div>
+            <div class="stat-num" id="st-attending">0</div>
+          </div>
+          <div class="stat-card red">
+            <div class="stat-label">Declined</div>
+            <div class="stat-num" id="st-declined">0</div>
+          </div>
+          <div class="stat-card yellow">
+            <div class="stat-label">Ask Later (Waitlist)</div>
+            <div class="stat-num" id="st-later">0</div>
+          </div>
+          <div class="stat-card blue">
+            <div class="stat-label">Total Invited Seats</div>
+            <div class="stat-num" id="st-total">0</div>
+          </div>
         </div>
 
         <div class="filter-bar">
@@ -180,7 +718,11 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody id="guests-tbody"><tr><td colspan="7" style="text-align:center;padding:3rem;">Loading data from Convex...</td></tr></tbody>
+          <tbody id="guests-tbody">
+            <tr>
+              <td colspan="7" style="text-align:center;padding:3rem;">Loading data from Convex...</td>
+            </tr>
+          </tbody>
         </table>
       </div>
 
@@ -188,7 +730,8 @@
       <div id="view-whatsapp" style="display:none;">
         <div class="wa-builder">
           <h2>WhatsApp Campaign Console</h2>
-          <p class="wa-muted">Send to groups or one guest at a time from a cleaner flow. Individual sends still use RSVP-aware messages automatically.</p>
+          <p class="wa-muted">Send to groups or one guest at a time from a cleaner flow. Individual sends still use
+            RSVP-aware messages automatically.</p>
 
           <div class="wa-kpis">
             <div class="wa-kpi"><strong id="wa-kpi-phones">0</strong><span>With WhatsApp</span></div>
@@ -215,7 +758,8 @@
             <div class="wa-panel">
               <h3>Send to Individual</h3>
               <div class="wa-row" style="margin-bottom:0.6rem;">
-                <input id="wa-person-search" type="text" placeholder="Search by name or phone..." oninput="filterWaPeople()" />
+                <input id="wa-person-search" type="text" placeholder="Search by name or phone..."
+                  oninput="filterWaPeople()" />
               </div>
               <div class="wa-row" style="margin-bottom:0.6rem;">
                 <select id="wa-person" onchange="showSelectedPersonMeta()"></select>
@@ -245,7 +789,8 @@ Open your invitation and respond here:
 With love,
 Rosanna and Andrew</textarea>
 
-          <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Live Preview (First match)</div>
+          <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Live Preview (First
+            match)</div>
           <div class="wa-preview" id="wa-preview">Loading preview...</div>
 
           <div class="wa-actions" style="margin-top:1.3rem;">
@@ -281,7 +826,13 @@ Rosanna and Andrew</textarea>
         </div>
         <div class="modal-group">
           <label>Max Party Size</label>
-          <input type="number" id="m-max" value="1" min="1" max="4" />
+          <input type="number" id="m-max" value="1" min="1" max="10" />
+        </div>
+      </div>
+      <div id="m-spouse-row" class="modal-row" style="display:none;">
+        <div class="modal-group" style="grid-column: 1 / -1;">
+          <label>Spouse / Partner First Name (Optional)</label>
+          <input type="text" id="m-spouse" placeholder="Jane" />
         </div>
       </div>
       <div class="modal-row">
@@ -303,8 +854,8 @@ Rosanna and Andrew</textarea>
 
   <script>
     const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
-    const WEDDING_URL     = 'https://wedinvitation-ruddy.vercel.app';
-    const SESSION_KEY     = 'ra_admin_token';
+    const WEDDING_URL = 'https://wedinvitation-ruddy.vercel.app';
+    const SESSION_KEY = 'ra_admin_token';
     const LIVE_REFRESH_MS = 12000;
     let guests = [];
     let currentFilter = 'all';
@@ -332,7 +883,7 @@ Rosanna and Andrew</textarea>
         document.getElementById('login-err').style.display = 'block';
       }
     }
-    
+
     async function logout() {
       if (refreshTimer) {
         clearInterval(refreshTimer);
@@ -342,7 +893,7 @@ Rosanna and Andrew</textarea>
         await fetch(`${CONVEX_HTTP_URL}/api/auth/logout`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${adminToken}` }
-        }).catch(() => {});
+        }).catch(() => { });
       }
       adminToken = '';
       localStorage.removeItem(SESSION_KEY);
@@ -379,11 +930,11 @@ Rosanna and Andrew</textarea>
     }
 
     function showView(view) {
-      document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       event.currentTarget.classList.add('active');
-      document.getElementById('view-guests').style.display = view==='guests'?'block':'none';
-      document.getElementById('view-whatsapp').style.display = view==='whatsapp'?'block':'none';
-      document.getElementById('view-title').textContent = view==='guests'?'Guest Management':'WhatsApp Inbox';
+      document.getElementById('view-guests').style.display = view === 'guests' ? 'block' : 'none';
+      document.getElementById('view-whatsapp').style.display = view === 'whatsapp' ? 'block' : 'none';
+      document.getElementById('view-title').textContent = view === 'guests' ? 'Guest Management' : 'WhatsApp Inbox';
       updateWaPreview();
     }
 
@@ -397,7 +948,7 @@ Rosanna and Andrew</textarea>
 
     function setFilter(f, btn) {
       currentFilter = f;
-      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderTable();
     }
@@ -443,19 +994,19 @@ Rosanna and Andrew</textarea>
 
     function renderTable() {
       let filtered = guests.filter(g => {
-        if(currentFilter === 'all') return true;
-        if(currentFilter === 'single' || currentFilter === 'couple' || currentFilter === 'family') return g.guest_type === currentFilter;
-        if(currentFilter === 'invited') return (!g.attendance || g.attendance === 'invited');
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'single' || currentFilter === 'couple' || currentFilter === 'family') return g.guest_type === currentFilter;
+        if (currentFilter === 'invited') return (!g.attendance || g.attendance === 'invited');
         return g.attendance === currentFilter;
       });
 
       const tbody = document.getElementById('guests-tbody');
-      if(!filtered.length) { tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">No guests matching filter.</td></tr>`; return; }
+      if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">No guests matching filter.</td></tr>`; return; }
 
       tbody.innerHTML = filtered.map(g => {
         const st = g.attendance || 'invited';
-        const pClass = { attending:'pill-attending', declined:'pill-declined', later:'pill-later', invited:'pill-invited' }[st];
-        const pLabel = { attending:'Yes', declined:'No', later:'Ask Later', invited:'Invited' }[st];
+        const pClass = { attending: 'pill-attending', declined: 'pill-declined', later: 'pill-later', invited: 'pill-invited' }[st];
+        const pLabel = { attending: 'Yes', declined: 'No', later: 'Ask Later', invited: 'Invited' }[st];
         const key = getGuestKey(g);
         const hasPhone = !!normalizeWaPhone(g.phone);
 
@@ -464,9 +1015,10 @@ Rosanna and Andrew</textarea>
           <td style="text-transform:capitalize">${g.guest_type || 'Single'}</td>
           <td>${g.max_party || 1} allowed</td>
           <td><span class="status-pill ${pClass}">${pLabel}</span></td>
-          <td>${g.phone||'-'}</td>
+          <td>${g.phone || '-'}</td>
           <td style="font-size:0.75rem">${g.deadline ? new Date(g.deadline).toLocaleDateString() : '-'}</td>
           <td><div class="table-actions">
+            <button class="action-btn" onclick="openEditGuest('${key}')" style="border-color:var(--gold);color:var(--gold);">Edit</button>
             ${hasPhone ? `<button class="action-btn wa" onclick="sendQuickWA('${key}')" title="Send individualized WhatsApp message">WhatsApp</button>` : `<span style="font-size:0.7rem;color:#999;">No phone</span>`}
             <button class="action-btn danger" onclick="deleteGuest('${key}')">Delete</button>
           </div></td>
@@ -475,26 +1027,62 @@ Rosanna and Andrew</textarea>
     }
 
     // â”€â”€â”€ ADDING FROM DASH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    function openAddGuest() { document.getElementById('add-modal').classList.add('open'); }
+    let editingGuestId = null;
+
+    function openAddGuest() {
+      editingGuestId = null;
+      document.getElementById('add-modal').querySelector('h2').textContent = 'Add Guest / Household';
+      document.getElementById('m-fname').value = '';
+      document.getElementById('m-lname').value = '';
+      document.getElementById('m-type').value = 'single';
+      document.getElementById('m-max').value = '1';
+      document.getElementById('m-phone').value = '';
+      document.getElementById('m-due').value = '2026-06-10';
+      document.getElementById('m-spouse').value = '';
+      syncPartySize();
+      document.getElementById('add-modal').classList.add('open');
+    }
+
+    function openEditGuest(key) {
+      const g = findGuestByKey(key);
+      if (!g) return;
+      editingGuestId = g._id || g.id;
+      document.getElementById('add-modal').querySelector('h2').textContent = 'Edit Guest / Household';
+      document.getElementById('m-fname').value = g.first_name || '';
+      document.getElementById('m-lname').value = g.last_name || '';
+      document.getElementById('m-type').value = g.guest_type || 'single';
+      document.getElementById('m-max').value = g.max_party || 1;
+      document.getElementById('m-phone').value = g.phone || '';
+      document.getElementById('m-due').value = (g.deadline || '2026-06-10').split('T')[0];
+      document.getElementById('m-spouse').value = g.spouse_name || '';
+      syncPartySize();
+      document.getElementById('add-modal').classList.add('open');
+    }
+
     function syncPartySize() {
       const t = document.getElementById('m-type').value;
       const m = document.getElementById('m-max');
-      if(t==='single') m.value=1; else if(t==='couple') m.value=2; else if(t==='family') m.value=4;
+      const s = document.getElementById('m-spouse-row');
+      if (t === 'single') m.value = 1; else if (t === 'couple') m.value = 2; else if (t === 'family') m.value = 4;
+      s.style.display = (t === 'couple') ? 'grid' : 'none';
     }
 
     function submitGuest() {
       const btn = document.querySelector('.modal .primary');
+      const originalText = btn.textContent;
       btn.textContent = 'Saving...'; btn.disabled = true;
 
       const payload = {
-        action: 'add_guest',
+        action: editingGuestId ? 'update_guest' : 'add_guest',
+        guest_id: editingGuestId || undefined,
         first_name: document.getElementById('m-fname').value.trim(),
         last_name: document.getElementById('m-lname').value.trim(),
         guest_type: document.getElementById('m-type').value,
         max_party: parseInt(document.getElementById('m-max').value, 10),
         phone: document.getElementById('m-phone').value.trim(),
         deadline: document.getElementById('m-due').value,
-        attendance: 'invited'
+        spouse_name: document.getElementById('m-spouse').value.trim(),
+        attendance: editingGuestId ? undefined : 'invited'
       };
 
       fetch(`${CONVEX_HTTP_URL}/api/guest`, {
@@ -507,20 +1095,30 @@ Rosanna and Andrew</textarea>
           throw new Error('Session expired. Please log in again.');
         }
         if (!res.ok) throw new Error(await res.text());
-        const data = await res.json();
-        payload.id = data?.id || Date.now().toString();
-        guests.unshift(payload);
         document.getElementById('add-modal').classList.remove('open');
-        btn.textContent = 'Save Guest'; btn.disabled = false;
+        btn.textContent = originalText; btn.disabled = false;
         fetchGuests();
-      }).catch(e => { alert('Failed: '+e); btn.textContent = 'Save Guest'; btn.disabled = false; });
+      }).catch(e => { alert('Failed: ' + e); btn.textContent = originalText; btn.disabled = false; });
     }
 
     // â”€â”€â”€ WHATSAPP BUILDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function generatePersonalLink(g) {
       const base = String(WEDDING_URL || '').replace(/\/+$/, '');
-      if(!g || !g.first_name) return `${base}/`;
-      const p = new URLSearchParams({ id:g._id || g.id || '', name:`${g.first_name} ${g.last_name}`, type:g.guest_type||'single', max:g.max_party||1, due:g.deadline||'' });
+      if (!g || !g.first_name) return `${base}/`;
+
+      let displayName = g.first_name;
+      if (g.spouse_name) {
+        displayName += ` & ${g.spouse_name}`;
+      }
+      displayName += ` ${g.last_name || ''}`;
+
+      const p = new URLSearchParams({
+        id: g._id || g.id || '',
+        name: displayName.trim(),
+        type: g.guest_type || 'single',
+        max: g.max_party || 1,
+        due: g.deadline || ''
+      });
       return `${base}/?${p.toString()}`;
     }
 
@@ -640,9 +1238,15 @@ Rosanna and Andrew</textarea>
 
     function buildText(g) {
       const tmpl = document.getElementById('wa-text').value;
-      if(!g) return tidyMessage(tmpl);
+      if (!g) return tidyMessage(tmpl);
+
+      let displayName = g.first_name;
+      if (g.spouse_name) {
+        displayName += ` & ${g.spouse_name}`;
+      }
+
       return tidyMessage(tmpl
-        .replace(/{{name}}/g, g.first_name || 'Guest')
+        .replace(/{{name}}/g, displayName)
         .replace(/{{type}}/g, formatGuestType(g.guest_type))
         .replace(/{{deadline}}/g, formatDeadline(g.deadline))
         .replace(/{{link}}/g, generatePersonalLink(g)));
@@ -741,16 +1345,14 @@ Rosanna and Andrew</textarea>
     function sendMassWA() {
       const tgt = document.getElementById('wa-group').value;
       const list = getGuestsForTarget(tgt, true);
-      if(!list.length) { alert('No guests with phones match this filter.'); return; }
-      if(!confirm(`Deploy WhatsApp msg to ${list.length} guest(s)?`)) return;
+      if (!list.length) { alert('No guests with phones match this filter.'); return; }
+      if (!confirm(`Deploy WhatsApp msg to ${list.length} guest(s)?`)) return;
 
-      list.forEach((g,i) => {
+      list.forEach((g, i) => {
         setTimeout(() => { openGuestWhatsApp(g); }, i * 800);
       });
     }
   </script>
 </body>
+
 </html>
-
-
-
