@@ -47,6 +47,7 @@ export const add = internalMutation({
     phone: v.optional(v.string()),
     email: v.optional(v.string()),
     deadline: v.optional(v.string()),
+    spouse_name: v.optional(v.string()),
     attendance: v.optional(attendanceValidator),
   },
   handler: async (ctx, args) => {
@@ -90,6 +91,7 @@ export const add = internalMutation({
         phone_key: phoneKey,
         email: args.email,
         deadline: args.deadline,
+        spouse_name: args.spouse_name,
         attendance: nextAttendance,
         updated_at: now,
       });
@@ -220,9 +222,9 @@ export const listGateQueries = internalQuery({
   handler: async (ctx, args) => {
     const rows = args.status
       ? await ctx.db
-          .query("rsvp_gate_queries")
-          .withIndex("by_status", (q) => q.eq("status", args.status!))
-          .collect()
+        .query("rsvp_gate_queries")
+        .withIndex("by_status", (q) => q.eq("status", args.status!))
+        .collect()
       : await ctx.db.query("rsvp_gate_queries").collect();
     return rows.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
   },

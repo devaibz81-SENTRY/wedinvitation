@@ -20,6 +20,7 @@ export default defineSchema({
     ),
     message: v.optional(v.string()),
     submitted_at: v.optional(v.string()),
+    spouse_name: v.optional(v.string()),
     created_at: v.string(),
     updated_at: v.string(),
   })

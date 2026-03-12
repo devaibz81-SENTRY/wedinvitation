@@ -141,6 +141,7 @@ http.route({
       phone: body.phone || undefined,
       email: body.email || undefined,
       deadline: body.deadline || undefined,
+      spouse_name: body.spouse_name || undefined,
       attendance: body.attendance || "invited",
     });
     return json(result);
