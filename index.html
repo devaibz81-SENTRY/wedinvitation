@@ -38,7 +38,8 @@
 
     html {
       scroll-behavior: smooth;
-      overflow-x: clip;
+      overflow-x: hidden;
+      width: 100%;
     }
 
     body {
@@ -48,6 +49,10 @@
       font-weight: 400;
       line-height: 1.55;
       overflow-x: hidden;
+      width: 100%;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     /* ─── NAV ─────────────────────────────────────── */
@@ -56,18 +61,20 @@
       top: 0;
       left: 0;
       right: 0;
+      width: 100%;
       z-index: 100;
       display: flex;
       justify-content: center;
       gap: 0.65rem;
       flex-wrap: wrap;
-      padding: 1.4rem 2rem;
+      padding: 1.4rem 1rem;
       background: rgba(250, 247, 242, 0.88);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(201, 168, 76, 0.2);
       font-size: 0.78rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
+      margin: 0 auto;
     }
 
     nav a {
@@ -137,6 +144,7 @@
       height: 12px;
       border-radius: 50% 0 50% 0;
       opacity: 0;
+      will-change: transform, opacity;
       animation: petalFall linear infinite;
     }
 
@@ -924,7 +932,7 @@
       transform: translateY(0) scale(1);
       background: #2b2520;
       /* Dark brown-black background for contrast */
-      transition: opacity 0.55s ease, visibility 0.55s ease;
+      transition: opacity 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.55s ease, transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     #intro-overlay.opening {
@@ -946,11 +954,13 @@
 
     .intro-stage {
       position: relative;
-      width: min(94vw, 430px);
+      width: min(90vw, 430px);
+      max-width: 100%;
       text-align: center;
       opacity: 0;
       transform: translateY(90px) scale(0.92) rotateX(10deg);
       animation: introFloatIn 1.15s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      margin: 0 auto;
     }
 
     @keyframes introFloatIn {
@@ -1523,75 +1533,75 @@
     <div class="story-text">
       <p class="section-eyebrow reveal">How It All Began</p>
       <h2 class="section-title reveal">Our Love Story – Andrew (Passy) &amp; Rose</h2>
-      <div class="story-body reveal">
-        <p>
+      <div class="story-body">
+        <p class="reveal">
           Over Fifteen years ago, our story began in the most unexpected and beautiful way. when our paths crossed At
           first, we were simply friends learning each other, laughing together, sharing conversations that seemed to
           stretch on forever. Neither of us knew then that those simple moments were quietly laying the foundation for a
           love that would grow far beyond what we could imagine. Somewhere along the way, friendship turned into
           something deeper. We didn’t just fall in love, we grew into it.
         </p>
-        <p>
+        <p class="reveal">
           Rose was completely head over heels, and Passy was just as swept away and determined. From very early on,
           there was this unspoken feeling between us that somehow our lives were meant to be connected. It wasn’t
           something we forced or planned. It was simply something we felt in our hearts, that no matter where life took
           us, we would somehow find our way back to each other.
         </p>
-        <p>
+        <p class="reveal">
           And life did take us on a journey. Like any love story that lasts through the years, ours was not perfect. We
           experienced incredible highs. Moments filled with laughter, adventure, and memories that will stay with us
           forever. But we also faced challenges that tested us in ways we never expected. There were difficult seasons,
           moments of hurt, and times when the road felt uncertain.
         </p>
-        <p>
+        <p class="reveal">
           Yet somehow, love kept bringing us back.<br />
           Because underneath everything, there was always a friendship that refused to break.<br />
           One of the most powerful chapters of our story came during one of the hardest times the world has faced, the
           COVID pandemic. While so many things around us felt uncertain, we made a decision that would change our lives
           forever. We chose to put our differences aside and build something together.
         </p>
-        <p>
+        <p class="reveal">
           Because we knew one thing for sure, if we could trust anyone, it was each other.
         </p>
-        <p>
+        <p class="reveal">
           So together, we took a leap of faith and created a business. What began as an idea soon became something much
           bigger than we ever expected. Working side by side showed us a different side of our love. We saw each other’s
           strength, resilience, and dedication in ways we had never experienced before.
         </p>
-        <p>
+        <p class="reveal">
           And through that journey, something beautiful happened. A deeper respect was born between us.
         </p>
-        <p>
+        <p class="reveal">
           Not just the kind of love that comes from passion, but the kind that comes from truly knowing someone,
           standing beside them through storms, growing together, and choosing each other again and again.
         </p>
-        <p>
+        <p class="reveal">
           After fifteen plus years of friendship, love, challenges, growth, and dreams, we have come to realize
           something very simple yet very powerful:
         </p>
-        <p>
+        <p class="reveal">
           <strong>God was guiding our story all along.</strong>
         </p>
-        <p>
+        <p class="reveal">
           Now, with grateful hearts and a love stronger than ever, we are choosing to begin a new chapter together, with
           God at the center of our lives and our marriage.
         </p>
-        <p>
+        <p class="reveal">
           Our journey has not always been easy, but it has always been real. Every lesson, every challenge, every moment
           has shaped the love we share today.
         </p>
-        <p>
+        <p class="reveal">
           And if the past fifteen years have taught us anything, it is this:
         </p>
-        <p>
+        <p class="reveal">
           <strong>Love isn’t just about the good moments.<br />
             It’s about choosing each other through everything.</strong>
         </p>
-        <p>
+        <p class="reveal">
           Today we stand here not just as two people in love, but as best friends, partners, and believers in a future
           that God has prepared for us.
         </p>
-        <p>
+        <p class="reveal">
           <em>And this is only the beginning of the rest of our story.</em>
         </p>
       </div>
@@ -1884,7 +1894,7 @@
           observer.unobserve(e.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1 }); // Lower threshold for earlier activation on mobile 
     reveals.forEach(el => observer.observe(el));
 
     // Staggered media loading reveal for hosted photos.
