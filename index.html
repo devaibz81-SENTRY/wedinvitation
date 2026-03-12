@@ -1214,23 +1214,26 @@
 
     .music-toggle {
       position: fixed;
-      right: 1rem;
-      top: 1rem;
+      right: 1.5rem;
+      top: 1.5rem;
       z-index: 3200;
-      border: 1px solid rgba(201, 168, 76, 0.7);
-      background: rgba(255, 253, 248, 0.92);
-      color: #2b2520;
-      padding: 0.58rem 0.95rem;
-      font-size: 0.66rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-weight: 600;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(210, 158, 154, 0.4);
+      background: rgba(255, 255, 255, 0.9);
+      color: #d29e9a;
+      /* Red speaker color */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
       cursor: pointer;
       backdrop-filter: blur(8px);
       opacity: 0;
       pointer-events: none;
       transform: translateY(-8px);
-      transition: background 0.25s ease, transform 0.2s ease, opacity 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .music-toggle.is-visible {
@@ -1240,8 +1243,27 @@
     }
 
     .music-toggle:hover {
-      background: #f4e6cc;
-      transform: translateY(-1px);
+      background: #fff;
+      border-color: #d29e9a;
+      transform: scale(1.05);
+    }
+
+    .music-toggle svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      transition: transform 0.3s ease;
+    }
+
+    .music-toggle.is-muted .mute-line {
+      display: block;
+    }
+
+    .music-toggle .mute-line {
+      display: none;
+      stroke: #d29e9a;
+      stroke-width: 2.5;
+      stroke-linecap: round;
     }
 
     body.intro-active .music-toggle {
@@ -1396,8 +1418,14 @@
     <source src="audio/Canon in D (Pachelbel's Canon) - Cello & Piano [BEST WEDDING VERSION]_01.mp3"
       type="audio/mpeg" />
   </audio>
-  <button id="music-toggle" class="music-toggle" type="button"
-    aria-label="Mute or unmute background music">Mute</button>
+  <button id="music-toggle" class="music-toggle" type="button" aria-label="Toggle background music">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round"></path>
+      <line class="mute-line" x1="1" y1="1" x2="23" y2="23"></line>
+    </svg>
+  </button>
 
   <!-- NAV -->
   <nav>
@@ -1927,8 +1955,9 @@
     function syncMusicUi() {
       if (!musicToggle || !bgMusic) return;
       const isPlaying = !bgMusic.paused;
+      const isMuted = bgMusic.muted;
       musicToggle.classList.toggle('is-visible', isPlaying);
-      musicToggle.textContent = bgMusic.muted ? 'Unmute' : 'Mute';
+      musicToggle.classList.toggle('is-muted', isMuted);
     }
 
     async function startMusic() {
