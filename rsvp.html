@@ -1,141 +1,740 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RSVP - Rosanna &amp; Andrew - July 4, 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
   <style>
     :root {
-      --black: #0d0d0d; --ivory: #f5f0e8; --champagne: #d4b896;
-      --blush: #e8c4b8; --green: #3a5c3f; --gold: #c9a84c;
-      --cream: #faf7f2; --error: #c0392b; --success: #27ae60;
+      --black: #2b2520;
+      --ivory: #f6efeb;
+      --champagne: #e2d5be;
+      --blush: #d29e9a;
+      --green: #8da38b;
+      --gold: #cba97c;
+      --cream: #faf5f0;
+      --error: #c0392b;
+      --success: #27ae60;
     }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; overflow-x: clip; }
-    body { background: var(--cream); color: var(--black); font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 16px; min-height: 100vh; overflow-x: clip; }
 
-    nav { display: flex; justify-content: center; gap: 0.6rem; padding: 1rem 1rem; border-bottom: 1px solid rgba(201,168,76,0.2); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; flex-wrap: wrap; }
-    nav a { color: var(--black); text-decoration: none; opacity: 0.92; transition: opacity 0.3s, border-color 0.3s, color 0.3s; border: 1px solid rgba(201,168,76,0.25); border-radius: 999px; background: rgba(255,255,255,0.45); padding: 0.5rem 0.9rem; min-width: 110px; text-align: center; white-space: nowrap; }
-    nav a:hover { opacity: 1; color: var(--gold); border-color: var(--gold); }
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: clip;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      min-height: 100vh;
+      overflow-x: clip;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1rem 1rem;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--black);
+      text-decoration: none;
+      opacity: 0.92;
+      transition: opacity 0.3s, border-color 0.3s, color 0.3s;
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.45);
+      padding: 0.5rem 0.9rem;
+      min-width: 110px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      opacity: 1;
+      color: var(--green);
+      border-color: var(--green);
+      background: rgba(141, 163, 139, 0.1);
+    }
 
     /* â”€â”€â”€ HERO â”€â”€â”€ */
-    .rsvp-hero { text-align: center; padding: 5rem 2rem 3rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
-    .rsvp-hero .eyebrow { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
-    .rsvp-hero h1 { font-family: 'Great Vibes', cursive; font-size: clamp(3rem,7vw,6rem); margin-bottom: 1rem; }
-    .rsvp-hero p { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #666; line-height: 1.8; text-wrap: balance; }
-    .personal-greeting { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--black); margin-top: 1.5rem; }
-    .personal-note { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #888; margin-top: 0.5rem; font-style: italic; }
-    .deadline { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1.5rem; padding: 0.5rem 2rem; border: 1px solid var(--gold); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); white-space: nowrap; max-width: 100%; }
+    .rsvp-hero {
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+    }
+
+    .rsvp-hero .eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 1rem;
+    }
+
+    .rsvp-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      margin-bottom: 1rem;
+    }
+
+    .rsvp-hero p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: #666;
+      line-height: 1.8;
+      text-wrap: balance;
+    }
+
+    .personal-greeting {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--black);
+      margin-top: 1.5rem;
+    }
+
+    .personal-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: #888;
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    .deadline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 2rem;
+      border: 1px solid var(--green);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      white-space: nowrap;
+      max-width: 100%;
+    }
 
     /* â”€â”€â”€ FORM â”€â”€â”€ */
-    .rsvp-container { max-width: 700px; margin: 4rem auto; padding: 0 2rem 4rem; }
-    .form-section { margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.7s ease forwards; }
-    .form-section:nth-child(1){animation-delay:.1s} .form-section:nth-child(2){animation-delay:.25s}
-    .form-section:nth-child(3){animation-delay:.4s} .form-section:nth-child(4){animation-delay:.55s}
-    .form-section:nth-child(5){animation-delay:.7s} .form-section:nth-child(6){animation-delay:.85s}
+    .rsvp-container {
+      max-width: 700px;
+      margin: 4rem auto;
+      padding: 0 2rem 4rem;
+    }
 
-    .form-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--black); margin-bottom: 1.5rem; padding-bottom: 0.7rem; border-bottom: 1px solid rgba(201,168,76,0.3); display: flex; align-items: center; gap: 0.8rem; white-space: nowrap; }
-    .form-section-title span { font-size: 0.9rem; color: var(--gold); }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .form-row.single { grid-template-columns: 1fr; }
-    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
-    .form-group label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: #555; font-weight: 600; white-space: nowrap; }
-    .form-group input, .form-group select, .form-group textarea { background: transparent; border: none; border-bottom: 1px solid rgba(0,0,0,0.3); padding: 0.8rem 0; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--black); font-weight: 500; outline: none; transition: border-color 0.3s; width: 100%; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-bottom-color: var(--gold); }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-    .form-group select { cursor: pointer; appearance: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c9a84c'/%3E%3C/svg%3E") no-repeat right 0.5rem center; }
+    .form-section {
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    .form-section:nth-child(1) {
+      animation-delay: .1s
+    }
+
+    .form-section:nth-child(2) {
+      animation-delay: .25s
+    }
+
+    .form-section:nth-child(3) {
+      animation-delay: .4s
+    }
+
+    .form-section:nth-child(4) {
+      animation-delay: .55s
+    }
+
+    .form-section:nth-child(5) {
+      animation-delay: .7s
+    }
+
+    .form-section:nth-child(6) {
+      animation-delay: .85s
+    }
+
+    .form-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--black);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.7rem;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .form-section-title span {
+      font-size: 0.9rem;
+      color: var(--green);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .form-row.single {
+      grid-template-columns: 1fr;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #555;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+      padding: 0.8rem 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--black);
+      font-weight: 500;
+      outline: none;
+      transition: border-color 0.3s;
+      width: 100%;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-bottom-color: var(--green);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c9a84c'/%3E%3C/svg%3E") no-repeat right 0.5rem center;
+    }
 
     /* â”€â”€â”€ ATTENDANCE â”€â”€â”€ */
-    .attendance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    .attend-option { position: relative; }
-    .attend-option input[type="radio"] { position: absolute; opacity: 0; width: 0; }
-    .attend-label { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 118px; padding: 1.2rem 0.85rem; border: 1px solid rgba(0,0,0,0.15); cursor: pointer; text-align: center; transition: border-color 0.3s, background 0.3s; }
-    .attend-label:hover { border-color: var(--gold); }
-    .attend-option input:checked + .attend-label { border-color: var(--gold); background: rgba(201,168,76,0.08); }
-    .attend-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
-    .attend-text { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; white-space: nowrap; }
-    .attend-sub { font-size: 0.67rem; color: #888; margin-top: 0.32rem; font-style: italic; letter-spacing: 0; text-transform: none; font-family: 'Cormorant Garamond', serif; white-space: nowrap; }
+    .attendance-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .attend-option {
+      position: relative;
+    }
+
+    .attend-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+    }
+
+    .attend-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 118px;
+      padding: 1.2rem 0.85rem;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .attend-label:hover {
+      border-color: var(--gold);
+    }
+
+    .attend-option input:checked+.attend-label {
+      border-color: var(--gold);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .attend-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .attend-text {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .attend-sub {
+      font-size: 0.67rem;
+      color: #888;
+      margin-top: 0.32rem;
+      font-style: italic;
+      letter-spacing: 0;
+      text-transform: none;
+      font-family: 'Cormorant Garamond', serif;
+      white-space: nowrap;
+    }
 
     /* â”€â”€â”€ PARTY MEMBERS â”€â”€â”€ */
-    .party-member { background: rgba(201,168,76,0.05); border: 1px solid rgba(201,168,76,0.2); padding: 1rem 1.2rem; margin-bottom: 0.8rem; border-radius: 2px; }
-    .party-member-title { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+    .party-member {
+      background: rgba(201, 168, 76, 0.05);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.8rem;
+      border-radius: 2px;
+    }
+
+    .party-member-title {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
 
     /* â”€â”€â”€ SUBMIT â”€â”€â”€ */
-    .submit-wrap { text-align: center; margin-top: 3rem; }
-    .btn-submit { display: inline-block; width: min(100%, 420px); padding: 1.3rem 1.5rem; background: var(--black); color: var(--cream); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; transition: background 0.3s, transform 0.2s; position: relative; overflow: hidden; white-space: nowrap; }
-    .btn-submit:hover { background: #1a1a1a; transform: translateY(-2px); }
-    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .submit-note { margin-top: 1rem; font-size: 0.7rem; color: #777; letter-spacing: 0.1em; }
+    .submit-wrap {
+      text-align: center;
+      margin-top: 3rem;
+    }
 
-    .status-msg { padding: 1.2rem 1.5rem; margin-bottom: 2rem; font-family: 'Cormorant Garamond', serif; font-size: 1rem; line-height: 1.6; display: none; }
-    .status-msg.success { background: rgba(39,174,96,0.08); border-left: 3px solid var(--success); color: var(--success); display: block; }
-    .status-msg.error { background: rgba(192,57,43,0.08); border-left: 3px solid var(--error); color: var(--error); display: block; }
+    .btn-submit {
+      width: 100%;
+      padding: 1.2rem;
+      background: var(--green);
+      color: white;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      margin-top: 2rem;
+    }
+
+    .btn-submit:hover {
+      background: #7a8e78;
+      transform: translateY(-2px);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .submit-note {
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      color: #777;
+      letter-spacing: 0.1em;
+    }
+
+    .status-msg {
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .status-msg.success {
+      background: rgba(39, 174, 96, 0.08);
+      border-left: 3px solid var(--success);
+      color: var(--success);
+      display: block;
+    }
+
+    .status-msg.error {
+      background: rgba(192, 57, 43, 0.08);
+      border-left: 3px solid var(--error);
+      color: var(--error);
+      display: block;
+    }
 
     /* â”€â”€â”€ SUCCESS â”€â”€â”€ */
-    #success-state { display: none; text-align: center; padding: 5rem 2rem; animation: fadeInScale 0.8s ease-out; }
-    @keyframes fadeInScale { from{opacity:0;transform:scale(0.9)} to{opacity:1;transform:scale(1)} }
-    @keyframes checkmark { 0%{stroke-dashoffset:100} 100%{stroke-dashoffset:0} }
-    .success-checkmark { width: 80px; height: 80px; margin: 0 auto 2rem; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; animation: popIn 0.5s ease-out 0.2s both; }
-    @keyframes popIn { 0%{transform:scale(0)} 70%{transform:scale(1.2)} 100%{transform:scale(1)} }
-    .success-checkmark svg { width: 40px; height: 40px; stroke: white; stroke-width: 3; fill: none; stroke-dasharray: 100; stroke-dashoffset: 100; animation: checkmark 0.6s ease-out 0.5s forwards; }
-    #success-state h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; margin-bottom: 1rem; color: var(--green); }
-    #success-state p { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #666; line-height: 1.9; max-width: 500px; margin: 0 auto 2rem; }
-    .proof-actions { display:flex; flex-direction:column; align-items:center; gap:0.9rem; margin:1.2rem 0 1.6rem; }
-    .btn-proof {
-      display:inline-block; border:1px solid var(--gold); background:var(--gold); color:white;
-      padding:0.9rem 1.8rem; text-decoration:none; cursor:pointer;
-      font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase; font-weight:600;
-      transition:background 0.25s ease, transform 0.2s ease;
+    #success-state {
+      display: none;
+      text-align: center;
+      padding: 5rem 2rem;
+      animation: fadeInScale 0.8s ease-out;
     }
-    .btn-proof:hover { background:#a8863a; transform:translateY(-1px); }
-    .proof-note { font-size:0.72rem; color:#777; letter-spacing:0.04em; }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9)
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1)
+      }
+    }
+
+    @keyframes checkmark {
+      0% {
+        stroke-dashoffset: 100
+      }
+
+      100% {
+        stroke-dashoffset: 0
+      }
+    }
+
+    .success-checkmark {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 2rem;
+      border-radius: 50%;
+      background: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: popIn 0.5s ease-out 0.2s both;
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0)
+      }
+
+      70% {
+        transform: scale(1.2)
+      }
+
+      100% {
+        transform: scale(1)
+      }
+    }
+
+    .success-checkmark svg {
+      width: 40px;
+      height: 40px;
+      stroke: white;
+      stroke-width: 3;
+      fill: none;
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: checkmark 0.6s ease-out 0.5s forwards;
+    }
+
+    #success-state h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--green);
+    }
+
+    #success-state p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: #666;
+      line-height: 1.9;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+    }
+
+    .proof-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+      margin: 1.2rem 0 1.6rem;
+    }
+
+    .btn-proof {
+      display: inline-block;
+      border: 1px solid var(--gold);
+      background: var(--gold);
+      color: white;
+      padding: 0.9rem 1.8rem;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: background 0.25s ease, transform 0.2s ease;
+    }
+
+    .btn-proof:hover {
+      background: #a8863a;
+      transform: translateY(-1px);
+    }
+
+    .proof-note {
+      font-size: 0.72rem;
+      color: #777;
+      letter-spacing: 0.04em;
+    }
 
     /* â”€â”€â”€ LATER STATE â”€â”€â”€ */
-    #later-state { display: none; text-align: center; padding: 5rem 2rem; animation: fadeInScale 0.8s ease-out; }
-    #later-state .later-icon { font-size: 4rem; margin-bottom: 1.5rem; display: block; animation: popIn 0.5s ease-out both; }
-    #later-state h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; margin-bottom: 1rem; color: var(--gold); }
-    #later-state p { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #666; line-height: 1.9; max-width: 500px; margin: 0 auto 2rem; }
+    #later-state {
+      display: none;
+      text-align: center;
+      padding: 5rem 2rem;
+      animation: fadeInScale 0.8s ease-out;
+    }
 
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    #later-state .later-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      display: block;
+      animation: popIn 0.5s ease-out both;
+    }
+
+    #later-state h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--gold);
+    }
+
+    #later-state p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: #666;
+      line-height: 1.9;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
 
     /* â”€â”€â”€ CONFIRM MODAL â”€â”€â”€ */
-    #confirm-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center; }
-    #confirm-modal.open { display:flex; }
-    .confirm-box { background:var(--cream); padding:2.5rem; border-radius:12px; max-width:480px; width:90%; text-align:center; animation:fadeInScale 0.3s ease-out; }
-    .confirm-box h3 { font-family:'Cormorant Garamond',serif; font-size:1.8rem; margin-bottom:1rem; }
-    #confirm-content { text-align:left; margin:1rem 0; font-family:'Cormorant Garamond',serif; font-size:1rem; line-height:1.9; }
-    .confirm-actions { display:flex; gap:1rem; justify-content:center; margin-top:1.5rem; }
-    .confirm-actions button { padding:1rem 2rem; cursor:pointer; border-radius:4px; font-size:1rem; font-weight:500; transition:all 0.2s; }
-    .btn-edit { border:2px solid var(--gold); background:transparent; color:var(--black); }
-    .btn-confirm { border:none; background:var(--gold); color:white; }
-    .btn-confirm:hover { background:#a8863a; }
+    #confirm-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #confirm-modal.open {
+      display: flex;
+    }
+
+    .confirm-box {
+      background: var(--cream);
+      padding: 2.5rem;
+      border-radius: 12px;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      animation: fadeInScale 0.3s ease-out;
+    }
+
+    .confirm-box h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    #confirm-content {
+      text-align: left;
+      margin: 1rem 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      line-height: 1.9;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+
+    .confirm-actions button {
+      padding: 1rem 2rem;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .btn-edit {
+      border: 2px solid var(--gold);
+      background: transparent;
+      color: var(--black);
+    }
+
+    .btn-confirm {
+      border: none;
+      background: var(--gold);
+      color: white;
+    }
+
+    .btn-confirm:hover {
+      background: #a8863a;
+    }
 
     @media(max-width:600px) {
-      nav { gap: 0.45rem; padding: 0.8rem 0.6rem; }
-      nav a { min-width: 0; flex: 1 1 calc(50% - 0.45rem); max-width: 170px; padding: 0.5rem 0.45rem; font-size: 0.62rem; letter-spacing: 0.11em; white-space: nowrap; }
-      .rsvp-hero { padding: 4rem 1rem 2.5rem; }
-      .rsvp-container { padding: 0 1rem 3rem; }
-      .rsvp-hero p { font-size: 1rem; line-height: 1.65; }
-      .deadline { padding: 0.45rem 0.9rem; font-size: 0.58rem; letter-spacing: 0.1em; max-width: 100%; }
-      .form-section { margin-bottom: 2.2rem; }
-      .form-section-title { font-size: 1.2rem; margin-bottom: 1rem; gap: 0.45rem; }
-      .form-group label { font-size: 0.62rem; letter-spacing: 0.1em; }
-      .form-group input, .form-group select, .form-group textarea { font-size: 1rem; }
-      .attend-label { align-items: flex-start; text-align: left; min-height: 0; padding: 0.95rem 0.85rem; }
-      .attend-text { font-size: 0.62rem; letter-spacing: 0.1em; }
-      .attend-sub { font-size: 0.72rem; white-space: nowrap; }
-      .btn-submit { width: 100%; padding: 1rem 0.8rem; font-size: 0.72rem; letter-spacing: 0.14em; }
-      .confirm-actions { flex-direction: column; }
-      .confirm-actions button { width: 100%; }
-      #success-state, #later-state { padding: 3.5rem 1rem; }
-      #success-state h2, #later-state h2 { font-size: 2.35rem; }
-      .form-row{grid-template-columns:1fr}
-      .attendance-grid{grid-template-columns:1fr}
+      nav {
+        gap: 0.45rem;
+        padding: 0.8rem 0.6rem;
+      }
+
+      nav a {
+        min-width: 0;
+        flex: 1 1 calc(50% - 0.45rem);
+        max-width: 170px;
+        padding: 0.5rem 0.45rem;
+        font-size: 0.62rem;
+        letter-spacing: 0.11em;
+        white-space: nowrap;
+      }
+
+      .rsvp-hero {
+        padding: 4rem 1rem 2.5rem;
+      }
+
+      .rsvp-container {
+        padding: 0 1rem 3rem;
+      }
+
+      .rsvp-hero p {
+        font-size: 1rem;
+        line-height: 1.65;
+      }
+
+      .deadline {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.58rem;
+        letter-spacing: 0.1em;
+        max-width: 100%;
+      }
+
+      .form-section {
+        margin-bottom: 2.2rem;
+      }
+
+      .form-section-title {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        gap: 0.45rem;
+      }
+
+      .form-group label {
+        font-size: 0.62rem;
+        letter-spacing: 0.1em;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        font-size: 1rem;
+      }
+
+      .attend-label {
+        align-items: flex-start;
+        text-align: left;
+        min-height: 0;
+        padding: 0.95rem 0.85rem;
+      }
+
+      .attend-text {
+        font-size: 0.62rem;
+        letter-spacing: 0.1em;
+      }
+
+      .attend-sub {
+        font-size: 0.72rem;
+        white-space: nowrap;
+      }
+
+      .btn-submit {
+        width: 100%;
+        padding: 1rem 0.8rem;
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+      }
+
+      .confirm-actions {
+        flex-direction: column;
+      }
+
+      .confirm-actions button {
+        width: 100%;
+      }
+
+      #success-state,
+      #later-state {
+        padding: 3.5rem 1rem;
+      }
+
+      #success-state h2,
+      #later-state h2 {
+        font-size: 2.35rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr
+      }
+
+      .attendance-grid {
+        grid-template-columns: 1fr
+      }
     }
   </style>
 </head>
+
 <body>
   <nav>
     <a href="index.html">Back</a>
@@ -144,13 +743,20 @@
 
   <div class="rsvp-hero">
     <p class="eyebrow">You Are Invited</p>
-    <h1>Kindly Reply</h1>
-    <p id="hero-sub">We would be honoured to have you celebrate with us.<br/>Please complete your RSVP below.</p>
+    <h1>Rosanna Depaz &amp; Andrew Haylock</h1>
+    <p id="hero-sub">We would be honoured to have you celebrate with us.<br />Please complete your RSVP below.</p>
     <div id="personal-greeting" style="display:none">
       <p class="personal-greeting" id="greeting-text"></p>
       <p class="personal-note" id="personal-note-text" style="display:none"></p>
     </div>
-    <div class="deadline">Respond by <span id="deadline-text">June 10th, 2026</span></div>
+    <div class="deadline">Kindly respond by <span id="deadline-text"
+        style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; font-size: 1.35rem;">June
+        10, 2026</span></div>
+    <div style="margin-top: 1.5rem;">
+      <a href="#" onclick="resetRsvpForm(event)"
+        style="font-size: 0.7rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border-bottom: 1px solid rgba(203, 169, 124, 0.3); padding-bottom: 2px;">Already
+        RSVP'd? Edit Response</a>
+    </div>
   </div>
 
   <div class="rsvp-container">
@@ -167,14 +773,14 @@
             <input type="text" id="first-name" placeholder="Your first name" required />
           </div>
           <div class="form-group">
-            <label for="last-name">Last Name *</label>
-            <input type="text" id="last-name" placeholder="Your last name" required />
+            <label for="last-name">Last Name (Optional)</label>
+            <input type="text" id="last-name" placeholder="Your last name" />
           </div>
         </div>
         <div class="form-row" style="margin-top:1.5rem">
           <div class="form-group">
-            <label for="email">Email Address *</label>
-            <input type="email" id="email" placeholder="your@email.com" required />
+            <label for="email">Email Address (Optional)</label>
+            <input type="email" id="email" placeholder="your@email.com" />
           </div>
           <div class="form-group">
             <label for="phone">WhatsApp Number</label>
@@ -249,27 +855,35 @@
     <!-- SUCCESS STATE -->
     <div id="success-state">
       <div class="success-checkmark">
-        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <svg viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
       </div>
       <h2>You're All Set!</h2>
-      <p id="success-text">Your RSVP has been received. We are so looking forward to celebrating with you at Gully Grill in Belize!</p>
+      <p id="success-text">Your RSVP has been received. We are so looking forward to celebrating with you at Gully Grill
+        in Belize!</p>
       <div class="proof-actions">
         <button type="button" class="btn-proof" onclick="downloadProofCard()">Download Invite Card (JPEG)</button>
         <p class="proof-note">Includes your name, RSVP status, and event details.</p>
       </div>
-      <a href="/" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">&lt;- Return to Invitation</a>
+      <a href="/"
+        style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">&lt;-
+        Return to Invitation</a>
     </div>
 
     <!-- ASK AGAIN LATER STATE -->
     <div id="later-state">
       <span class="later-icon">Later</span>
       <h2>We'll Check Back!</h2>
-      <p id="later-text">No worries - we completely understand. We'll reach out closer to the date. We hope you can make it.</p>
+      <p id="later-text">No worries - we completely understand. We'll reach out closer to the date. We hope you can make
+        it.</p>
       <div class="proof-actions">
         <button type="button" class="btn-proof" onclick="downloadProofCard()">Download RSVP Card (JPEG)</button>
         <p class="proof-note">Your card will show your current RSVP status as Ask Me Again Later.</p>
       </div>
-      <a href="/" style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">&lt;- Return to Invitation</a>
+      <a href="/"
+        style="font-size:0.8rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;">&lt;-
+        Return to Invitation</a>
     </div>
 
     <!-- CONFIRM MODAL -->
@@ -285,7 +899,8 @@
     </div>
   </div>
 
-  <footer style="background:var(--black);color:var(--ivory);text-align:center;padding:2rem;font-size:0.6rem;letter-spacing:0.2em;opacity:0.8;">
+  <footer
+    style="background:var(--black);color:var(--ivory);text-align:center;padding:2rem;font-size:0.6rem;letter-spacing:0.2em;opacity:0.8;">
     Rosanna &amp; Andrew - July 4, 2026 - Gully Grill, Belize
   </footer>
 
@@ -299,6 +914,12 @@
       redirectUrl.search = entryParams.toString();
       window.location.replace(redirectUrl.toString());
     }
+    // Force scroll to top on reload
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
     // â”€â”€â”€ Convex Config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
 
@@ -309,12 +930,12 @@
     const GUEST_ID = getParam('id');
     const GUEST_NAME = getParam('name');
     const GUEST_TYPE = getParam('type') || 'single';   // single | couple | family
-    const MAX_PARTY  = parseInt(getParam('max') || '1', 10);
-    const DEADLINE   = getParam('due')  || '2026-06-10';
-    const PERS_NOTE  = getParam('msg')  || '';
+    const MAX_PARTY = parseInt(getParam('max') || '1', 10);
+    const DEADLINE = getParam('due') || '2026-06-10';
+    const PERS_NOTE = getParam('msg') || '';
     const EVENT_DATE_TEXT = 'Saturday, July 4, 2026';
     const EVENT_LOCATION_TEXT = 'Gully Grill, Belize';
-    const COUPLE_NAMES = 'Rosanna Vanessa Depaz & Andrew Denton Haylock';
+    const COUPLE_NAMES = 'Rosanna Depaz & Andrew Haylock';
     let lastSubmittedCardData = null;
 
     // Format deadline nicely
@@ -334,7 +955,7 @@
         // Pre-fill name fields
         const parts = GUEST_NAME.trim().split(' ');
         document.getElementById('first-name').value = parts[0] || '';
-        document.getElementById('last-name').value  = parts.slice(1).join(' ') || '';
+        document.getElementById('last-name').value = parts.slice(1).join(' ') || '';
       }
       if (PERS_NOTE) {
         const noteEl = document.getElementById('personal-note-text');
@@ -348,7 +969,7 @@
     // â”€â”€â”€ Build party members section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function buildPartySection() {
       const section = document.getElementById('party-section');
-      const list    = document.getElementById('party-members-list');
+      const list = document.getElementById('party-members-list');
 
       if (GUEST_TYPE === 'single' || MAX_PARTY <= 1) {
         section.style.display = 'none';
@@ -360,18 +981,19 @@
       renumberSections(true);
       list.innerHTML = '';
 
-      const label = GUEST_TYPE === 'couple' ? 'Partner' : 'Family Member';
+      const label = GUEST_TYPE === 'couple' ? 'Spouse / Partner' : 'Family Member';
       for (let i = 1; i < MAX_PARTY; i++) {
+        const isSpouse = (GUEST_TYPE === 'couple' && i === 1);
         list.innerHTML += `
           <div class="party-member">
             <div class="party-member-title">${label} ${i}</div>
             <div class="form-row">
               <div class="form-group">
-                <label>First Name</label>
+                <label>First Name ${isSpouse ? '(Optional)' : '*'}</label>
                 <input type="text" id="party-fn-${i}" placeholder="First name" />
               </div>
               <div class="form-group">
-                <label>Last Name</label>
+                <label>Last Name (Optional)</label>
                 <input type="text" id="party-ln-${i}" placeholder="Last name" />
               </div>
             </div>
@@ -380,14 +1002,14 @@
     }
 
     function renumberSections(hasParty) {
-      document.getElementById('extras-num').textContent  = hasParty ? '04' : '03';
+      document.getElementById('extras-num').textContent = hasParty ? '04' : '03';
     }
 
     // â”€â”€â”€ Attendance change â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function onAttendanceChange() {
       const val = document.querySelector('input[name="attendance"]:checked')?.value;
       const showFull = val === 'attending';
-      document.getElementById('party-section').style.display  = (showFull && GUEST_TYPE !== 'single' && MAX_PARTY > 1) ? 'block' : 'none';
+      document.getElementById('party-section').style.display = (showFull && GUEST_TYPE !== 'single' && MAX_PARTY > 1) ? 'block' : 'none';
     }
 
     // â”€â”€â”€ Collect party names â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -407,14 +1029,13 @@
       statusEl.className = 'status-msg';
       statusEl.style.display = 'none';
 
-      const firstName  = document.getElementById('first-name').value.trim();
-      const lastName   = document.getElementById('last-name').value.trim();
-      const email      = document.getElementById('email').value.trim();
-      const phone      = document.getElementById('phone').value.trim();
+      const firstName = document.getElementById('first-name').value.trim();
+      const lastName = document.getElementById('last-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
       const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
 
-      if (!firstName || !lastName) { showStatus('error', 'Please enter your full name.'); return; }
-      if (!email)      { showStatus('error', 'Please enter your email address.'); return; }
+      if (!firstName) { showStatus('error', 'Please enter your first name.'); return; }
       if (!attendance) { showStatus('error', "Please select your attendance."); return; }
 
       // "Ask Again Later" submits immediately
@@ -452,15 +1073,15 @@
       }
 
       // Show confirmation modal for attending/declined
-      const party     = getPartyNames();
-      const song      = document.getElementById('song').value.trim();
-      const message   = document.getElementById('message').value.trim();
+      const party = getPartyNames();
+      const song = document.getElementById('song').value.trim();
+      const message = document.getElementById('message').value.trim();
 
       document.getElementById('confirm-content').innerHTML = `
         <p><strong>Name:</strong> ${firstName} ${lastName}</p>
         <p><strong>Attending:</strong> ${attendance === 'attending' ? "Accepts with Pleasure" : "Declines with Regret"}</p>
         ${party ? `<p><strong>Party:</strong> ${party}</p>` : ''}
-        ${song  ? `<p><strong>Song:</strong> ${song}</p>` : ''}
+        ${song ? `<p><strong>Song:</strong> ${song}</p>` : ''}
         ${message ? `<p><strong>Message:</strong> ${message}</p>` : ''}
       `;
       document.getElementById('confirm-modal').classList.add('open');
@@ -846,10 +1467,23 @@
       el.textContent = msg;
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+
+    function resetRsvpForm(e) {
+      if (e) e.preventDefault();
+      // Reset form display
+      document.getElementById('rsvp-form-wrap').style.display = 'block';
+      document.getElementById('success-state').style.display = 'none';
+      document.getElementById('later-state').style.display = 'none';
+
+      // Reset button
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Submit RSVP';
+      btn.disabled = false;
+
+      // Scroll to form
+      document.querySelector('.rsvp-container').scrollIntoView({ behavior: 'smooth' });
+    }
   </script>
 </body>
+
 </html>
-
-
-
-
