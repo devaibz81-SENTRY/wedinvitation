@@ -929,6 +929,7 @@
     const getParam = (k) => params.get(k) || '';
     const GUEST_ID = getParam('id');
     const GUEST_NAME = getParam('name');
+    const GUEST_SPOUSE = getParam('spouse');
     const GUEST_TYPE = getParam('type') || 'single';   // single | couple | family
     const MAX_PARTY = parseInt(getParam('max') || '1', 10);
     const DEADLINE = getParam('due') || '2026-06-10';
@@ -951,7 +952,12 @@
 
       if (GUEST_NAME) {
         document.getElementById('personal-greeting').style.display = 'block';
-        document.getElementById('greeting-text').textContent = `Dear ${GUEST_NAME},`;
+        let greeting = GUEST_NAME.split(' ')[0];
+        if (GUEST_SPOUSE) {
+          greeting += ` & ${GUEST_SPOUSE}`;
+        }
+        document.getElementById('greeting-text').textContent = `Dear ${greeting},`;
+
         // Pre-fill name fields
         const parts = GUEST_NAME.trim().split(' ');
         document.getElementById('first-name').value = parts[0] || '';
@@ -990,11 +996,11 @@
             <div class="form-row">
               <div class="form-group">
                 <label>First Name ${isSpouse ? '(Optional)' : '*'}</label>
-                <input type="text" id="party-fn-${i}" placeholder="First name" />
+                <input type="text" id="party-fn-${i}" placeholder="First name" value="${isSpouse && GUEST_SPOUSE ? GUEST_SPOUSE : ''}" />
               </div>
               <div class="form-group">
                 <label>Last Name (Optional)</label>
-                <input type="text" id="party-ln-${i}" placeholder="Last name" />
+                <input type="text" id="party-ln-${i}" placeholder="Last name" value="${isSpouse && document.getElementById('last-name').value ? document.getElementById('last-name').value : ''}" />
               </div>
             </div>
           </div>`;
@@ -1217,10 +1223,18 @@
       const first = String(input.first_name || document.getElementById('first-name')?.value || '').trim();
       const last = String(input.last_name || document.getElementById('last-name')?.value || '').trim();
       const primaryName = `${first} ${last}`.trim() || 'Guest';
+
+      let spName = '';
+      if (GUEST_TYPE === 'couple') {
+        const sFn = document.getElementById('party-fn-1')?.value || '';
+        const sLn = document.getElementById('party-ln-1')?.value || last;
+        if (sFn) spName = `${sFn} ${sLn}`.trim();
+      }
+
       const partySource = input.party_names != null ? input.party_names : getPartyNames();
       const partyNamesRaw = String(partySource || '').trim();
       const partyNames = parsePartyNames(partyNamesRaw);
-      const guestNames = dedupeNames([primaryName, ...partyNames]);
+      const guestNames = dedupeNames([primaryName, spName, ...partyNames]);
       return {
         fullName: primaryName,
         partyNames: partyNamesRaw || undefined,

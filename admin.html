@@ -1010,8 +1010,10 @@ Rosanna and Andrew</textarea>
         const key = getGuestKey(g);
         const hasPhone = !!normalizeWaPhone(g.phone);
 
+        let displayName = `<strong>${g.first_name}${g.spouse_name ? ' & ' + g.spouse_name : ''} ${g.last_name}</strong>`;
+
         return `<tr>
-          <td><strong>${g.first_name} ${g.last_name}</strong></td>
+          <td>${displayName}</td>
           <td style="text-transform:capitalize">${g.guest_type || 'Single'}</td>
           <td>${g.max_party || 1} allowed</td>
           <td><span class="status-pill ${pClass}">${pLabel}</span></td>
@@ -1106,15 +1108,10 @@ Rosanna and Andrew</textarea>
       const base = String(WEDDING_URL || '').replace(/\/+$/, '');
       if (!g || !g.first_name) return `${base}/`;
 
-      let displayName = g.first_name;
-      if (g.spouse_name) {
-        displayName += ` & ${g.spouse_name}`;
-      }
-      displayName += ` ${g.last_name || ''}`;
-
       const p = new URLSearchParams({
         id: g._id || g.id || '',
-        name: displayName.trim(),
+        name: `${g.first_name} ${g.last_name || ''}`.trim(),
+        spouse: g.spouse_name || '',
         type: g.guest_type || 'single',
         max: g.max_party || 1,
         due: g.deadline || ''
@@ -1240,13 +1237,13 @@ Rosanna and Andrew</textarea>
       const tmpl = document.getElementById('wa-text').value;
       if (!g) return tidyMessage(tmpl);
 
-      let displayName = g.first_name;
+      let greetName = g.first_name;
       if (g.spouse_name) {
-        displayName += ` & ${g.spouse_name}`;
+        greetName += ` & ${g.spouse_name}`;
       }
 
       return tidyMessage(tmpl
-        .replace(/{{name}}/g, displayName)
+        .replace(/{{name}}/g, greetName)
         .replace(/{{type}}/g, formatGuestType(g.guest_type))
         .replace(/{{deadline}}/g, formatDeadline(g.deadline))
         .replace(/{{link}}/g, generatePersonalLink(g)));
