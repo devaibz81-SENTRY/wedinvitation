@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rosanna &amp; Andrew - Wedding Invitation</title>
+
+  <!-- Google Fonts fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── CUSTOM FONTS ──────────────────────────────── */
+    @font-face {
+      font-family: 'WeddingScript3';
+      src: url('fonts/option 3.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'WeddingScript2';
+      src: url('fonts/option 2.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    /* ── FALLING HEARTS ────────────────────────────── */
+    .heart {
+      position: absolute;
+      top: -60px;
+      pointer-events: none;
+      user-select: none;
+      font-size: clamp(14px, 3vw, 22px);
+      opacity: 0;
+      animation: fallHeart linear infinite;
+      z-index: 1;
+      filter: drop-shadow(0 1px 3px rgba(180,100,120,0.25));
+    }
+    @keyframes fallHeart {
+      0%   { transform: translateY(0) rotate(0deg) scale(0.8);    opacity: 0; }
+      5%   { opacity: 0.9; }
+      85%  { opacity: 0.6; }
+      100% { transform: translateY(calc(100vh + 80px)) rotate(25deg) scale(0.6); opacity: 0; }
+    }
+
+    /* ── DESIGN TOKENS ─────────────────────────────── */
+    :root {
+      --gold-foil: linear-gradient(135deg,
+        #a67c00 0%, #bf9b30 20%, #ffefaa 45%,
+        #ffffff 50%, #ffefaa 55%, #bf9b30 80%, #a67c00 100%);
+      --gold-solid: #bf9b30;
+      --ivory: #fdfcf8;
+      --dark-elegant: #1a1c22;
+      --transition-speed: 1.3s;
+    }
+
+    /* ── RESET ─────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── BODY ──────────────────────────────────────── */
+    body {
+      background-color: #f8f2e8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Playfair Display', 'Georgia', serif;
+    }
+
+    /* ── INTRO OVERLAY ─────────────────────────────── */
+    #intro-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      background: radial-gradient(ellipse at center, #fdfaf4 0%, #f0e6d3 60%, #e8d9c0 100%);
+      padding: 20px;
+      overflow: hidden;
+      transition: opacity 1s ease;
+    }
+
+    /* ── CARD CONTAINER ────────────────────────────── */
+    .intro-card {
+      width: min(92vw, 420px);
+      height: min(88vh, 720px);
+      perspective: 2000px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    @media (min-width: 768px) {
+      .intro-card { width: 420px; height: 720px; }
+    }
+
+    /* ══════════════════════════════════════════════════
+       LAYER 1 — IVORY INVITATION CARD (behind envelope)
+    ══════════════════════════════════════════════════ */
+    .inner-invitation {
+      position: absolute;
+      inset: 0;
+      background-color: var(--dark-elegant);
+      background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      z-index: 1;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    /* Gold trim frame */
+    .gold-trim-container {
+      flex: 1;
+      border: 1px solid var(--gold-solid);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Corner accents */
+    .trim-corner {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      z-index: 5;
+    }
+    .trim-top-left     { top: 5px;    left: 5px;  border-top: 2px solid var(--gold-solid); border-left:   2px solid var(--gold-solid); }
+    .trim-top-right    { top: 5px;    right: 5px; border-top: 2px solid var(--gold-solid); border-right:  2px solid var(--gold-solid); }
+    .trim-bottom-left  { bottom: 5px; left: 5px;  border-bottom: 2px solid var(--gold-solid); border-left:  2px solid var(--gold-solid); }
+    .trim-bottom-right { bottom: 5px; right: 5px; border-bottom: 2px solid var(--gold-solid); border-right: 2px solid var(--gold-solid); }
+
+    /* Photo */
+    .photo-frame {
+      height: 66%;
+      width: 100%;
+      overflow: hidden;
+      border-bottom: 2.5px solid transparent;
+      border-image: var(--gold-foil) 1;
+      flex-shrink: 0;
+    }
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center; /* Prevents top of photo from getting cropped out */
+      display: block;
+    }
+
+    /* Names & text */
+    .reveal-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .reveal-names {
+      font-family: 'WeddingScript2', 'WeddingScript3', 'Great Vibes', cursive;
+      font-size: clamp(2.6rem, 11vw, 3.4rem);
+      background: var(--gold-foil);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+      animation: shine 4s linear infinite;
+      line-height: 1.15;
+    }
+
+    .reveal-surname {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 0.75rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--gold-solid);
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+
+    .reveal-sub {
+      font-size: 0.68rem;
+      letter-spacing: 2.5px;
+      color: var(--ivory);
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    .reveal-date {
+      font-size: 0.68rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold-solid);
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .reveal-hint {
+      font-size: 0.58rem;
+      color: #999;
+      margin-top: 14px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════════════════
+       LAYER 2 — ENVELOPE BASE (dark rectangle)
+    ══════════════════════════════════════════════════ */
+    .envelope-base {
+      position: absolute;
+      inset: 0;
+      background-color: var(--dark-elegant);
+      background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
+      border-radius: 4px;
+      z-index: 5;
+      border: 1px solid rgba(191,155,48,0.3);
+      pointer-events: none;
+      transition: opacity 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+
+    /* Gold border on envelope with shimmer sweep */
+    .envelope-gold-border {
+      position: absolute;
+      inset: 12px;
+      border: 1.5px solid var(--gold-solid);
+      pointer-events: none;
+      z-index: 6;
+      overflow: hidden;
+    }
+    .envelope-gold-border::after {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: -150%;
+      width: 50%;
+      height: 300%;
+      background: linear-gradient(
+        to right,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.4) 50%,
+        rgba(255,255,255,0) 100%
+      );
+      transform: rotate(30deg);
+      animation: shimmer 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ══════════════════════════════════════════════════
+       LAYER 3 — TRIANGULAR FLAP (rotates open)
+    ══════════════════════════════════════════════════ */
+    .envelope-flap-tri {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background-color: var(--dark-elegant);
+      background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-bottom: 1.5px solid var(--gold-solid);
+      z-index: 15;
+      transform-origin: top;
+      transition: transform var(--transition-speed) cubic-bezier(0.7, 0, 0.3, 1);
+      transform-style: preserve-3d;
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════════════
+       WAX SEAL — sits on flap tip, animates with flap
+    ══════════════════════════════════════════════════ */
+    .wax-seal {
+      position: absolute;
+      left: 50%;
+      top: 50%;           /* sits on the flap crease */
+      width: clamp(90px, 25vw, 120px);
+      height: clamp(90px, 25vw, 120px);
+      transform: translate(-50%, -50%);
+      z-index: 30;
+      cursor: pointer;
+      overflow: hidden;
+      border-radius: 50%;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.75));
+      transition: transform var(--transition-speed) cubic-bezier(0.7, 0, 0.3, 1),
+                  opacity 0.4s ease 0.6s;
+    }
+
+    .wax-seal img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      display: block;
+    }
+
+    /* Shimmer gleam over seal */
+    .wax-seal::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(
+        to right,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.3) 50%,
+        rgba(255,255,255,0) 100%
+      );
+      transform: skewX(-25deg);
+      animation: shimmer-seal 4s infinite;
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════════════
+       CLICK HINT
+    ══════════════════════════════════════════════════ */
+    .seal-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--gold-solid);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 0.65rem;
+      animation: pulse 2.5s infinite;
+      white-space: nowrap;
+      z-index: 35;
+      transition: opacity 0.5s ease;
+    }
+
+    /* ══════════════════════════════════════════════════
+       OPENED STATE
+    ══════════════════════════════════════════════════ */
+    .intro-card.is-open .envelope-flap-tri {
+      transform: rotateX(170deg);
+    }
+    .intro-card.is-open .envelope-base {
+      opacity: 0;
+    }
+    .intro-card.is-open .seal-hint {
+      opacity: 0;
+      pointer-events: none;
+    }
+    /* Seal flip-away animation on open */
+    .intro-card.is-open .wax-seal {
+      animation: sealFlipAway 0.7s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+      pointer-events: none;
+    }
+
+    @keyframes sealFlipAway {
+      0%   { transform: translate(-50%, -50%) rotateY(0deg) scale(1);   opacity: 1; }
+      40%  { transform: translate(-50%, -80%) rotateY(90deg) scale(1.15);  opacity: 1; }
+      100% { transform: translate(-50%, -200%) rotateY(360deg) scale(0); opacity: 0; }
+    }
+
+    /* ══════════════════════════════════════════════════
+       MUSIC TOGGLE BUTTON
+    ══════════════════════════════════════════════════ */
+    .music-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 500;
+      width: 44px;
+      height: 44px;
+      background: rgba(26,28,34,0.9);
+      border: 1px solid var(--gold-solid);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      color: var(--gold-solid);
+    }
+    .music-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    /* ══════════════════════════════════════════════════
+       ANIMATIONS
+    ══════════════════════════════════════════════════ */
+    @keyframes shimmer {
+      0%   { left: -150%; }
+      30%  { left: 150%; }
+      100% { left: 150%; }
+    }
+
+    @keyframes shimmer-seal {
+      0%   { left: -100%; }
+      40%  { left: 200%; }
+      100% { left: 200%; }
+    }
+
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1; }
+    }
+
+    /* ══════════════════════════════════════════════════
+       MAIN SITE (behind overlay) — placeholder
+    ══════════════════════════════════════════════════ */
+    #main-site {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MAIN SITE CONTENT goes here (behind overlay) -->
+  <div id="main-site"></div>
+
+  <!-- ═══════════════════════════════════════════════
+       INTRO OVERLAY
+  ══════════════════════════════════════════════════ -->
+  <div id="intro-overlay">
+
+    <div class="intro-card" id="main-card">
+
+      <!-- ── LAYER 1: IVORY INVITATION (revealed) ── -->
+      <div class="inner-invitation">
+        <div class="gold-trim-container">
+          <div class="trim-corner trim-top-left"></div>
+          <div class="trim-corner trim-top-right"></div>
+          <div class="trim-corner trim-bottom-left"></div>
+          <div class="trim-corner trim-bottom-right"></div>
+
+          <div class="photo-frame">
+            <img src="photos/main-card-photo.jpeg" alt="Rosanna and Andrew">
+          </div>
+
+          <div class="reveal-content">
+            <div class="reveal-names">Rosanna &amp; Andrew</div>
+            <div class="reveal-sub">San Ignacio, Belize</div>
+            <div class="reveal-date">July 4, 2026</div>
+            <div class="reveal-hint">Tap to View Full Invite</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LAYER 2: ENVELOPE BASE ── -->
+      <div class="envelope-base">
+        <div class="envelope-gold-border"></div>
+      </div>
+
+      <!-- ── LAYER 3: TRIANGULAR FLAP ── -->
+      <div class="envelope-flap-tri"></div>
+
+      <!-- ── WAX SEAL (sits at flap centre) ── -->
+      <div class="wax-seal" id="wax-seal">
+        <img src="photos/wax-seal.png" alt="R&amp;A Wax Seal">
+      </div>
+
+      <!-- ── CLICK HINT ── -->
+      <div class="seal-hint" id="seal-hint">Click Seal to Open</div>
+
+    </div><!-- /.intro-card -->
+  </div><!-- /#intro-overlay -->
+
+  <!-- MUSIC -->
+  <audio id="bg-music" preload="auto" loop>
+    <source src="audio/MUSIC.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- MUSIC TOGGLE -->
+  <button class="music-btn" id="musicBtn" aria-label="Toggle music">
+    <svg viewBox="0 0 24 24">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+      <line id="muteL" x1="1" y1="1" x2="23" y2="23" style="display:none;"></line>
+    </svg>
+  </button>
+
+  <script>
+    var card      = document.getElementById('main-card');
+    var overlay   = document.getElementById('intro-overlay');
+    var music     = document.getElementById('bg-music');
+    var musicBtn  = document.getElementById('musicBtn');
+    var muteL     = document.getElementById('muteL');
+    var hint      = document.getElementById('seal-hint');
+    var state     = 0;
+
+    /* ── SOFT FALLING HEARTS ─────────────────────────────── */
+    var heartChars = ['♥', '♥', '♥', '❤', '♥'];
+    var maxHearts  = 18;
+    // Soft rose, blush, dusty rose, deep blush — all at low opacity
+    var heartColors = ['#c9768a', '#b85c72', '#d4a0b0', '#bf9b30', '#c07080'];
+
+    function spawnHeart() {
+      if (!overlay.parentNode) return;
+      var el = document.createElement('span');
+      el.className = 'heart';
+      el.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+
+      var size     = 10 + Math.random() * 16;
+      var left     = 5 + Math.random() * 90;
+      var dur      = 6 + Math.random() * 10;
+      var delay    = Math.random() * -16;
+      var maxOpac  = 0.15 + Math.random() * 0.22;  // 0.15–0.37 very soft
+      var hue      = heartColors[Math.floor(Math.random() * heartColors.length)];
+      var sway     = (Math.random() - 0.5) * 40;
+
+      el.style.cssText = [
+        'font-size:' + size + 'px',
+        'left:' + left + '%',
+        'color:' + hue,
+        'animation-duration:' + dur + 's',
+        'animation-delay:' + delay + 's',
+        '--max-opac:' + maxOpac,
+        '--sway:' + sway + 'px'
+      ].join(';');
+
+      overlay.insertBefore(el, overlay.firstChild);
+
+      setTimeout(function() {
+        if (el.parentNode) el.parentNode.removeChild(el);
+        if (overlay.querySelectorAll('.heart').length < maxHearts) spawnHeart();
+      }, (dur + Math.abs(delay)) * 1000 + 2000);
+    }
+
+    // Update keyframe to use CSS custom props for opacity
+    (function patchKeyframes() {
+      var style = document.createElement('style');
+      style.textContent = [
+        '@keyframes fallHeart {',
+        '  0%   { transform: translateY(0) translateX(0) rotate(-8deg) scale(0.7); opacity: 0; }',
+        '  5%   { opacity: var(--max-opac, 0.35); }',
+        '  50%  { transform: translateY(50vh) translateX(var(--sway, 20px)) rotate(8deg) scale(0.9); opacity: var(--max-opac, 0.35); }',
+        '  90%  { opacity: calc(var(--max-opac, 0.35) * 0.4); }',
+        '  100% { transform: translateY(105vh) translateX(calc(var(--sway, 20px) * 1.5)) rotate(15deg) scale(0.6); opacity: 0; }',
+        '}'
+      ].join('\n');
+      document.head.appendChild(style);
+    })();
+
+    // Seed initial hearts with staggered starts
+    for (var i = 0; i < maxHearts; i++) {
+      (function(i) { setTimeout(spawnHeart, i * 350); })(i);
+    }
+
+    /* ── CARD INTERACTION ─────────────────────────────────── */
+    card.addEventListener('click', function () {
+      if (state === 0) {
+        card.classList.add('is-open');
+        hint.style.display = 'none';
+        music.play().catch(function () {});
+        state = 1;
+      } else if (state === 1) {
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        setTimeout(function () { overlay.style.display = 'none'; }, 1000);
+        state = 2;
+      }
+    });
+
+    musicBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (music.paused) {
+        music.play();
+        muteL.style.display = 'none';
+      } else {
+        music.pause();
+        muteL.style.display = 'block';
+      }
+    });
+  </script>
+
+</body>
+</html>
