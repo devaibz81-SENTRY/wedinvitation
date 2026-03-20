@@ -581,11 +581,15 @@
         hint.style.display = 'none';
         music.play().catch(function () {});
         state = 1;
-      } else if (state === 1) {
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-        setTimeout(function () { overlay.style.display = 'none'; }, 1000);
-        state = 2;
+        
+        // Automatic redirect after animation finishes
+        setTimeout(function() {
+          overlay.style.opacity = '0';
+          overlay.style.pointerEvents = 'none';
+          setTimeout(function () { 
+            window.location.href = 'invitation.html'; 
+          }, 1000);
+        }, 2200); // 2.2s allows the flip to resolve beautifully
       }
     });
 
