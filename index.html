@@ -151,7 +151,7 @@
 
     /* Photo */
     .photo-frame {
-      flex: 0 0 56%;
+      flex: 0 0 52%;
       width: 100%;
       overflow: visible; /* Remove crop */
       border-bottom: 2.5px solid transparent;
@@ -179,13 +179,13 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      padding: 18px 14px 18px;
+      padding: 16px 14px 18px;
       margin: 0 auto;
     }
 
     .reveal-names {
       font-family: 'WeddingScript2', 'WeddingScript3', 'Great Vibes', cursive;
-      font-size: clamp(2.3rem, 8.2vw, 3.45rem);
+      font-size: clamp(2.6rem, 8.9vw, 3.9rem);
       background: var(--gold-foil);
       background-size: 200% auto;
       -webkit-background-clip: text;
@@ -197,7 +197,7 @@
       white-space: normal;
       overflow: visible;
       text-wrap: balance;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0;
     }
 
     .ampersand {
@@ -221,7 +221,8 @@
       letter-spacing: 2.5px;
       color: var(--ivory);
       text-transform: uppercase;
-      margin-top: 0;
+      margin-top: auto;
+      padding-top: 1.2rem;
     }
 
     .reveal-date {
@@ -230,8 +231,8 @@
       text-transform: uppercase;
       color: var(--gold-solid);
       font-weight: bold;
-      margin-top: auto;
-      padding-top: 1.15rem;
+      margin-top: 0.45rem;
+      padding-top: 0;
     }
 
     .reveal-hint {
@@ -1357,11 +1358,11 @@
       }
 
       .reveal-names {
-        font-size: clamp(2.1rem, 9.8vw, 3rem);
+        font-size: clamp(2.35rem, 10.4vw, 3.3rem);
       }
 
-      .reveal-date {
-        padding-top: 0.95rem;
+      .reveal-sub {
+        padding-top: 1rem;
       }
       
 
@@ -2005,6 +2006,7 @@
     var overlay   = document.getElementById('intro-overlay');
     var site      = document.getElementById('main-invitation-container');
     var music     = document.getElementById('bg-music');
+    var revealHint = document.querySelector('.reveal-hint');
     var state     = 0;
 
     // Heart Spawning Logic (Scoped to overlay)
@@ -2037,25 +2039,31 @@
     for (var i = 0; i < maxHearts; i++) { setTimeout(spawnHeart, i * 250); }
 
     /* --- TRANSITION LOGIC --- */
+    function showInvitationSite() {
+      overlay.style.opacity = '0';
+      site.style.display = 'block';
+      setTimeout(function() {
+        site.style.opacity = '1';
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        document.body.style.position = 'static'; // Allow scrolling
+        window.dispatchEvent(new Event('scroll'));
+      }, 100);
+    }
+
     card.addEventListener('click', function () {
       if (state === 0) {
         card.classList.add('is-open');
         music.play().catch(function () {});
         state = 1;
-        
-        // After card animation, reveal the site
+
         setTimeout(function() {
-          overlay.style.opacity = '0';
-          site.style.display = 'block';
-          setTimeout(function() {
-            site.style.opacity = '1';
-            overlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            document.body.style.position = 'static'; // Allow scrolling
-            // Trigger intersection observers for reveal animations
-            window.dispatchEvent(new Event('scroll'));
-          }, 100);
-        }, 2500); 
+          if (revealHint) revealHint.textContent = 'Tap Card to View Full Invite';
+          state = 2;
+        }, 1400);
+      } else if (state === 2) {
+        state = 3;
+        showInvitationSite();
       }
     });
 
