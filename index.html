@@ -2213,13 +2213,51 @@
   </audio>
 
   <script>
-    /* --- CARD SCRIPTS --- */
-    var card      = document.getElementById('main-card');
+    /* --- INTRO GIF SCRIPTS --- */
+    var gifContainer = document.getElementById('intro-gif-container');
+    var introGif = document.getElementById('intro-gif');
+    var enterPrompt = document.getElementById('enter-prompt');
     var overlay   = document.getElementById('intro-overlay');
     var site      = document.getElementById('main-invitation-container');
     var music     = document.getElementById('bg-music');
-    var enterBtn  = document.getElementById('enter-card-btn');
-    var state     = 0;
+    var hasStarted = false;
+    var readyToEnter = false;
+    
+    /* Click to start GIF and music */
+    if (gifContainer) {
+      gifContainer.onclick = function() {
+        /* First click - start music and GIF */
+        if (!hasStarted) {
+          hasStarted = true;
+          music.play().catch(function(e) { console.log('Music play failed:', e); });
+          
+          /* After 10 seconds, show enter prompt */
+          setTimeout(function() {
+            readyToEnter = true;
+            if (enterPrompt) {
+              enterPrompt.classList.add('visible');
+            }
+          }, 10000);
+          
+        /* Second click - enter invitation */
+        } else if (readyToEnter) {
+          /* Animate GIF off screen */
+          gifContainer.classList.add('exit');
+          
+          /* Show invitation */
+          setTimeout(function() {
+            site.style.display = 'block';
+            setTimeout(function() {
+              site.style.opacity = '1';
+              overlay.style.display = 'none';
+              document.body.style.overflow = 'auto';
+              document.body.style.position = 'static';
+              window.dispatchEvent(new Event('scroll'));
+            }, 100);
+          }, 1000);
+        }
+      };
+    }
 
     // Falling leaf effect behind the intro card
     var leafChars = ['❦', '❧', '❦', '✤'];
@@ -2258,18 +2296,24 @@
         site.style.opacity = '1';
         overlay.style.display = 'none';
         document.body.style.overflow = 'auto';
-        document.body.style.position = 'static'; // Allow scrolling
+        document.body.style.position = 'static';
         window.dispatchEvent(new Event('scroll'));
       }, 100);
     }
 
     function enterInvitation() {
-      if (state !== 2) return;
-      state = 3;
-      if (enterBtn) {
-        enterBtn.style.pointerEvents = 'none';
-      }
-      showInvitationSite();
+      if (!canEnter) return;
+      gifContainer.classList.add('exit');
+      setTimeout(function() {
+        site.style.display = 'block';
+        setTimeout(function() {
+          site.style.opacity = '1';
+          overlay.style.display = 'none';
+          document.body.style.overflow = 'auto';
+          document.body.style.position = 'static';
+          window.dispatchEvent(new Event('scroll'));
+        }, 100);
+      }, 1200);
     }
 
     card.addEventListener('click', function () {
