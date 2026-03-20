@@ -1584,30 +1584,27 @@
     var enterPrompt = document.getElementById('enter-prompt');
     var overlay = document.getElementById('intro-overlay');
     var music = document.getElementById('bg-music');
-    var hasStarted = false;
-    var readyToEnter = false;
     
+    // Start music automatically when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      music.play().catch(function(e) { console.log('Music autoplay blocked:', e); });
+    });
+    
+    // Show enter prompt after 2 seconds
+    setTimeout(function() {
+      if (enterPrompt) {
+        enterPrompt.classList.add('visible');
+      }
+    }, 2000);
+    
+    // Click to enter invitation
     if (gifContainer) {
       gifContainer.onclick = function() {
-        // First click - start music
-        if (!hasStarted) {
-          hasStarted = true;
-          music.play().catch(function(e) { console.log('Music play failed:', e); });
-          // After 10 seconds, show enter prompt
-          setTimeout(function() {
-            readyToEnter = true;
-            if (enterPrompt) {
-              enterPrompt.classList.add('visible');
-            }
-          }, 10000);
-        // Second click - enter invitation
-        } else if (readyToEnter) {
-          gifContainer.classList.add('exit');
-          setTimeout(function() {
-            overlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
-          }, 1000);
-        }
+        gifContainer.classList.add('exit');
+        setTimeout(function() {
+          overlay.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }, 1000);
       };
     }
 
