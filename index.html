@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 
   <style>
     /* --- INTEGRATED CARD STYLES --- */
@@ -100,7 +100,8 @@
       perspective: 2000px;
       cursor: pointer;
       position: relative;
-      overflow: hidden;
+      overflow: visible !important; /* FORCED: Allow names to span outside card boundaries */
+      border: none !important; /* Ensure no border crops the content */
       border-radius: 4px;
     }
 
@@ -122,6 +123,7 @@
       padding: 12px;
       z-index: 1;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      overflow: visible !important;
     }
 
     /* Gold trim frame */
@@ -172,15 +174,16 @@
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
+      max-width: 95%;
       z-index: 20;
       pointer-events: none;
       text-align: center;
-      padding: 0;
+      padding: 0 10px;
     }
 
     .reveal-names {
       font-family: 'WeddingScript2', 'WeddingScript3', 'Great Vibes', cursive;
-      font-size: clamp(2.6rem, 11vw, 4.4rem);
+      font-size: clamp(1.7rem, 6.8vw, 2.6rem);
       background: var(--gold-foil);
       background-size: 200% auto;
       -webkit-background-clip: text;
@@ -188,9 +191,10 @@
       background-clip: text;
       filter: drop-shadow(0 2px 5px rgba(0,0,0,0.45));
       animation: shine 4s linear infinite;
-      line-height: 1.0;
-      white-space: nowrap;
+      line-height: 0.95;
+      white-space: normal;
       overflow: visible;
+      text-wrap: balance;
     }
 
     .ampersand {
@@ -598,7 +602,7 @@
       letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 3rem; /* Increased spacing */
+      margin-bottom: 3.5rem; /* More space for larger names */
       font-weight: 500;
       opacity: 0;
       animation: fadeUp 1s ease 0.3s forwards;
@@ -606,7 +610,7 @@
 
     .hero-names {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.8rem, 6.5vw, 4.2rem); /* Reduced size to avoid conflict */
+      font-size: clamp(2.4rem, 9.5vw, 5.8rem); /* High impact prominence */
       line-height: 1.1;
       color: var(--black);
       position: relative;
@@ -720,9 +724,10 @@
       color: white;
       text-decoration: none;
       font-size: 0.78rem;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       font-weight: 600;
+      font-family: 'Cormorant Garamond', serif;
       position: relative;
       overflow: hidden;
       opacity: 0;
@@ -731,7 +736,7 @@
     }
 
     .hero-cta:hover {
-      background: #7a8e78;
+      background: var(--black);
       transform: translateY(-2px);
     }
 
@@ -1439,8 +1444,8 @@
 
     /* Customized Title Fonts for specific sections */
     .script-title {
-      font-family: 'WeddingScript3', 'Great Vibes', cursive !important;
-      font-size: clamp(2.2rem, 6vw, 5rem);
+      font-family: 'WeddingScript2', 'Great Vibes', cursive !important;
+      font-size: clamp(2.5rem, 6.5vw, 5.2rem);
       text-align: center;
       margin-bottom: 3rem;
       color: var(--black);
@@ -1497,7 +1502,7 @@
           <div class="reveal-content">
             <div class="reveal-names">Rosanna <span class="ampersand">&amp;</span> Andrew</div>
             <div class="reveal-sub">San Ignacio, Belize</div>
-            <div class="reveal-date" style="line-height: 1.4;">Saturday, the Fourth of July<br>Two Thousand Twenty-Six</div>
+            <div class="reveal-date" style="line-height: 1.4;">4th July 2026</div>
             <div class="reveal-hint">Tap to View Full Invite</div>
           </div>
         </div>
@@ -1592,16 +1597,15 @@
     </div>
 
     <p class="hero-date"
-      style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 500; color: var(--gold); line-height: 1.6;">
-      Saturday, the Fourth of July<br>
-      <span style="font-size: 1.2em; letter-spacing: 0.05em;">Two Thousand Twenty-Six</span>
+      style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 500; color: var(--gold); line-height: 1.6; margin-top: 2rem;">
+      4th July 2026
     </p>
     <p class="hero-location"
       style="opacity: 0; animation: fadeUp 1s ease 2.1s forwards; color: var(--black); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">
       San Ignacio, Belize
     </p>
 
-    <a href="rsvp.html" class="hero-cta" style="font-family: 'WeddingScript3', cursive; text-transform: none; font-size: 2.2rem; letter-spacing: 0; padding: 0.5rem 3rem;">Kindly Reply</a>
+    <a href="rsvp.html" class="hero-cta" style="font-family: 'Cormorant Garamond', serif; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.2em; padding: 1.1rem 3.5rem;">Kindly Reply</a>
 
     <div class="scroll-hint">
       <span>Scroll</span>
@@ -1785,7 +1789,7 @@
             </svg>
           </span>
           <div class="detail-label">The Ceremony</div>
-          <div class="detail-value">Saturday<br />the Fourth of July<br />Two Thousand Twenty-Six</div>
+          <div class="detail-value">4th July 2026</div>
           <div class="detail-sub">2:00 PM - Ceremony Begins</div>
         </div>
         <div class="detail-card reveal">
@@ -1880,7 +1884,7 @@
 <section id="rsvp-cta">
     <div class="rsvp-box reveal">
       <p class="section-eyebrow">You Are Cordially Invited</p>
-      <h2 class="script-title reveal" style="font-size: 3.2rem; margin-bottom: 1.5rem; color: var(--black); font-family: 'WeddingScript3', cursive !important;">Kindly Reply</h2>
+      <h2 class="reveal" style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 2.2rem; margin-bottom: 2rem; color: var(--black); text-transform: uppercase; letter-spacing: 0.15em;">Kindly Reply</h2>
       <p class="rsvp-text">
         Please let us know if you'll be joining us to celebrate.
       </p>
@@ -1959,10 +1963,7 @@
   <!-- ─── FOOTER ────────────────────────────────────── -->
   <footer>
     <div class="footer-names">Rosanna <span class="ampersand">&amp;</span> Andrew</div>
-    <p style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">Saturday, the Fourth of
-      July - <span
-        style="font-weight: 500; font-size: 1.6rem; letter-spacing: 0.02em; color: var(--gold); vertical-align: middle;">Two
-        Thousand Twenty-Six</span> - San Ignacio, Belize</p>
+    <p style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">4th July 2026 - San Ignacio, Belize</p>
     <p style="margin-top: 1rem;">With love</p>
   </footer>
 
