@@ -131,7 +131,7 @@
       position: relative;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow: visible; /* Remove crop */
     }
 
     /* Corner accents */
@@ -150,10 +150,12 @@
     .photo-frame {
       height: 66%;
       width: 100%;
-      overflow: hidden;
+      overflow: visible; /* Remove crop */
       border-bottom: 2.5px solid transparent;
       border-image: var(--gold-foil) 1;
       flex-shrink: 0;
+      position: relative;
+      z-index: 1;
     }
     .photo-frame img {
       width: 100%;
@@ -165,26 +167,30 @@
 
     /* Names & text */
     .reveal-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      position: absolute;
+      bottom: 2%; 
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      z-index: 20;
+      pointer-events: none;
       text-align: center;
-      padding: 8px 12px;
+      padding: 0;
     }
 
     .reveal-names {
       font-family: 'WeddingScript2', 'WeddingScript3', 'Great Vibes', cursive;
-      font-size: clamp(1.7rem, 7.2vw, 2.4rem);
+      font-size: clamp(2.6rem, 11vw, 4.4rem);
       background: var(--gold-foil);
       background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.45));
       animation: shine 4s linear infinite;
-      line-height: 1.15;
+      line-height: 1.0;
+      white-space: nowrap;
+      overflow: visible;
     }
 
     .ampersand {
@@ -208,7 +214,7 @@
       letter-spacing: 2.5px;
       color: var(--ivory);
       text-transform: uppercase;
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     .reveal-date {
@@ -223,7 +229,7 @@
     .reveal-hint {
       font-size: 0.58rem;
       color: #999;
-      margin-top: 14px;
+      margin-top: 8px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
     }
@@ -592,7 +598,7 @@
       letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 2rem;
+      margin-bottom: 3rem; /* Increased spacing */
       font-weight: 500;
       opacity: 0;
       animation: fadeUp 1s ease 0.3s forwards;
@@ -600,7 +606,7 @@
 
     .hero-names {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.2rem, 8vw, 5rem);
+      font-size: clamp(1.8rem, 6.5vw, 4.2rem); /* Reduced size to avoid conflict */
       line-height: 1.1;
       color: var(--black);
       position: relative;
@@ -1427,14 +1433,27 @@
   
     
     /* Font Unification: Use WeddingScript2 for Site Headers */
-    .section-title, .hero-names, .story-signature, .footer-names {
+    .hero-names, .story-signature, .footer-names {
       font-family: 'WeddingScript2', 'Great Vibes', cursive !important;
     }
-    
-    /* Card Polish: Fix Name Cropping */
-    .reveal-content { padding: 4px 10px; }
-    .reveal-names { font-size: clamp(1.45rem, 6.2vw, 2.0rem); }
 
+    /* Customized Title Fonts for specific sections */
+    .script-title {
+      font-family: 'WeddingScript3', 'Great Vibes', cursive !important;
+      font-size: clamp(2.2rem, 6vw, 5rem);
+      text-align: center;
+      margin-bottom: 3rem;
+      color: var(--black);
+    }
+
+    .ampersand {
+      font-family: 'Great Vibes', 'Playfair Display', cursive !important;
+      font-style: normal !important;
+      font-size: 1.1em;
+      vertical-align: middle;
+      margin: 0 4px;
+    }
+    
     /* Merger Structural Adjustments */
     #intro-overlay {
       position: fixed; inset: 0; z-index: 10000;
@@ -1478,7 +1497,7 @@
           <div class="reveal-content">
             <div class="reveal-names">Rosanna <span class="ampersand">&amp;</span> Andrew</div>
             <div class="reveal-sub">San Ignacio, Belize</div>
-            <div class="reveal-date">July 4, 2026</div>
+            <div class="reveal-date" style="line-height: 1.4;">Saturday, the Fourth of July<br>Two Thousand Twenty-Six</div>
             <div class="reveal-hint">Tap to View Full Invite</div>
           </div>
         </div>
@@ -1554,7 +1573,7 @@
 
     <h1 class="hero-names">
       Rosanna
-      <span class="hero-ampersand">&amp;</span>
+      <span class="ampersand">&amp;</span>
       Andrew
     </h1>
     <svg class="hero-flourish" viewBox="0 0 360 34" aria-hidden="true" focusable="false">
@@ -1573,20 +1592,16 @@
     </div>
 
     <p class="hero-date"
-      style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 500; color: var(--gold);">
-      Saturday, the Fourth of July
-    </p>
-    <p class="hero-location" style="opacity: 0; animation: fadeUp 1s ease 1.9s forwards;">
-      <span
-        style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; font-size: 1.8rem; letter-spacing: 0.05em; color: var(--gold);">Two
-        Thousand Twenty-Six</span>
+      style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 500; color: var(--gold); line-height: 1.6;">
+      Saturday, the Fourth of July<br>
+      <span style="font-size: 1.2em; letter-spacing: 0.05em;">Two Thousand Twenty-Six</span>
     </p>
     <p class="hero-location"
       style="opacity: 0; animation: fadeUp 1s ease 2.1s forwards; color: var(--black); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">
-      Belize
+      San Ignacio, Belize
     </p>
 
-    <a href="rsvp.html" class="hero-cta">Kindly Reply</a>
+    <a href="rsvp.html" class="hero-cta" style="font-family: 'WeddingScript3', cursive; text-transform: none; font-size: 2.2rem; letter-spacing: 0; padding: 0.5rem 3rem;">Kindly Reply</a>
 
     <div class="scroll-hint">
       <span>Scroll</span>
@@ -1623,7 +1638,7 @@
   <!-- ─── PHOTO GALLERY ─────────────────────────────── -->
   <div id="gallery">
     <p class="section-eyebrow reveal">Our Moments</p>
-    <h2 class="section-title reveal" style="color: var(--ivory);">A Love Story in Frames</h2>
+    <h2 class="script-title reveal" style="color: var(--ivory);">A Love Story in Frames</h2>
 
     <div class="gallery-grid stagger">
 
@@ -1670,7 +1685,7 @@
   <section id="story">
     <div class="story-text">
       <p class="section-eyebrow reveal">How It All Began</p>
-      <h2 class="section-title reveal">Our Love Story – Andrew (Passy) &amp; Rose</h2>
+      <h2 class="script-title reveal" style="text-align: left; font-size: clamp(2rem, 4.5vw, 3.8rem);">Our Love Story – Andrew (Passy) <span class="ampersand">&amp;</span> Rose</h2>
       <div class="story-body">
         <p class="reveal">
           Over Fifteen years ago, our story began in the most unexpected and beautiful way. when our paths crossed At
@@ -1743,7 +1758,7 @@
           <em>And this is only the beginning of the rest of our story.</em>
         </p>
       </div>
-      <div class="story-signature reveal">Rosanna &amp; Andrew</div>
+      <div class="story-signature reveal">Rosanna <span class="ampersand">&amp;</span> Andrew</div>
     </div>
 
     <div class="story-visual reveal">
@@ -1770,7 +1785,7 @@
             </svg>
           </span>
           <div class="detail-label">The Ceremony</div>
-          <div class="detail-value">Saturday<br />4th July, 2026</div>
+          <div class="detail-value">Saturday<br />the Fourth of July<br />Two Thousand Twenty-Six</div>
           <div class="detail-sub">2:00 PM - Ceremony Begins</div>
         </div>
         <div class="detail-card reveal">
@@ -1865,7 +1880,7 @@
 <section id="rsvp-cta">
     <div class="rsvp-box reveal">
       <p class="section-eyebrow">You Are Cordially Invited</p>
-      <h2 class="section-title" style="font-size: 2.5rem; margin-bottom: 1.5rem;">Kindly Reply</h2>
+      <h2 class="script-title reveal" style="font-size: 3.2rem; margin-bottom: 1.5rem; color: var(--black); font-family: 'WeddingScript3', cursive !important;">Kindly Reply</h2>
       <p class="rsvp-text">
         Please let us know if you'll be joining us to celebrate.
       </p>
@@ -1928,7 +1943,7 @@
 
       <p
         style="font-size: 0.85rem; color: #777; font-family: 'Cormorant Garamond', serif; font-style: italic; margin-top: 2rem;">
-        With gratitude, <br /> Rosanna & Andrew
+        With gratitude, <br /> Rosanna <span class="ampersand">&amp;</span> Andrew
       </p>
     </div>
   </div>
@@ -1943,7 +1958,7 @@
 
   <!-- ─── FOOTER ────────────────────────────────────── -->
   <footer>
-    <div class="footer-names">Rosanna &amp; Andrew</div>
+    <div class="footer-names">Rosanna <span class="ampersand">&amp;</span> Andrew</div>
     <p style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">Saturday, the Fourth of
       July - <span
         style="font-weight: 500; font-size: 1.6rem; letter-spacing: 0.02em; color: var(--gold); vertical-align: middle;">Two
