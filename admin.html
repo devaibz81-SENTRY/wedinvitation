@@ -357,6 +357,187 @@
       color: #95a5a6;
     }
 
+    .btn-link {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .table-shell {
+      overflow-x: auto;
+    }
+
+    .vault-hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .vault-copy {
+      background: linear-gradient(140deg, #171410 0%, #241c13 58%, #3b2f1a 100%);
+      color: var(--ivory);
+      padding: 2rem;
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      box-shadow: 0 16px 34px rgba(13, 13, 13, 0.15);
+    }
+
+    .vault-copy h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+    }
+
+    .vault-kicker {
+      display: inline-block;
+      margin-bottom: 0.85rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.62);
+    }
+
+    .vault-copy p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      max-width: 32rem;
+      color: rgba(245, 240, 232, 0.85);
+    }
+
+    .vault-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .vault-preview {
+      position: relative;
+      min-height: 270px;
+      padding: 1.6rem;
+      background:
+        radial-gradient(circle at top left, rgba(212, 184, 150, 0.22), transparent 42%),
+        linear-gradient(180deg, #fffaf2 0%, #f6efe6 100%);
+      border: 1px solid #eadfce;
+      overflow: hidden;
+    }
+
+    .vault-stack {
+      position: relative;
+      height: 100%;
+      min-height: 236px;
+    }
+
+    .vault-card-mini {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: min(100%, 280px);
+      min-height: 180px;
+      padding: 1.25rem;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(201, 168, 76, 0.18);
+      box-shadow: 0 16px 30px rgba(13, 13, 13, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform-origin: center bottom;
+    }
+
+    .vault-card-mini:nth-child(1) {
+      transform: translate(0, 0) rotate(-2deg);
+      z-index: 3;
+    }
+
+    .vault-card-mini:nth-child(2) {
+      transform: translate(-14px, 12px) rotate(2deg);
+      z-index: 2;
+    }
+
+    .vault-card-mini:nth-child(3) {
+      transform: translate(-28px, 24px) rotate(-4deg);
+      z-index: 1;
+    }
+
+    .vault-card-mini blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      line-height: 1.45;
+      color: #2f2418;
+      margin: 0;
+    }
+
+    .vault-card-mini footer {
+      margin-top: 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #826837;
+    }
+
+    .media-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .media-panel {
+      background: white;
+      border: 1px solid #e8e2d8;
+      box-shadow: 0 10px 28px rgba(13, 13, 13, 0.04);
+      overflow: hidden;
+    }
+
+    .media-panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 1rem;
+      padding: 1.4rem 1.5rem 1rem;
+      border-bottom: 1px solid #efe8dd;
+      background: linear-gradient(180deg, #fffdfb 0%, #fcf8f2 100%);
+    }
+
+    .media-panel-head h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 400;
+      color: var(--black);
+    }
+
+    .media-kicker {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #8b7444;
+    }
+
+    .media-count {
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6f6557;
+      text-align: right;
+    }
+
+    .media-note-cell {
+      max-width: 360px;
+      line-height: 1.55;
+      white-space: normal;
+    }
+
+    .media-empty {
+      text-align: center;
+      padding: 2rem;
+      color: #8b8276;
+      font-size: 0.84rem;
+    }
+
     /* WhatsApp Inbox Build */
     .wa-builder {
       background: white;
@@ -614,6 +795,8 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
+      .vault-hero,
+      .media-layout,
       .wa-layout {
         grid-template-columns: 1fr;
       }
@@ -626,6 +809,15 @@
 
       .wa-kpis {
         grid-template-columns: 1fr;
+      }
+
+      .vault-copy,
+      .vault-preview {
+        padding: 1.2rem;
+      }
+
+      .vault-actions {
+        flex-direction: column;
       }
 
       .wa-row select,
@@ -656,8 +848,9 @@
       <div class="brand-name">Rosanna &amp; Andrew</div>
     </div>
     <div class="nav-label">Management</div>
-    <div class="nav-item active" onclick="showView('guests')">Guests Data</div>
-    <div class="nav-item" onclick="showView('whatsapp')">WhatsApp Inbox</div>
+    <div class="nav-item active" onclick="showView('guests', event)">Guests Data</div>
+    <div class="nav-item" onclick="showView('media', event)">Songs &amp; Messages</div>
+    <div class="nav-item" onclick="showView('whatsapp', event)">WhatsApp Inbox</div>
   </div>
 
   <!-- Main -->
@@ -669,7 +862,7 @@
       </div>
       <div class="top-bar-actions">
         <button class="btn-sm" onclick="fetchGuests()">Refresh</button>
-        <button class="btn-sm primary" onclick="openAddGuest()">+ Add Guest / Family</button>
+        <button id="add-guest-btn" class="btn-sm primary" onclick="openAddGuest()">+ Add Guest / Family</button>
         <button class="btn-sm" onclick="logout()">Logout</button>
       </div>
     </div>
@@ -724,6 +917,105 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- SONGS & MESSAGES VIEW -->
+      <div id="view-media" style="display:none;">
+        <div class="vault-hero">
+          <div class="vault-copy">
+            <span class="vault-kicker">Private Couple Portal</span>
+            <h2>Message Vault</h2>
+            <p id="vault-summary">Your guests have shared hidden notes and playlist picks. Open the private vault to
+              flip through every message and download the collection.</p>
+            <div class="vault-actions">
+              <a class="btn-sm primary btn-link" href="/messages" target="_blank" rel="noopener">Open Message Vault</a>
+              <button class="btn-sm" onclick="downloadMessages()">Download Messages</button>
+              <button class="btn-sm" onclick="downloadSongs()">Download Songs</button>
+            </div>
+          </div>
+          <div class="vault-preview">
+            <div id="vault-preview-stack" class="vault-stack">
+              <div class="vault-card-mini">
+                <blockquote>Loading guest notes...</blockquote>
+                <footer>Wedding Memory Vault</footer>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card blue">
+            <div class="stat-label">Guest Messages</div>
+            <div class="stat-num" id="media-messages">0</div>
+          </div>
+          <div class="stat-card yellow">
+            <div class="stat-label">Song Requests</div>
+            <div class="stat-num" id="media-songs">0</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-label">Message Senders</div>
+            <div class="stat-num" id="media-senders">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Latest Note</div>
+            <div class="stat-num" id="media-latest" style="font-size:1.35rem;">-</div>
+          </div>
+        </div>
+
+        <div class="media-layout">
+          <section class="media-panel">
+            <div class="media-panel-head">
+              <div>
+                <span class="media-kicker">Playlist Requests</span>
+                <h3>Song Requests</h3>
+              </div>
+              <div id="songs-count-label" class="media-count">0 requests</div>
+            </div>
+            <div class="table-shell">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Guest</th>
+                    <th>Song Request</th>
+                    <th>Status</th>
+                    <th>Submitted</th>
+                  </tr>
+                </thead>
+                <tbody id="songs-tbody">
+                  <tr>
+                    <td colspan="4" class="media-empty">Loading song requests...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="media-panel">
+            <div class="media-panel-head">
+              <div>
+                <span class="media-kicker">Recent Notes</span>
+                <h3>Guest Messages</h3>
+              </div>
+              <div id="messages-count-label" class="media-count">0 notes</div>
+            </div>
+            <div class="table-shell">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Guest</th>
+                    <th>Message</th>
+                    <th>Submitted</th>
+                  </tr>
+                </thead>
+                <tbody id="messages-tbody">
+                  <tr>
+                    <td colspan="3" class="media-empty">Loading guest messages...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
       </div>
 
       <!-- WHATSAPP VIEW -->
@@ -858,6 +1150,18 @@ Rosanna and Andrew</textarea>
     const SESSION_KEY = 'ra_admin_token';
     const LIVE_REFRESH_MS = 12000;
     let guests = [];
+    let rsvpMedia = {
+      songs: [],
+      messages: [],
+      counts: {
+        totalRsvps: 0,
+        songCount: 0,
+        messageCount: 0,
+        uniqueMessageSenders: 0,
+        lastSubmittedAt: null
+      }
+    };
+    let currentView = 'guests';
     let currentFilter = 'all';
     let waPersonQuery = '';
     let adminToken = localStorage.getItem(SESSION_KEY) || '';
@@ -929,13 +1233,25 @@ Rosanna and Andrew</textarea>
       }
     }
 
-    function showView(view) {
+    function showView(view, evt) {
+      currentView = view;
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      event.currentTarget.classList.add('active');
+      if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
+
       document.getElementById('view-guests').style.display = view === 'guests' ? 'block' : 'none';
+      document.getElementById('view-media').style.display = view === 'media' ? 'block' : 'none';
       document.getElementById('view-whatsapp').style.display = view === 'whatsapp' ? 'block' : 'none';
-      document.getElementById('view-title').textContent = view === 'guests' ? 'Guest Management' : 'WhatsApp Inbox';
-      updateWaPreview();
+      document.getElementById('add-guest-btn').style.display = view === 'guests' ? 'inline-flex' : 'none';
+
+      const titles = {
+        guests: 'Guest Management',
+        media: 'Songs & Messages',
+        whatsapp: 'WhatsApp Inbox'
+      };
+      document.getElementById('view-title').textContent = titles[view] || 'Guest Management';
+
+      if (view === 'media') renderMediaView();
+      if (view === 'whatsapp') updateWaPreview();
     }
 
     function startLiveRefresh() {
@@ -954,23 +1270,88 @@ Rosanna and Andrew</textarea>
     }
 
     // â”€â”€â”€ DATA SYNC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function truncateText(value, max = 120) {
+      const text = String(value ?? '').trim();
+      return text.length > max ? `${text.slice(0, max - 1)}...` : text;
+    }
+
+    function formatAttendanceLabel(status) {
+      return {
+        attending: 'Attending',
+        declined: 'Declined',
+        later: 'Ask Later'
+      }[status] || 'Submitted';
+    }
+
+    function formatShortDate(value) {
+      if (!value) return '-';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value);
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function formatLongDateTime(value) {
+      if (!value) return 'No submissions yet';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value);
+      return date.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+      });
+    }
+
     async function fetchGuests(opts = { showLoading: true }) {
       if (opts.showLoading) {
         document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">Syncing with Convex...</td></tr>`;
+        document.getElementById('songs-tbody').innerHTML = `<tr><td colspan="4" class="media-empty">Syncing song requests...</td></tr>`;
+        document.getElementById('messages-tbody').innerHTML = `<tr><td colspan="3" class="media-empty">Syncing guest messages...</td></tr>`;
       }
       try {
-        const res = await fetch(`${CONVEX_HTTP_URL}/api/guests`, {
-          headers: authHeaders()
-        });
-        if (res.status === 401) {
+        const [guestRes, mediaRes] = await Promise.all([
+          fetch(`${CONVEX_HTTP_URL}/api/guests`, {
+            headers: authHeaders()
+          }),
+          fetch(`${CONVEX_HTTP_URL}/api/rsvp-media`, {
+            headers: authHeaders()
+          })
+        ]);
+
+        if (guestRes.status === 401 || mediaRes.status === 401) {
           await logout();
           throw new Error('Session expired. Please log in again.');
         }
-        if (!res.ok) throw new Error(await res.text());
-        guests = await res.json();
-        updateStats(); renderTable(); updateWaPreview(); updateSyncLabel();
+        if (!guestRes.ok) throw new Error(await guestRes.text());
+        if (!mediaRes.ok) throw new Error(await mediaRes.text());
+
+        const [guestPayload, mediaPayload] = await Promise.all([
+          guestRes.json(),
+          mediaRes.json()
+        ]);
+
+        guests = guestPayload;
+        rsvpMedia = mediaPayload;
+
+        updateStats();
+        renderTable();
+        renderMediaView();
+        updateWaPreview();
+        updateSyncLabel();
       } catch (err) {
         document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;color:red;padding:2rem;">Error loading data from Convex.</td></tr>`;
+        document.getElementById('songs-tbody').innerHTML = `<tr><td colspan="4" class="media-empty">Unable to load song requests right now.</td></tr>`;
+        document.getElementById('messages-tbody').innerHTML = `<tr><td colspan="3" class="media-empty">Unable to load guest messages right now.</td></tr>`;
       }
     }
 
@@ -990,6 +1371,14 @@ Rosanna and Andrew</textarea>
       document.getElementById('st-attending').textContent = att;
       document.getElementById('st-declined').textContent = dec;
       document.getElementById('st-later').textContent = lat;
+
+      const counts = rsvpMedia.counts || {};
+      document.getElementById('media-messages').textContent = counts.messageCount || 0;
+      document.getElementById('media-songs').textContent = counts.songCount || 0;
+      document.getElementById('media-senders').textContent = counts.uniqueMessageSenders || 0;
+      document.getElementById('media-latest').textContent = counts.lastSubmittedAt
+        ? formatShortDate(counts.lastSubmittedAt)
+        : '-';
     }
 
     function renderTable() {
@@ -1026,6 +1415,105 @@ Rosanna and Andrew</textarea>
           </div></td>
         </tr>`;
       }).join('');
+    }
+
+    function renderMediaView() {
+      const songs = Array.isArray(rsvpMedia.songs) ? rsvpMedia.songs : [];
+      const messages = Array.isArray(rsvpMedia.messages) ? rsvpMedia.messages : [];
+
+      document.getElementById('songs-count-label').textContent = `${songs.length} request${songs.length === 1 ? '' : 's'}`;
+      document.getElementById('messages-count-label').textContent = `${messages.length} note${messages.length === 1 ? '' : 's'}`;
+
+      const songsBody = document.getElementById('songs-tbody');
+      songsBody.innerHTML = songs.length
+        ? songs.map((row) => {
+          const status = String(row.attendance || 'submitted');
+          const pillClass = {
+            attending: 'pill-attending',
+            declined: 'pill-declined',
+            later: 'pill-later'
+          }[status] || 'pill-invited';
+          return `<tr>
+            <td><strong>${escapeHtml(row.display_name)}</strong></td>
+            <td class="media-note-cell">${escapeHtml(row.song_request)}</td>
+            <td><span class="status-pill ${pillClass}">${escapeHtml(formatAttendanceLabel(status))}</span></td>
+            <td>${escapeHtml(formatLongDateTime(row.submitted_at))}</td>
+          </tr>`;
+        }).join('')
+        : `<tr><td colspan="4" class="media-empty">No song requests have been submitted yet.</td></tr>`;
+
+      const messagesBody = document.getElementById('messages-tbody');
+      messagesBody.innerHTML = messages.length
+        ? messages.map((row) => `<tr>
+            <td><strong>${escapeHtml(row.display_name)}</strong></td>
+            <td class="media-note-cell">${escapeHtml(truncateText(row.message, 160))}</td>
+            <td>${escapeHtml(formatLongDateTime(row.submitted_at))}</td>
+          </tr>`).join('')
+        : `<tr><td colspan="3" class="media-empty">No guest messages have been submitted yet.</td></tr>`;
+
+      const summary = messages.length
+        ? `You have ${messages.length} hidden message${messages.length === 1 ? '' : 's'} from your guests, plus ${songs.length} song request${songs.length === 1 ? '' : 's'} ready for the celebration.`
+        : `The portal is ready. As soon as guests leave notes, you will be able to flip through them here and download the full collection.`;
+      document.getElementById('vault-summary').textContent = summary;
+
+      const preview = document.getElementById('vault-preview-stack');
+      const stack = messages.slice(0, 3);
+      preview.innerHTML = stack.length
+        ? stack.map((row) => `<article class="vault-card-mini">
+            <blockquote>“${escapeHtml(truncateText(row.message, 120))}”</blockquote>
+            <footer>${escapeHtml(row.display_name)} · ${escapeHtml(formatShortDate(row.submitted_at))}</footer>
+          </article>`).join('')
+        : `<article class="vault-card-mini">
+            <blockquote>No hidden notes yet — once guests start writing, this vault will fill beautifully.</blockquote>
+            <footer>Wedding Memory Vault</footer>
+          </article>`;
+    }
+
+    function downloadBlob(filename, type, content) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadMessages() {
+      const messages = Array.isArray(rsvpMedia.messages) ? rsvpMedia.messages : [];
+      if (!messages.length) {
+        alert('There are no guest messages to download yet.');
+        return;
+      }
+
+      const body = messages.map((row, index) => (
+        `${index + 1}. ${row.display_name}\n` +
+        `Status: ${formatAttendanceLabel(row.attendance)}\n` +
+        `Submitted: ${formatLongDateTime(row.submitted_at)}\n\n` +
+        `${row.message}\n`
+      )).join('\n----------------------------------------\n\n');
+
+      downloadBlob('wedding-guest-messages.txt', 'text/plain;charset=utf-8', body);
+    }
+
+    function downloadSongs() {
+      const songs = Array.isArray(rsvpMedia.songs) ? rsvpMedia.songs : [];
+      if (!songs.length) {
+        alert('There are no song requests to download yet.');
+        return;
+      }
+
+      const header = 'Guest,Song Request,Attendance,Submitted';
+      const rows = songs.map((row) => [
+        `"${String(row.display_name || '').replace(/"/g, '""')}"`,
+        `"${String(row.song_request || '').replace(/"/g, '""')}"`,
+        `"${String(formatAttendanceLabel(row.attendance)).replace(/"/g, '""')}"`,
+        `"${String(formatLongDateTime(row.submitted_at)).replace(/"/g, '""')}"`
+      ].join(','));
+
+      downloadBlob('wedding-song-requests.csv', 'text/csv;charset=utf-8', [header, ...rows].join('\n'));
     }
 
     // â”€â”€â”€ ADDING FROM DASH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

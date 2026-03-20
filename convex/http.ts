@@ -173,6 +173,24 @@ http.route({
 });
 
 http.route({
+  path: "/api/rsvp-media",
+  method: "OPTIONS",
+  handler: httpAction(async () => noContent()),
+});
+
+http.route({
+  path: "/api/rsvp-media",
+  method: "GET",
+  handler: httpAction(async (ctx, request) => {
+    if (!(await requireAdmin(ctx, request))) {
+      return json({ ok: false, error: "Unauthorized" }, 401);
+    }
+    const payload = await ctx.runQuery(internal.rsvps.listMedia, {});
+    return json(payload);
+  }),
+});
+
+http.route({
   path: "/api/guest/delete",
   method: "OPTIONS",
   handler: httpAction(async () => noContent()),
