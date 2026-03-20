@@ -133,6 +133,7 @@
       position: relative;
       display: flex;
       flex-direction: column;
+      padding-bottom: 8px;
       overflow: visible; /* Remove crop */
     }
 
@@ -150,7 +151,7 @@
 
     /* Photo */
     .photo-frame {
-      flex: 0 0 62%;
+      flex: 0 0 56%;
       width: 100%;
       overflow: visible; /* Remove crop */
       border-bottom: 2.5px solid transparent;
@@ -169,18 +170,22 @@
     /* Names & text */
     .reveal-content {
       position: relative;
+      flex: 1 1 auto;
       width: 100%;
-      max-width: 95%;
+      max-width: 100%;
       z-index: 20;
       pointer-events: none;
       text-align: center;
-      padding: 10px 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 18px 14px 18px;
       margin: 0 auto;
     }
 
     .reveal-names {
       font-family: 'WeddingScript2', 'WeddingScript3', 'Great Vibes', cursive;
-      font-size: clamp(2rem, 7.5vw, 3rem);
+      font-size: clamp(2.3rem, 8.2vw, 3.45rem);
       background: var(--gold-foil);
       background-size: 200% auto;
       -webkit-background-clip: text;
@@ -188,11 +193,11 @@
       background-clip: text;
       filter: drop-shadow(0 2px 5px rgba(0,0,0,0.45));
       animation: shine 4s linear infinite;
-      line-height: 0.9;
+      line-height: 0.86;
       white-space: normal;
       overflow: visible;
       text-wrap: balance;
-      margin-bottom: 2px;
+      margin-bottom: 0.35rem;
     }
 
     .ampersand {
@@ -212,26 +217,27 @@
     }
 
     .reveal-sub {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       letter-spacing: 2.5px;
       color: var(--ivory);
       text-transform: uppercase;
-      margin-top: 2px;
+      margin-top: 0;
     }
 
     .reveal-date {
-      font-size: 0.7rem;
-      letter-spacing: 2px;
+      font-size: 0.78rem;
+      letter-spacing: 2.2px;
       text-transform: uppercase;
       color: var(--gold-solid);
       font-weight: bold;
-      margin-top: 4px;
+      margin-top: auto;
+      padding-top: 1.15rem;
     }
 
     .reveal-hint {
       font-size: 0.58rem;
       color: #999;
-      margin-top: 6px;
+      margin-top: 0.75rem;
       letter-spacing: 1.5px;
       text-transform: uppercase;
     }
@@ -1341,6 +1347,21 @@
 
     /* ─── RESPONSIVE ──────────────────────────────── */
     @media (max-width: 768px) {
+      .gold-trim-container {
+        padding-bottom: 6px;
+      }
+
+      .reveal-content {
+        padding: 16px 12px 16px;
+      }
+
+      .reveal-names {
+        font-size: clamp(2.1rem, 9.8vw, 3rem);
+      }
+
+      .reveal-date {
+        padding-top: 0.95rem;
+      }
       
 
       
