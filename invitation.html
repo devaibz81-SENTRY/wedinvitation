@@ -10,6 +10,10 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400&display=swap"
     rel="stylesheet" />
+  <link rel="preload" as="image" href="photos/main-card-photo.gif" fetchpriority="high" />
+  <link rel="preload" as="image" href="photos/cheers.gif" />
+  <link rel="preload" as="image" href="photos/dinner.gif" />
+  <link rel="preload" as="image" href="photos/story-photo.gif" />
   <style>
     :root {
       --black: #2b2520;
@@ -1117,7 +1121,7 @@
       <div class="photo-frame large reveal">
         <div class="photo-inner">
           <div class="photo-placeholder">
-            <img src="photos/cheers.gif" alt="Rosanna and Andrew celebrating" loading="lazy" />
+            <img src="photos/cheers.gif" alt="Rosanna and Andrew celebrating" loading="lazy" decoding="async" />
           </div>
           <div class="photo-caption">Together forever begins here</div>
         </div>
@@ -1126,7 +1130,7 @@
       <div class="photo-frame reveal">
         <div class="photo-inner">
           <div class="photo-placeholder">
-            <img src="photos/dinner.gif" alt="Rosanna and Andrew at dinner" loading="lazy" />
+            <img src="photos/dinner.gif" alt="Rosanna and Andrew at dinner" loading="lazy" decoding="async" />
           </div>
           <div class="photo-caption">A glance that says everything</div>
         </div>
@@ -1135,7 +1139,7 @@
       <div class="photo-frame tall reveal">
         <div class="photo-inner">
           <div class="photo-placeholder">
-            <img class="gallery-main-photo" src="photos/main-card-photo.gif" alt="Rosanna and Andrew together" loading="lazy" />
+            <img class="gallery-main-photo" src="photos/main-card-photo.gif" alt="Rosanna and Andrew together" loading="lazy" decoding="async" />
           </div>
           <div class="photo-caption">Two hearts, one story</div>
         </div>
@@ -1227,7 +1231,7 @@
     <div class="story-visual reveal">
       <div class="story-img-wrap">
         <div class="story-placeholder">
-          <img src="photos/story-photo.gif" alt="Rosanna and Andrew story photo" loading="lazy" />
+          <img src="photos/story-photo.gif" alt="Rosanna and Andrew story photo" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="story-img-accent"></div>
@@ -1508,6 +1512,29 @@
     }, { threshold: 0.1 }); // Lower threshold for earlier activation on mobile 
     reveals.forEach(el => observer.observe(el));
 
+    function primeMediaCache() {
+      const mediaSources = [
+        'photos/main-card-photo.gif',
+        'photos/cheers.gif',
+        'photos/dinner.gif',
+        'photos/story-photo.gif',
+        'photos/new_dress_code.jpeg'
+      ];
+      const warm = () => {
+        mediaSources.forEach((src, index) => {
+          const img = new Image();
+          img.decoding = 'async';
+          if ('fetchPriority' in img) img.fetchPriority = index === 0 ? 'high' : 'low';
+          img.src = src;
+        });
+      };
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(warm, { timeout: 1200 });
+      } else {
+        setTimeout(warm, 250);
+      }
+    }
+
     // Staggered media loading reveal for hosted photos.
     function setupMediaLoading() {
       const mediaItems = Array.from(document.querySelectorAll(
@@ -1524,6 +1551,7 @@
         img.addEventListener('error', markReady, { once: true });
       });
     }
+    primeMediaCache();
     setupMediaLoading();
 
     // Intro card reveal + music
