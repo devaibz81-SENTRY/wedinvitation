@@ -1,9 +1,10 @@
 import { httpRouter } from "convex/server";
-import { internal } from "./_generated/api";
+import { api, internal } from "./_generated/api";
 import { httpAction } from "./_generated/server";
 import { Id } from "./_generated/dataModel";
 
 const http = httpRouter();
+declare const process: { env: Record<string, string | undefined> };
 
 function corsHeaders() {
   return {
@@ -186,6 +187,21 @@ http.route({
       return json({ ok: false, error: "Unauthorized" }, 401);
     }
     const payload = await ctx.runQuery(internal.rsvps.listMedia, {});
+    return json(payload);
+  }),
+});
+
+http.route({
+  path: "/api/messages-vault",
+  method: "OPTIONS",
+  handler: httpAction(async () => noContent()),
+});
+
+http.route({
+  path: "/api/messages-vault",
+  method: "GET",
+  handler: httpAction(async (ctx) => {
+    const payload = await ctx.runQuery((api.rsvps as any).listMessagesVault, {});
     return json(payload);
   }),
 });

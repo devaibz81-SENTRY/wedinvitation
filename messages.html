@@ -613,12 +613,12 @@
 <body>
   <div class="shell">
     <section id="auth-screen" class="auth-card hidden" aria-live="polite">
-      <span class="kicker">Private Couple Portal</span>
-      <h1>Message Vault Locked</h1>
-      <p>This page only opens with a valid admin session, so guest messages stay private. Open the admin dashboard to
-        sign in, then come right back here.</p>
+      <span class="kicker">Couple Message Vault</span>
+      <h1>Message Vault Unavailable</h1>
+      <p>We could not load the guest message presentation right now. Your guest notes may still be saved, but the
+        message route is not responding yet.</p>
       <div class="btn-row">
-        <a class="btn" href="/admin">Open Admin</a>
+        <a class="btn" href="/">Back To Invitation</a>
         <button class="ghost-btn" onclick="location.reload()">Try Again</button>
       </div>
     </section>
@@ -634,7 +634,7 @@
           <button class="ghost-btn" onclick="copyPresentationLink()">Copy Presentation Link</button>
           <button class="ghost-btn" onclick="downloadMessages('txt')">Download TXT</button>
           <button class="ghost-btn" onclick="downloadMessages('json')">Download JSON</button>
-          <a class="btn" href="/admin">Back To Admin</a>
+          <a class="btn" href="/">Back To Invitation</a>
         </div>
       </header>
 
@@ -695,8 +695,6 @@
 
   <script>
     const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
-    const SESSION_KEY = 'ra_admin_token';
-    let adminToken = localStorage.getItem(SESSION_KEY) || '';
     let messages = [];
     let currentIndex = 0;
     let currentStage = 'sender';
@@ -748,22 +746,6 @@
       });
     }
 
-    function authHeaders(extra = {}) {
-      return { ...extra, Authorization: `Bearer ${adminToken}` };
-    }
-
-    async function hasValidSession() {
-      if (!adminToken) return false;
-      try {
-        const res = await fetch(`${CONVEX_HTTP_URL}/api/auth/me`, {
-          headers: authHeaders()
-        });
-        return res.ok;
-      } catch {
-        return false;
-      }
-    }
-
     async function copyText(text, successMessage) {
       const value = String(text || '').trim();
       if (!value) return;
@@ -790,8 +772,8 @@
     }
 
     function showAuthScreen(title, body) {
-      document.querySelector('#auth-screen h1').textContent = title || 'Message Vault Locked';
-      document.querySelector('#auth-screen p').textContent = body || 'This page only opens with a valid admin session, so guest messages stay private. Open the admin dashboard to sign in, then come right back here.';
+      document.querySelector('#auth-screen h1').textContent = title || 'Message Vault Unavailable';
+      document.querySelector('#auth-screen p').textContent = body || 'We could not load the guest message presentation right now. Your guest notes may still be saved, but the message route is not responding yet.';
       document.getElementById('auth-screen').classList.remove('hidden');
       document.getElementById('app').classList.add('hidden');
     }
@@ -851,7 +833,7 @@
           <div class="message-footer">
             <div class="note-signature">
               <strong>Message Vault</strong>
-              <span class="scene-meta">Protected by your admin session</span>
+              <span class="scene-meta">Ready for your guest keepsakes</span>
             </div>
           </div>
         </article>
@@ -1001,29 +983,12 @@
     }
 
     async function init() {
-      if (!adminToken || !(await hasValidSession())) {
-        adminToken = '';
-        localStorage.removeItem(SESSION_KEY);
-        showAuthScreen();
-        return;
-      }
-
       try {
-        const res = await fetch(`${CONVEX_HTTP_URL}/api/rsvp-media`, {
-          headers: authHeaders()
-        });
-
-        if (res.status === 401) {
-          adminToken = '';
-          localStorage.removeItem(SESSION_KEY);
-          showAuthScreen();
-          return;
-        }
-
+        const res = await fetch(`${CONVEX_HTTP_URL}/api/messages-vault`);
         if (res.status === 404) {
           showAuthScreen(
             'Message Vault Not Ready',
-            'Your admin session is fine, but the songs and messages Convex route is not deployed yet. Deploy the Convex backend, then reload this page.'
+            'The public message vault route is not deployed yet. The guest notes may still be saved in Convex, but this presentation cannot open until that route is live.'
           );
           return;
         }
@@ -1051,7 +1016,7 @@
       } catch {
         showAuthScreen(
           'Message Vault Unavailable',
-          'We could not load guest messages from Convex right now. Your data may still be there, but the route is not responding yet.'
+          'We could not load guest messages from Convex right now. Your data may still be there, but the public presentation route is not responding yet.'
         );
       }
     }
