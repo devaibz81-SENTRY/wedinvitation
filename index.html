@@ -2183,50 +2183,33 @@
     var overlay   = document.getElementById('intro-overlay');
     var site      = document.getElementById('main-invitation-container');
     var music     = document.getElementById('bg-music');
-    var hasPlayed = false;
+    var gifStarted = false;
     
-    /* GIF animation ends and fades into invitation */
-    if (introGif) {
-      introGif.addEventListener('animationend', function() {
-        if (!hasPlayed) {
-          hasPlayed = true;
-          gifContainer.classList.add('playing');
-        }
-      });
-    }
-    
-    /* Click/tap to play GIF and transition to invitation */
+    /* Click/tap to play GIF - waits 10 seconds then fades */
     if (gifContainer) {
       gifContainer.addEventListener('click', function() {
-        if (!hasPlayed) {
-          hasPlayed = true;
-          introGif.src = 'photos/invitation-3.gif?' + Date.now();
-          introGif.style.animation = 'none';
-          introGif.offsetHeight;
-          introGif.style.animation = 'gifPlay 3s ease-out forwards';
-        } else {
-          gifContainer.classList.add('fade-out');
+        if (!gifStarted) {
+          gifStarted = true;
+          gifContainer.classList.add('playing');
           music.play().catch(function() {});
+          
+          /* After 10 seconds, fade out GIF and show invitation */
           setTimeout(function() {
-            site.style.display = 'block';
+            gifContainer.classList.add('fade-out');
             setTimeout(function() {
-              site.style.opacity = '1';
-              overlay.style.display = 'none';
-              document.body.style.overflow = 'auto';
-              document.body.style.position = 'static';
-              window.dispatchEvent(new Event('scroll'));
-            }, 100);
-          }, 1400);
+              site.style.display = 'block';
+              setTimeout(function() {
+                site.style.opacity = '1';
+                overlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                document.body.style.position = 'static';
+                window.dispatchEvent(new Event('scroll'));
+              }, 100);
+            }, 1500);
+          }, 10000);
         }
       });
     }
-    
-    /* Animation for GIF playback */
-    (function addGifAnimation() {
-      var s = document.createElement('style');
-      s.textContent = '@keyframes gifPlay { 0% { opacity: 0; transform: scale(0.8); } 10% { opacity: 1; transform: scale(1); } 70% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.05); } }';
-      document.head.appendChild(s);
-    })();
 
     // Falling leaf effect behind the intro card
     var leafChars = ['❦', '❧', '❦', '✤'];
