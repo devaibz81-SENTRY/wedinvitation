@@ -364,13 +364,13 @@
       background-color: var(--dark-elegant);
       background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
       clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-bottom: 1.5px solid var(--gold-solid);
       z-index: 15;
       transform-origin: top;
       transition: transform var(--transition-speed) cubic-bezier(0.7, 0, 0.3, 1);
       transform-style: preserve-3d;
       filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
       pointer-events: none;
-      overflow: visible;
     }
 
     /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
@@ -379,12 +379,14 @@
     .wax-seal {
       position: absolute;
       left: 50%;
-      top: 50%;
+      top: 50%;           /* sits on the flap crease */
       width: clamp(90px, 25vw, 120px);
       height: clamp(90px, 25vw, 120px);
       transform: translate(-50%, -50%);
       z-index: 30;
       cursor: pointer;
+      overflow: hidden;
+      border-radius: 50%;
       filter: drop-shadow(0 6px 14px rgba(0,0,0,0.75));
       transition: transform var(--transition-speed) cubic-bezier(0.7, 0, 0.3, 1),
                   opacity 0.4s ease 0.6s;
@@ -394,6 +396,7 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
+      border-radius: 50%;
       display: block;
     }
 
@@ -1749,9 +1752,9 @@
 </head>
 <body>
 
-  <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-       INTRO OVERLAY
-  ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
+  <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+       INTRO GIF OVERLAY
+   ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
   <div id="intro-overlay">
     <div class="intro-gif-container" id="intro-gif-container">
       <div class="invited-text">You are Invited</div>
@@ -1759,6 +1762,11 @@
       <div class="enter-prompt" id="enter-prompt">Tap to Enter</div>
     </div>
   </div>
+
+  <!-- MUSIC -->
+  <audio id="bg-music" preload="auto" loop>
+    <source src="audio/MUSIC.mp3" type="audio/mpeg">
+  </audio>
 
   <!-- MUSIC -->
   <audio id="bg-music" preload="auto" loop>
@@ -1775,6 +1783,8 @@
   </button>
 
   
+  </div>
+
   <!-- LAYER 2: MAIN INVITATION SITE -->
   <div id="main-invitation-container">
     
@@ -2203,56 +2213,13 @@
   </audio>
 
   <script>
-    /* --- INTRO GIF SCRIPTS --- */
-    var gifContainer = document.getElementById('intro-gif-container');
-    var introGif = document.getElementById('intro-gif');
-    var enterPrompt = document.getElementById('enter-prompt');
+    /* --- CARD SCRIPTS --- */
+    var card      = document.getElementById('main-card');
     var overlay   = document.getElementById('intro-overlay');
     var site      = document.getElementById('main-invitation-container');
     var music     = document.getElementById('bg-music');
-    var canEnter = false;
-    
-    /* Wait for GIF to load, then show enter prompt after 10s */
-    if (introGif) {
-      introGif.onload = function() {
-        setTimeout(function() {
-          if (enterPrompt) enterPrompt.classList.add('visible');
-          canEnter = true;
-        }, 10000);
-      };
-      /* Fallback if GIF is cached */
-      if (introGif.complete) {
-        setTimeout(function() {
-          if (enterPrompt) enterPrompt.classList.add('visible');
-          canEnter = true;
-        }, 10000);
-      }
-    }
-    
-    /* Click to enter - animate GIF off screen and show invitation */
-    if (gifContainer) {
-      gifContainer.addEventListener('click', function() {
-        if (!canEnter) return;
-        
-        /* Start music */
-        music.play().catch(function() {});
-        
-        /* Animate GIF flying off screen */
-        gifContainer.classList.add('exit');
-        
-        /* Show invitation after animation */
-        setTimeout(function() {
-          site.style.display = 'block';
-          setTimeout(function() {
-            site.style.opacity = '1';
-            overlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            document.body.style.position = 'static';
-            window.dispatchEvent(new Event('scroll'));
-          }, 100);
-        }, 1200);
-      });
-    }
+    var enterBtn  = document.getElementById('enter-card-btn');
+    var state     = 0;
 
     // Falling leaf effect behind the intro card
     var leafChars = ['❦', '❧', '❦', '✤'];
