@@ -1665,55 +1665,82 @@
       position: fixed;
       inset: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 9999;
       background: var(--cream);
-      cursor: pointer;
     }
     
     .intro-gif {
-      max-width: 90vw;
-      max-height: 90vh;
+      max-width: 95vw;
+      max-height: 85vh;
       object-fit: contain;
-      animation: gifScale 0.5s ease-out forwards;
+      animation: gifScale 0.6s ease-out forwards;
     }
     
     @keyframes gifScale {
-      from { transform: scale(0.9); opacity: 0; }
+      from { transform: scale(0.85); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
     
-    .tap-hint {
+    .invited-text {
+      font-family: 'WeddingScript2', 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 6vw, 4rem);
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      margin-bottom: 2vh;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      animation: fadeInUp 1s ease-out 0.5s both;
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .enter-prompt {
       position: absolute;
-      bottom: 8vh;
+      bottom: 10vh;
       left: 50%;
       transform: translateX(-50%);
       color: var(--gold);
       font-family: 'Cormorant Garamond', serif;
-      font-size: 0.9rem;
-      letter-spacing: 0.15em;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    
+    .enter-prompt.visible {
+      opacity: 1;
+      pointer-events: auto;
       animation: pulse 2s ease-in-out infinite;
     }
     
     @keyframes pulse {
-      0%, 100% { opacity: 0.6; }
+      0%, 100% { opacity: 0.7; }
       50% { opacity: 1; }
     }
     
-    .intro-gif-container.playing .tap-hint {
-      opacity: 0;
-      transition: opacity 0.3s;
+    .intro-gif-container.exit .intro-gif {
+      animation: flyOff 1s ease-in forwards;
     }
     
-    .intro-gif-container.fade-out {
-      animation: fadeOutGif 1.5s ease-out forwards;
+    @keyframes flyOff {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-120vh) scale(0.6); opacity: 0; }
     }
     
-    @keyframes fadeOutGif {
-      0% { opacity: 1; }
-      100% { opacity: 0; pointer-events: none; }
+    .intro-gif-container.exit {
+      animation: fadeOutBg 0.8s ease-out 0.5s forwards;
+    }
+    
+    @keyframes fadeOutBg {
+      to { opacity: 0; pointer-events: none; }
     }
     
     /* Background Music Toggle override for merger */
@@ -1727,8 +1754,9 @@
   ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
   <div id="intro-overlay">
     <div class="intro-gif-container" id="intro-gif-container">
+      <div class="invited-text">You're Invited</div>
       <img src="photos/invitation-3.gif" alt="Wedding Invitation" id="intro-gif" class="intro-gif">
-      <div class="tap-hint">Tap to open</div>
+      <div class="enter-prompt" id="enter-prompt">Tap to Enter</div>
     </div>
   </div>
 
@@ -2180,34 +2208,51 @@
     /* --- INTRO GIF SCRIPTS --- */
     var gifContainer = document.getElementById('intro-gif-container');
     var introGif = document.getElementById('intro-gif');
+    var enterPrompt = document.getElementById('enter-prompt');
     var overlay   = document.getElementById('intro-overlay');
     var site      = document.getElementById('main-invitation-container');
     var music     = document.getElementById('bg-music');
-    var gifStarted = false;
+    var canEnter = false;
     
-    /* Click/tap to play GIF - waits 10 seconds then fades */
+    /* Wait for GIF to load, then show enter prompt after 10s */
+    if (introGif) {
+      introGif.onload = function() {
+        setTimeout(function() {
+          if (enterPrompt) enterPrompt.classList.add('visible');
+          canEnter = true;
+        }, 10000);
+      };
+      /* Fallback if GIF is cached */
+      if (introGif.complete) {
+        setTimeout(function() {
+          if (enterPrompt) enterPrompt.classList.add('visible');
+          canEnter = true;
+        }, 10000);
+      }
+    }
+    
+    /* Click to enter - animate GIF off screen and show invitation */
     if (gifContainer) {
       gifContainer.addEventListener('click', function() {
-        if (!gifStarted) {
-          gifStarted = true;
-          gifContainer.classList.add('playing');
-          music.play().catch(function() {});
-          
-          /* After 10 seconds, fade out GIF and show invitation */
+        if (!canEnter) return;
+        
+        /* Start music */
+        music.play().catch(function() {});
+        
+        /* Animate GIF flying off screen */
+        gifContainer.classList.add('exit');
+        
+        /* Show invitation after animation */
+        setTimeout(function() {
+          site.style.display = 'block';
           setTimeout(function() {
-            gifContainer.classList.add('fade-out');
-            setTimeout(function() {
-              site.style.display = 'block';
-              setTimeout(function() {
-                site.style.opacity = '1';
-                overlay.style.display = 'none';
-                document.body.style.overflow = 'auto';
-                document.body.style.position = 'static';
-                window.dispatchEvent(new Event('scroll'));
-              }, 100);
-            }, 1500);
-          }, 10000);
-        }
+            site.style.opacity = '1';
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.body.style.position = 'static';
+            window.dispatchEvent(new Event('scroll'));
+          }, 100);
+        }, 1200);
       });
     }
 
