@@ -31,22 +31,22 @@
     }
 
     /* ΓöÇΓöÇ FALLING HEARTS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
-    .heart {
+    .leaf {
       position: absolute;
       top: -60px;
       pointer-events: none;
       user-select: none;
-      font-size: clamp(14px, 3vw, 22px);
+      font-size: clamp(16px, 3vw, 24px);
       opacity: 0;
-      animation: fallHeart linear infinite;
+      animation: fallLeaf linear infinite;
       z-index: 1;
-      filter: drop-shadow(0 1px 3px rgba(180,100,120,0.25));
+      filter: drop-shadow(0 2px 4px rgba(83,57,20,0.22));
     }
-    @keyframes fallHeart {
-      0%   { transform: translateY(0) rotate(0deg) scale(0.8);    opacity: 0; }
-      5%   { opacity: 0.9; }
-      85%  { opacity: 0.6; }
-      100% { transform: translateY(calc(100vh + 80px)) rotate(25deg) scale(0.6); opacity: 0; }
+    @keyframes fallLeaf {
+      0%   { transform: translateY(-8vh) translateX(0) rotate(0deg) scale(0.85); opacity: 0; }
+      10%  { opacity: 0.8; }
+      50%  { transform: translateY(45vh) translateX(var(--sway, 24px)) rotate(120deg) scale(1); }
+      100% { transform: translateY(110vh) translateX(calc(var(--sway, 24px) * 0.45)) rotate(260deg) scale(0.72); opacity: 0; }
     }
 
     /* ΓöÇΓöÇ DESIGN TOKENS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
@@ -1982,8 +1982,8 @@
             </svg>
           </span>
           <div class="detail-label">Ceremony</div>
-          <div class="detail-value">Saturday, 4th July 2026</div>
-          <div class="detail-sub">Sacred Heart Church at 2:00 PM</div>
+          <div class="detail-value">Sacred Heart Church</div>
+          <div class="detail-sub">4th July 2026 at 2:00 PM</div>
         </div>
         <div class="detail-card reveal">
           <span class="detail-icon" aria-hidden="true">
@@ -1992,8 +1992,8 @@
             </svg>
           </span>
           <div class="detail-label">Reception</div>
-          <div class="detail-value">The Gully Grill, San Ignacio</div>
-          <div class="detail-sub">Following the ceremony in San Ignacio, Cayo, Belize</div>
+          <div class="detail-value">The Gully Grill</div>
+          <div class="detail-sub">Cocktail Hour: 4:00 PM - 6:30 PM | Followed by Dinner and Dancing</div>
         </div>
         <div class="detail-card reveal">
           <span class="detail-icon" aria-hidden="true">
@@ -2023,7 +2023,7 @@
     <div class="gift-container reveal" style="max-width: 600px; margin: 0 auto;">
       <p class="section-eyebrow">A Token of Love</p>
       <h2 class="section-title" style="font-size: 2.2rem; margin-bottom: 2rem;">Wedding Gift</h2>
-      <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #555; margin-bottom: 3rem; line-height: 1.8;">Your presence at our wedding is appreciated. Should you wish to honor us with a gift, we would gratefully appreciate a monetary contribution toward our future together.</p>
+      <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #555; margin-bottom: 3rem; line-height: 1.8;">Your presence at our wedding is appreciated. Should you wish to honor us with a gift, we would appreciate a monetary contribution toward our future together.</p>
 
       <!-- Interactive Gift Card Trigger (Luxury Redesign) -->
       <div class="gift-card-trigger" onclick="openGiftModal()" style="
@@ -2176,34 +2176,34 @@
     var enterBtn  = document.getElementById('enter-card-btn');
     var state     = 0;
 
-    // Heart Spawning Logic (Scoped to overlay)
-    var heartChars = ['♥', '💖', '💕', '❤', '♥'];
-    var maxHearts  = 35;
-    var heartColors = ['#c9768a', '#b85c72', '#d4a0b0', '#c07080', '#e8c4b8'];
+    // Falling leaf effect behind the intro card
+    var leafChars = ['❦', '❧', '❦', '✤'];
+    var maxLeaves = 28;
+    var leafColors = ['#b88a44', '#8f6a2f', '#c29b5c', '#7c5b28', '#d8b780'];
 
-    function spawnHeart() {
+    function spawnLeaf() {
       if (!overlay || !overlay.parentNode) return;
       var el = document.createElement('span');
-      el.className = 'heart';
-      el.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
-      var size = 12 + Math.random() * 20;
+      el.className = 'leaf';
+      el.textContent = leafChars[Math.floor(Math.random() * leafChars.length)];
+      var size = 14 + Math.random() * 18;
       var left = Math.random() * 100;
-      var dur = 7 + Math.random() * 8;
+      var dur = 8 + Math.random() * 9;
       var delay = Math.random() * -15;
-      var maxOpac = 0.2 + Math.random() * 0.4;
-      var color = heartColors[Math.floor(Math.random() * heartColors.length)];
-      var sway = (Math.random() - 0.5) * 60;
+      var maxOpac = 0.16 + Math.random() * 0.26;
+      var color = leafColors[Math.floor(Math.random() * leafColors.length)];
+      var sway = (Math.random() - 0.5) * 80;
       el.style.cssText = 'font-size:'+size+'px;left:'+left+'%;color:'+color+';animation-duration:'+dur+'s;animation-delay:'+delay+'s;--max-opac:'+maxOpac+';--sway:'+sway+'px';
       overlay.appendChild(el);
-      setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); if (overlay.querySelectorAll('.heart').length < maxHearts) spawnHeart(); }, (dur + 2) * 1000);
+      setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); if (overlay.querySelectorAll('.leaf').length < maxLeaves) spawnLeaf(); }, (dur + 2) * 1000);
     }
     
     (function patchKeyframes() {
       var s = document.createElement('style');
-      s.textContent = '@keyframes fallHeart { 0% { transform: translateY(-10vh) translateX(0) rotate(0deg) scale(0.5); opacity: 0; } 10% { opacity: var(--max-opac, 0.4); } 50% { transform: translateY(50vh) translateX(var(--sway, 20px)) rotate(180deg) scale(1); } 100% { transform: translateY(110vh) translateX(calc(var(--sway, 20px) * 0.5)) rotate(360deg) scale(0.5); opacity: 0; } }';
+      s.textContent = '@keyframes fallLeaf { 0% { transform: translateY(-10vh) translateX(0) rotate(0deg) scale(0.78); opacity: 0; } 10% { opacity: var(--max-opac, 0.28); } 50% { transform: translateY(50vh) translateX(var(--sway, 24px)) rotate(140deg) scale(1); } 100% { transform: translateY(110vh) translateX(calc(var(--sway, 24px) * 0.45)) rotate(280deg) scale(0.7); opacity: 0; } }';
       document.head.appendChild(s);
     })();
-    for (var i = 0; i < maxHearts; i++) { setTimeout(spawnHeart, i * 250); }
+    for (var i = 0; i < maxLeaves; i++) { setTimeout(spawnLeaf, i * 320); }
 
     /* --- TRANSITION LOGIC --- */
     function showInvitationSite() {
