@@ -1,84 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rosanna & Andrew - July 4th, 2026 - San Ignacio, Belize</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400&display=swap"
+    rel="stylesheet" />
+  <link rel="preload" as="image" href="photos/main-card-photo.gif" fetchpriority="high" />
+  <link rel="preload" as="image" href="photos/cheers.gif" />
+  <link rel="preload" as="image" href="photos/dinner.gif" />
+  <link rel="preload" as="image" href="photos/story-photo.gif" />
   <style>
-    /* --- INTEGRATED CARD STYLES --- */
-    
-    /* ΓöÇΓöÇ CUSTOM FONTS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
-    @font-face {
-      font-family: 'WeddingScript3';
-      src: url('fonts/option 3.otf') format('opentype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'WeddingScript2';
-      src: url('fonts/option 2.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    /* ΓöÇΓöÇ FALLING HEARTS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
-    .heart {
-      position: absolute;
-      top: -60px;
-      pointer-events: none;
-      user-select: none;
-      font-size: clamp(14px, 3vw, 22px);
-      opacity: 0;
-      animation: fallHeart linear infinite;
-      z-index: 1;
-      filter: drop-shadow(0 1px 3px rgba(180,100,120,0.25));
-    }
-    @keyframes fallHeart {
-      0%   { transform: translateY(0) rotate(0deg) scale(0.8);    opacity: 0; }
-      5%   { opacity: 0.9; }
-      85%  { opacity: 0.6; }
-      100% { transform: translateY(calc(100vh + 80px)) rotate(25deg) scale(0.6); opacity: 0; }
-    }
-
-    /* ΓöÇΓöÇ DESIGN TOKENS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
     :root {
-      --gold-foil: linear-gradient(135deg,
-        #a67c00 0%, #bf9b30 20%, #ffefaa 45%,
-        #ffffff 50%, #ffefaa 55%, #bf9b30 80%, #a67c00 100%);
-      --gold-solid: #bf9b30;
-      --ivory: #fdfcf8;
-      --dark-elegant: #1a1c22;
-      --transition-speed: 1.3s;
+      --black: #2b2520;
+      /* Soft brown-black */
+      --ivory: #f6efeb;
+      /* Nude/warm ivory */
+      --champagne: #e2d5be;
+      /* Champagne/Sand */
+      --blush: #d29e9a;
+      /* Dusty Rose */
+      --green: #8da38b;
+      /* Sage Green */
+      --gold: #cba97c;
+      /* Muted Light Gold */
+      --cream: #faf5f0;
+      /* Background Tint */
     }
 
-    /* ΓöÇΓöÇ RESET ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
-    *, *::before, *::after {
-      box-sizing: border-box;
+    *,
+    *::before,
+    *::after {
       margin: 0;
       padding: 0;
-      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
     }
 
-    /* ΓöÇΓöÇ BODY ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
-    body {
-      background-color: #f8f2e8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      position: fixed;
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
       width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Playfair Display', 'Georgia', serif;
     }
 
-    /* ΓöÇΓöÇ INTRO GIF OVERLAY ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
+    body {
+      background: var(--cream);
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      line-height: 1.55;
+      overflow-x: hidden;
+      width: 100%;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ─── GIF INTRO OVERLAY ─────────────────────────────────── */
     #intro-overlay {
       position: fixed;
       inset: 0;
@@ -111,7 +92,7 @@
     }
     
     .invited-text {
-      font-family: 'WeddingScript2', 'Cormorant Garamond', serif;
+      font-family: 'Great Vibes', cursive;
       font-size: clamp(2rem, 6vw, 4rem);
       color: var(--gold);
       letter-spacing: 0.05em;
@@ -167,387 +148,6 @@
     
     @keyframes fadeOutBg {
       to { opacity: 0; pointer-events: none; }
-    }
-
-    /* ΓöÇΓöÇ CARD CONTAINER ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
-    .intro-card {
-      width: min(92vw, 420px);
-      height: min(88vh, 720px);
-      perspective: 2000px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      border-radius: 4px;
-    }
-
-    @media (min-width: 768px) {
-      .intro-card { width: 420px; height: 720px; }
-    }
-
-    /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-       LAYER 1 ΓÇö IVORY INVITATION CARD (behind envelope)
-    ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
-    .inner-invitation {
-      position: absolute;
-      inset: 0;
-      background-color: var(--dark-elegant);
-      background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
-      border-radius: 4px;
-      display: flex;
-      flex-direction: column;
-      padding: 12px;
-      z-index: 1;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    /* Gold trim frame */
-    .gold-trim-container {
-      flex: 1;
-      border: 1px solid var(--gold-solid);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    /* Corner accents */
-    .trim-corner {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      z-index: 5;
-    }
-    .trim-top-left     { top: 5px;    left: 5px;  border-top: 2px solid var(--gold-solid); border-left:   2px solid var(--gold-solid); }
-    .trim-top-right    { top: 5px;    right: 5px; border-top: 2px solid var(--gold-solid); border-right:  2px solid var(--gold-solid); }
-    .trim-bottom-left  { bottom: 5px; left: 5px;  border-bottom: 2px solid var(--gold-solid); border-left:  2px solid var(--gold-solid); }
-    .trim-bottom-right { bottom: 5px; right: 5px; border-bottom: 2px solid var(--gold-solid); border-right: 2px solid var(--gold-solid); }
-
-    /* Photo */
-    .photo-frame {
-      height: 66%;
-      width: 100%;
-      overflow: hidden;
-      border-bottom: 2.5px solid transparent;
-      border-image: var(--gold-foil) 1;
-      flex-shrink: 0;
-    }
-    .photo-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center; /* Prevents top of photo from getting cropped out */
-      display: block;
-    }
-
-    /* Names & text */
-    .reveal-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 8px 12px;
-    }
-
-    .reveal-names {
-      font-family: 'WeddingScript2', 'WeddingScript3', 'Great Vibes', cursive;
-      font-size: clamp(1.7rem, 7.2vw, 2.4rem);
-      background: var(--gold-foil);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
-      animation: shine 4s linear infinite;
-      line-height: 1.15;
-    }
-
-    .ampersand {
-      font-family: 'Great Vibes', cursive;
-      font-size: 0.9em;
-      margin: 0 4px;
-    }
-
-    .reveal-surname {
-      font-family: 'Playfair Display', 'Georgia', serif;
-      font-size: 0.75rem;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      color: var(--gold-solid);
-      margin-top: 2px;
-      margin-bottom: 2px;
-    }
-
-    .reveal-sub {
-      font-size: 0.68rem;
-      letter-spacing: 2.5px;
-      color: var(--ivory);
-      text-transform: uppercase;
-      margin-top: 6px;
-    }
-
-    .reveal-date {
-      font-size: 0.68rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--gold-solid);
-      font-weight: bold;
-      margin-top: 5px;
-    }
-
-    .reveal-hint {
-      font-size: 0.58rem;
-      color: #999;
-      margin-top: 14px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-       LAYER 2 ΓÇö ENVELOPE BASE (dark rectangle)
-    ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
-    .envelope-base {
-      position: absolute;
-      inset: 0;
-      background-color: var(--dark-elegant);
-      background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
-      border-radius: 4px;
-      z-index: 5;
-      border: 1px solid rgba(191,155,48,0.3);
-      pointer-events: none;
-      transition: opacity 0.5s ease 0.5s;
-      overflow: hidden;
-    }
-
-    /* Gold border on envelope with shimmer sweep */
-    .envelope-gold-border {
-      position: absolute;
-      inset: 12px;
-      border: 1.5px solid var(--gold-solid);
-      pointer-events: none;
-      z-index: 6;
-      overflow: hidden;
-    }
-    .envelope-gold-border::after {
-      content: "";
-      position: absolute;
-      top: -100%;
-      left: -150%;
-      width: 50%;
-      height: 300%;
-      background: linear-gradient(
-        to right,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.4) 50%,
-        rgba(255,255,255,0) 100%
-      );
-      transform: rotate(30deg);
-      animation: shimmer 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-       LAYER 3 ΓÇö TRIANGULAR FLAP (rotates open)
-    ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
-    .envelope-flap-tri {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 50%;
-      background-color: var(--dark-elegant);
-      background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
-      clip-path: polygon(0 0, 100% 0, 50% 100%);
-      border-bottom: 1.5px solid var(--gold-solid);
-      z-index: 15;
-      transform-origin: top;
-      transition: transform var(--transition-speed) cubic-bezier(0.7, 0, 0.3, 1);
-      transform-style: preserve-3d;
-      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
-      pointer-events: none;
-    }
-
-    /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-       WAX SEAL ΓÇö sits on flap tip, animates with flap
-    ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
-    .wax-seal {
-      position: absolute;
-      left: 50%;
-      top: 50%;           /* sits on the flap crease */
-      width: clamp(90px, 25vw, 120px);
-      height: clamp(90px, 25vw, 120px);
-      transform: translate(-50%, -50%);
-      z-index: 30;
-      cursor: pointer;
-      overflow: hidden;
-      border-radius: 50%;
-      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.75));
-      transition: transform var(--transition-speed) cubic-bezier(0.7, 0, 0.3, 1),
-                  opacity 0.4s ease 0.6s;
-    }
-
-    .wax-seal img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border-radius: 50%;
-      display: block;
-    }
-
-    /* Shimmer gleam over seal removed per request */
-    .wax-seal::after {
-      display: none;
-    }
-
-    /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-       CLICK HINT
-    ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
-    .seal-hint {
-      position: absolute;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: var(--gold-solid);
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-size: 0.65rem;
-      animation: pulse 2.5s infinite;
-      white-space: nowrap;
-      z-index: 35;
-      transition: opacity 0.5s ease;
-    }
-
-    /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-       OPENED STATE
-    ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
-    .intro-card.is-open .envelope-flap-tri {
-      transform: rotateX(170deg);
-    }
-    .intro-card.is-open .envelope-base {
-      opacity: 0;
-    }
-    .intro-card.is-open .seal-hint {
-      opacity: 0;
-      pointer-events: none;
-    }
-    /* Seal flip-away animation on open */
-    .intro-card.is-open .wax-seal {
-      animation: sealFlipAway 0.7s cubic-bezier(0.55, 0, 1, 0.45) forwards;
-      pointer-events: none;
-    }
-
-    @keyframes sealFlipAway {
-      0%   { transform: translate(-50%, -50%) rotateY(0deg) scale(1);   opacity: 1; }
-      40%  { transform: translate(-50%, -80%) rotateY(90deg) scale(1.15);  opacity: 1; }
-      100% { transform: translate(-50%, -200%) rotateY(360deg) scale(0); opacity: 0; }
-    }
-
-    /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-       MUSIC TOGGLE BUTTON
-    ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
-    .music-btn {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 500;
-      width: 44px;
-      height: 44px;
-      background: rgba(26,28,34,0.9);
-      border: 1px solid var(--gold-solid);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      color: var(--gold-solid);
-    }
-    .music-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-    }
-
-    /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-       ANIMATIONS
-    ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
-    @keyframes shimmer {
-      0%   { left: -150%; }
-      30%  { left: 150%; }
-      100% { left: 150%; }
-    }
-
-    @keyframes shimmer-seal {
-      0%   { left: -100%; }
-      40%  { left: 200%; }
-      100% { left: 200%; }
-    }
-
-    @keyframes shine {
-      to { background-position: 200% center; }
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.4; }
-      50%       { opacity: 1; }
-    }
-
-    /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-       MAIN SITE (behind overlay) ΓÇö placeholder
-    ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
-    #main-site {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-    }
-  
-    
-    /* --- INTEGRATED SITE STYLES --- */
-    
-    :root {
-      --black: #2b2520;
-      /* Soft brown-black */
-      --ivory: #f6efeb;
-      /* Nude/warm ivory */
-      --champagne: #e2d5be;
-      /* Champagne/Sand */
-      --blush: #d29e9a;
-      /* Dusty Rose */
-      --green: #8da38b;
-      /* Sage Green */
-      --gold: #cba97c;
-      /* Muted Light Gold */
-      --cream: #faf5f0;
-      /* Background Tint */
-    }
-
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      overflow-x: hidden;
-      width: 100%;
-    }
-
-    body {
-      background: var(--cream);
-      color: var(--black);
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 400;
-      line-height: 1.55;
-      overflow-x: hidden;
-      width: 100%;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     /* ─── NAV ─────────────────────────────────────── */
@@ -675,8 +275,9 @@
     }
 
     .hero-names {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Great Vibes', cursive;
       font-size: clamp(2.2rem, 8vw, 5rem);
+      font-weight: 400;
       line-height: 1.1;
       color: var(--black);
       position: relative;
@@ -790,9 +391,10 @@
       color: white;
       text-decoration: none;
       font-size: 0.78rem;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       font-weight: 600;
+      font-family: 'Cormorant Garamond', serif;
       position: relative;
       overflow: hidden;
       opacity: 0;
@@ -801,7 +403,7 @@
     }
 
     .hero-cta:hover {
-      background: #7a8e78;
+      background: var(--black);
       transform: translateY(-2px);
     }
 
@@ -969,6 +571,10 @@
       transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
     }
 
+    .photo-placeholder img.gallery-main-photo {
+      object-position: center 30%;
+    }
+
     .photo-placeholder img.is-loaded,
     .story-placeholder img.is-loaded {
       opacity: 1;
@@ -1098,19 +704,52 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, var(--blush) 0%, var(--champagne) 100%);
+      background: linear-gradient(135deg, #f0e3d1 0%, #d9c3a0 100%);
     }
 
     .story-placeholder img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
       object-position: center center;
       opacity: 0;
-      transform: translateY(18px) scale(1.02);
+      transform: translateY(18px) scale(1);
       filter: saturate(0.9);
       transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
+      padding: 1rem;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 72%);
+    }
+
+    .story-lead-in {
+      margin-top: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .story-lead-card {
+      position: relative;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 1.25rem;
+      border: 1px solid rgba(191, 155, 48, 0.45);
+      background: linear-gradient(135deg, rgba(255, 248, 238, 0.95) 0%, rgba(239, 226, 205, 0.96) 100%);
+      box-shadow: 0 22px 44px rgba(62, 44, 21, 0.14);
+    }
+
+    .story-lead-card::before {
+      content: '';
+      position: absolute;
+      inset: 10px;
+      border: 1px solid rgba(191, 155, 48, 0.35);
+      pointer-events: none;
+    }
+
+    .story-lead-card img {
+      display: block;
+      width: 100%;
+      max-height: min(72vh, 680px);
+      object-fit: contain;
+      object-position: center center;
     }
 
     .story-placeholder-text {
@@ -1472,6 +1111,15 @@
         grid-auto-rows: auto;
       }
 
+      .story-lead-in {
+        margin-top: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .story-lead-card {
+        padding: 0.85rem;
+      }
+
       .photo-frame {
         min-height: 200px;
         max-height: 400px;
@@ -1500,29 +1148,9 @@
         display: none;
       }
     }
-  
-    
-    /* Font Unification: Use WeddingScript2 for Site Headers */
-    .section-title, .hero-names, .story-signature, .footer-names {
-      font-family: 'WeddingScript2', 'Great Vibes', cursive !important;
-    }
-    
-    /* Card Polish: Fix Name Cropping */
-    .reveal-content { padding: 4px 10px; }
-    .reveal-names { font-size: clamp(1.45rem, 6.2vw, 2.0rem); }
-
-    /* Merger Structural Adjustments */
-    #intro-overlay {
-      position: fixed; inset: 0; z-index: 10000;
-      transition: opacity 1s ease-in-out;
-    }
-    body { overflow: hidden; background: var(--cream); }
-    #main-invitation-container { display: none; opacity: 0; transition: opacity 1.2s ease; }
-    
-    /* Background Music Toggle override for merger */
-    #music-toggle-container { position: fixed; bottom: 24px; right: 24px; z-index: 10001; }
   </style>
 </head>
+
 <body>
 
   <!-- INTRO GIF OVERLAY -->
@@ -1536,12 +1164,8 @@
 
   <!-- MUSIC -->
   <audio id="bg-music" preload="auto" loop>
-    <source src="audio/MUSIC.mp3" type="audio/mpeg">
+    <source src="audio/MUSIC.mp3" type="audio/mpeg" />
   </audio>
-
-  <!-- LAYER 2: MAIN INVITATION SITE -->
-  <div id="main-invitation-container">
-
   <button id="music-toggle" class="music-toggle" type="button" aria-label="Toggle background music">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
@@ -1588,12 +1212,7 @@
 
     <p class="hero-date"
       style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 500; color: var(--gold);">
-      Saturday, the Fourth of July
-    </p>
-    <p class="hero-location" style="opacity: 0; animation: fadeUp 1s ease 1.9s forwards;">
-      <span
-        style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; font-size: 1.8rem; letter-spacing: 0.05em; color: var(--gold);">Two
-        Thousand Twenty-Six</span>
+      4th July 2026
     </p>
     <p class="hero-location"
       style="opacity: 0; animation: fadeUp 1s ease 2.1s forwards; color: var(--black); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">
@@ -1641,19 +1260,10 @@
 
     <div class="gallery-grid stagger">
 
-      <div class="photo-frame large reveal">
-        <div class="photo-inner">
-          <div class="photo-placeholder">
-            <img src="photos/photo1.gif" alt="Rosanna and Andrew portrait" loading="lazy" />
-          </div>
-          <div class="photo-caption">Together forever begins here</div>
-        </div>
-      </div>
-
       <div class="photo-frame reveal">
         <div class="photo-inner">
           <div class="photo-placeholder">
-            <img src="photos/photo2.gif" alt="Rosanna and Andrew candid" loading="lazy" />
+            <img src="photos/dinner.gif" alt="Rosanna and Andrew at dinner" loading="lazy" decoding="async" />
           </div>
           <div class="photo-caption">A glance that says everything</div>
         </div>
@@ -1662,18 +1272,18 @@
       <div class="photo-frame tall reveal">
         <div class="photo-inner">
           <div class="photo-placeholder">
-            <img src="photos/photo3.gif" alt="Rosanna and Andrew portrait in motion" loading="lazy" />
+            <img class="gallery-main-photo" src="photos/main-card-photo.gif" alt="Rosanna and Andrew together" loading="lazy" decoding="async" />
           </div>
           <div class="photo-caption">Two hearts, one story</div>
         </div>
       </div>
 
-      <div class="photo-frame reveal">
+      <div class="photo-frame large reveal">
         <div class="photo-inner">
           <div class="photo-placeholder">
-            <img src="photos/photo4.gif" alt="Rosanna and Andrew moment" loading="lazy" />
+            <img src="photos/cheers.gif" alt="Rosanna and Andrew celebrating" loading="lazy" decoding="async" />
           </div>
-          <div class="photo-caption">The moments we'll treasure</div>
+          <div class="photo-caption">Together forever begins here</div>
         </div>
       </div>
 
@@ -1681,6 +1291,12 @@
   </div>
 
   <!-- ─── OUR STORY ─────────────────────────────────── -->
+  <section class="story-lead-in reveal" aria-label="Story photo">
+    <div class="story-lead-card">
+      <img src="photos/story-photo.gif" alt="Rosanna and Andrew story portrait" loading="lazy" decoding="async" />
+    </div>
+  </section>
+
   <section id="story">
     <div class="story-text">
       <p class="section-eyebrow reveal">How It All Began</p>
@@ -1763,7 +1379,7 @@
     <div class="story-visual reveal">
       <div class="story-img-wrap">
         <div class="story-placeholder">
-          <img src="photos/story.gif" alt="Rosanna and Andrew story photo" loading="lazy" />
+          <img src="photos/story-photo.gif" alt="Rosanna and Andrew story photo" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="story-img-accent"></div>
@@ -1783,9 +1399,9 @@
               <path d="M12 3v18M3 12h18M6.5 6.5l11 11M17.5 6.5l-11 11"></path>
             </svg>
           </span>
-          <div class="detail-label">The Ceremony</div>
-          <div class="detail-value">Saturday<br />4th July, 2026</div>
-          <div class="detail-sub">2:00 PM - Ceremony Begins</div>
+          <div class="detail-label">Ceremony</div>
+          <div class="detail-value">Sacred Heart Church</div>
+          <div class="detail-sub">4th July 2026 at 2:00 PM</div>
         </div>
         <div class="detail-card reveal">
           <span class="detail-icon" aria-hidden="true">
@@ -1793,9 +1409,9 @@
               <path d="M12 3v18M3 12h18M6.5 6.5l11 11M17.5 6.5l-11 11"></path>
             </svg>
           </span>
-          <div class="detail-label">The Venue</div>
-          <div class="detail-value"><strong>Ceremony:</strong> Sacred Heart Church at 2:00 PM<br /><br /><strong>Reception:</strong> The Gully Grill, San Ignacio</div>
-          <div class="detail-sub">San Ignacio, Cayo, Belize</div>
+          <div class="detail-label">Reception</div>
+          <div class="detail-value">The Gully Grill</div>
+          <div class="detail-sub">Cocktail Hour: 4:00 PM - 6:30 PM | Followed by Dinner and Dancing</div>
         </div>
         <div class="detail-card reveal">
           <span class="detail-icon" aria-hidden="true">
@@ -1804,7 +1420,7 @@
             </svg>
           </span>
           <div class="detail-label">Dress Code</div>
-          <div class="detail-value">Tropical Formal<br />Elegance</div>
+          <div class="detail-value">Tropical Formal</div>
           <div class="detail-sub">Sage, Dusty Rose, Champagne</div>
         </div>
       </div>
@@ -1825,7 +1441,7 @@
     <div class="gift-container reveal" style="max-width: 600px; margin: 0 auto;">
       <p class="section-eyebrow">A Token of Love</p>
       <h2 class="section-title" style="font-size: 2.2rem; margin-bottom: 2rem;">Wedding Gift</h2>
-      <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #555; margin-bottom: 3rem; line-height: 1.8;">Your presence at our wedding is appreciated. Should you wish to honor us with a gift, we would gratefully appreciate a monetary contribution toward our future together.</p>
+      <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #555; margin-bottom: 3rem; line-height: 1.8;">Your presence at our wedding is appreciated. Should you wish to honor us with a gift, we would appreciate a monetary contribution toward our future together.</p>
 
       <!-- Interactive Gift Card Trigger (Luxury Redesign) -->
       <div class="gift-card-trigger" onclick="openGiftModal()" style="
@@ -1958,87 +1574,43 @@
   <!-- ─── FOOTER ────────────────────────────────────── -->
   <footer>
     <div class="footer-names">Rosanna &amp; Andrew</div>
-    <p style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">Saturday, the Fourth of
-      July - <span
-        style="font-weight: 500; font-size: 1.6rem; letter-spacing: 0.02em; color: var(--gold); vertical-align: middle;">Two
-        Thousand Twenty-Six</span> - San Ignacio, Belize</p>
+    <p style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">4th July 2026 - San Ignacio, Belize</p>
     <p style="margin-top: 1rem;">With love</p>
   </footer>
 
-   
-  </div>
-
   <script>
-    /* --- GIF INTRO SCRIPTS --- */
+    // ─── GIF INTRO SCRIPTS ─────────────────────────────────
     var gifContainer = document.getElementById('intro-gif-container');
     var enterPrompt = document.getElementById('enter-prompt');
-    var overlay   = document.getElementById('intro-overlay');
-    var site      = document.getElementById('main-invitation-container');
-    var music     = document.getElementById('bg-music');
+    var overlay = document.getElementById('intro-overlay');
+    var music = document.getElementById('bg-music');
     var hasStarted = false;
     var readyToEnter = false;
     
-    /* Click to start GIF and music */
     if (gifContainer) {
       gifContainer.onclick = function() {
-        /* First click - start music */
+        // First click - start music
         if (!hasStarted) {
           hasStarted = true;
           music.play().catch(function(e) { console.log('Music play failed:', e); });
-          
-          /* After 10 seconds, show enter prompt */
+          // After 10 seconds, show enter prompt
           setTimeout(function() {
             readyToEnter = true;
             if (enterPrompt) {
               enterPrompt.classList.add('visible');
             }
           }, 10000);
-          
-        /* Second click - enter invitation */
+        // Second click - enter invitation
         } else if (readyToEnter) {
-          /* Animate GIF off screen */
           gifContainer.classList.add('exit');
-          
-          /* Show invitation */
           setTimeout(function() {
-            site.style.display = 'block';
-            setTimeout(function() {
-              site.style.opacity = '1';
-              overlay.style.display = 'none';
-              document.body.style.overflow = 'auto';
-              document.body.style.position = 'static';
-              window.dispatchEvent(new Event('scroll'));
-            }, 100);
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
           }, 1000);
         }
       };
     }
 
-    /* --- TRANSITION LOGIC --- */
-    card.addEventListener('click', function () {
-      if (state === 0) {
-        card.classList.add('is-open');
-        music.play().catch(function () {});
-        state = 1;
-        
-        // After card animation, reveal the site
-        setTimeout(function() {
-          overlay.style.opacity = '0';
-          site.style.display = 'block';
-          setTimeout(function() {
-            site.style.opacity = '1';
-            overlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            document.body.style.position = 'static'; // Allow scrolling
-            // Trigger intersection observers for reveal animations
-            window.dispatchEvent(new Event('scroll'));
-          }, 100);
-        }, 2500); 
-      }
-    });
-
-    /* --- SITE SCRIPTS (Merged from invitation.html) --- */
-    
     // Force scroll to top on reload
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
@@ -2120,6 +1692,29 @@
     }, { threshold: 0.1 }); // Lower threshold for earlier activation on mobile 
     reveals.forEach(el => observer.observe(el));
 
+    function primeMediaCache() {
+      const mediaSources = [
+        'photos/main-card-photo.gif',
+        'photos/cheers.gif',
+        'photos/dinner.gif',
+        'photos/story-photo.gif',
+        'photos/new_dress_code.jpeg'
+      ];
+      const warm = () => {
+        mediaSources.forEach((src, index) => {
+          const img = new Image();
+          img.decoding = 'async';
+          if ('fetchPriority' in img) img.fetchPriority = index === 0 ? 'high' : 'low';
+          img.src = src;
+        });
+      };
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(warm, { timeout: 1200 });
+      } else {
+        setTimeout(warm, 250);
+      }
+    }
+
     // Staggered media loading reveal for hosted photos.
     function setupMediaLoading() {
       const mediaItems = Array.from(document.querySelectorAll(
@@ -2136,6 +1731,7 @@
         img.addEventListener('error', markReady, { once: true });
       });
     }
+    primeMediaCache();
     setupMediaLoading();
 
     // Intro card reveal + music
@@ -2172,7 +1768,7 @@
         closeGiftModal();
       }
     }
-  
   </script>
 </body>
+
 </html>

@@ -59,6 +59,97 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
+    /* ─── GIF INTRO OVERLAY ─────────────────────────────────── */
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .intro-gif-container {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .intro-gif {
+      max-width: 95vw;
+      max-height: 85vh;
+      object-fit: contain;
+      animation: gifScale 0.6s ease-out forwards;
+    }
+    
+    @keyframes gifScale {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    .invited-text {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2rem, 6vw, 4rem);
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      margin-bottom: 2vh;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      animation: fadeInUp 1s ease-out 0.5s both;
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .enter-prompt {
+      position: absolute;
+      bottom: 10vh;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--gold);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    
+    .enter-prompt.visible {
+      opacity: 1;
+      pointer-events: auto;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+    
+    .intro-gif-container.exit .intro-gif {
+      animation: flyOff 1s ease-in forwards;
+    }
+    
+    @keyframes flyOff {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-120vh) scale(0.6); opacity: 0; }
+    }
+    
+    .intro-gif-container.exit {
+      animation: fadeOutBg 0.8s ease-out 0.5s forwards;
+    }
+    
+    @keyframes fadeOutBg {
+      to { opacity: 0; pointer-events: none; }
+    }
+
     /* ─── NAV ─────────────────────────────────────── */
     nav {
       position: fixed;
@@ -1062,9 +1153,18 @@
 
 <body>
 
+  <!-- INTRO GIF OVERLAY -->
+  <div id="intro-overlay">
+    <div class="intro-gif-container" id="intro-gif-container">
+      <div class="invited-text">You are Invited</div>
+      <img src="photos/invitation-3.gif" alt="Wedding Invitation" id="intro-gif" class="intro-gif">
+      <div class="enter-prompt" id="enter-prompt">Tap to Enter</div>
+    </div>
+  </div>
+
+  <!-- MUSIC -->
   <audio id="bg-music" preload="auto" loop>
-    <source src="audio/Canon in D (Pachelbel's Canon) - Cello & Piano [BEST WEDDING VERSION]_01.mp3"
-      type="audio/mpeg" />
+    <source src="audio/MUSIC.mp3" type="audio/mpeg" />
   </audio>
   <button id="music-toggle" class="music-toggle" type="button" aria-label="Toggle background music">
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1479,6 +1579,38 @@
   </footer>
 
   <script>
+    // ─── GIF INTRO SCRIPTS ─────────────────────────────────
+    var gifContainer = document.getElementById('intro-gif-container');
+    var enterPrompt = document.getElementById('enter-prompt');
+    var overlay = document.getElementById('intro-overlay');
+    var music = document.getElementById('bg-music');
+    var hasStarted = false;
+    var readyToEnter = false;
+    
+    if (gifContainer) {
+      gifContainer.onclick = function() {
+        // First click - start music
+        if (!hasStarted) {
+          hasStarted = true;
+          music.play().catch(function(e) { console.log('Music play failed:', e); });
+          // After 10 seconds, show enter prompt
+          setTimeout(function() {
+            readyToEnter = true;
+            if (enterPrompt) {
+              enterPrompt.classList.add('visible');
+            }
+          }, 10000);
+        // Second click - enter invitation
+        } else if (readyToEnter) {
+          gifContainer.classList.add('exit');
+          setTimeout(function() {
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+          }, 1000);
+        }
+      };
+    }
+
     // Force scroll to top on reload
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
