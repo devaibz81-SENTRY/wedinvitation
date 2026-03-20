@@ -194,18 +194,16 @@
     }
 
     .reveal-names {
-      display: flex;
-      flex-wrap: wrap;
+      display: inline-flex;
       justify-content: center;
       align-items: flex-end;
-      column-gap: 0.14em;
-      row-gap: 0.04em;
+      gap: 0.08em;
       font-family: 'WeddingScript2', 'WeddingScript3', 'Great Vibes', cursive;
       max-width: 92%;
       margin-left: auto;
       margin-right: auto;
-      padding: 0.03em 0.04em 0.08em;
-      font-size: clamp(2.42rem, 8.3vw, 3.6rem);
+      padding: 0.03em 0.06em 0.08em;
+      font-size: clamp(4.1rem, 15vw, 6.7rem);
       background: var(--gold-foil);
       background-size: 200% auto;
       -webkit-background-clip: text;
@@ -213,36 +211,61 @@
       background-clip: text;
       filter: drop-shadow(0 2px 5px rgba(0,0,0,0.45));
       animation: shine 4s linear infinite;
-      line-height: 0.98;
-      white-space: normal;
+      line-height: 0.82;
+      white-space: nowrap;
       overflow: visible;
-      margin-top: clamp(14px, 2vh, 18px);
-      margin-bottom: 0.1rem;
-      letter-spacing: 0.01em;
+      margin-top: clamp(18px, 3vh, 26px);
+      margin-bottom: 0.2rem;
+      letter-spacing: 0;
     }
 
     .reveal-name {
       display: inline-flex;
       align-items: flex-end;
-      line-height: 0.92;
+      line-height: 0.82;
     }
 
     .reveal-initial {
-      font-size: 1.22em;
-      line-height: 0.76;
-      margin-right: 0.01em;
+      display: inline-block;
+      font-size: 1em;
+      line-height: 0.72;
     }
 
     .reveal-rest {
-      font-size: 0.82em;
-      line-height: 0.98;
-      letter-spacing: 0.015em;
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .reveal-names .ampersand {
       align-self: center;
-      font-size: 0.82em;
-      margin: 0 0.08em 0.08em;
+      font-size: 0.56em;
+      margin: 0 0.03em 0.08em;
+    }
+
+    .reveal-fullnames {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.82rem, 2.2vw, 1rem);
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      opacity: 0.88;
+      margin-top: 0.2rem;
+      margin-bottom: auto;
+      padding-bottom: 0.35rem;
+    }
+
+    .reveal-fullnames .ampersand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1em;
+      margin: 0 0.24em;
+      font-style: italic;
     }
 
     .ampersand {
@@ -1411,17 +1434,23 @@
 
       .reveal-names {
         max-width: 100%;
-        font-size: clamp(2.15rem, 9.55vw, 3rem);
-        column-gap: 0.12em;
+        font-size: clamp(3.45rem, 18vw, 5rem);
+        gap: 0.05em;
       }
 
       .reveal-initial {
-        font-size: 1.16em;
+        font-size: 1em;
       }
 
-      .reveal-rest {
-        font-size: 0.82em;
-        letter-spacing: 0.01em;
+      .reveal-names .ampersand {
+        font-size: 0.52em;
+        margin-bottom: 0.06em;
+      }
+
+      .reveal-fullnames {
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        padding-bottom: 0.15rem;
       }
 
       .reveal-sub {
@@ -1604,6 +1633,7 @@
               <span class="ampersand">&amp;</span>
               <span class="reveal-name"><span class="reveal-initial">A</span><span class="reveal-rest">ndrew</span></span>
             </div>
+            <div class="reveal-fullnames" aria-hidden="true">Rosanna <span class="ampersand">&amp;</span> Andrew</div>
             <div class="reveal-sub">San Ignacio, Belize</div>
             <div class="reveal-date" style="line-height: 1.4;">4th July 2026</div>
           </div>
