@@ -1590,12 +1590,12 @@
       music.play().catch(function(e) { console.log('Music autoplay blocked:', e); });
     });
     
-    // Show enter prompt after 2 seconds
+    // Show enter prompt after 4 seconds
     setTimeout(function() {
       if (enterPrompt) {
         enterPrompt.classList.add('visible');
       }
-    }, 2000);
+    }, 4000);
     
     // Click to enter invitation
     if (gifContainer) {
