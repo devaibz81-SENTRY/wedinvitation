@@ -476,6 +476,10 @@
       transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
     }
 
+    .gallery-main-photo {
+      object-position: center 18%;
+    }
+
     .photo-placeholder img.is-loaded,
     .story-placeholder img.is-loaded {
       opacity: 1;
@@ -1131,7 +1135,7 @@
       <div class="photo-frame tall reveal">
         <div class="photo-inner">
           <div class="photo-placeholder">
-            <img src="photos/main-card-photo.gif" alt="Rosanna and Andrew together" loading="lazy" />
+            <img class="gallery-main-photo" src="photos/main-card-photo.gif" alt="Rosanna and Andrew together" loading="lazy" />
           </div>
           <div class="photo-caption">Two hearts, one story</div>
         </div>
