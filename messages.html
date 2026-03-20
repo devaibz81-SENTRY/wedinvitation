@@ -789,7 +789,9 @@
       copyText(window.location.href, 'Presentation link copied.');
     }
 
-    function showAuthScreen() {
+    function showAuthScreen(title, body) {
+      document.querySelector('#auth-screen h1').textContent = title || 'Message Vault Locked';
+      document.querySelector('#auth-screen p').textContent = body || 'This page only opens with a valid admin session, so guest messages stay private. Open the admin dashboard to sign in, then come right back here.';
       document.getElementById('auth-screen').classList.remove('hidden');
       document.getElementById('app').classList.add('hidden');
     }
@@ -1018,6 +1020,14 @@
           return;
         }
 
+        if (res.status === 404) {
+          showAuthScreen(
+            'Message Vault Not Ready',
+            'Your admin session is fine, but the songs and messages Convex route is not deployed yet. Deploy the Convex backend, then reload this page.'
+          );
+          return;
+        }
+
         if (!res.ok) throw new Error(await res.text());
 
         const payload = await res.json();
@@ -1039,7 +1049,10 @@
           document.getElementById('intro-overlay').classList.add('hidden');
         }
       } catch {
-        showAuthScreen();
+        showAuthScreen(
+          'Message Vault Unavailable',
+          'We could not load guest messages from Convex right now. Your data may still be there, but the route is not responding yet.'
+        );
       }
     }
 

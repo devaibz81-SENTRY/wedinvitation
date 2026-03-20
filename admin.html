@@ -1195,8 +1195,7 @@ Rosanna and Andrew</textarea>
     const SESSION_KEY = 'ra_admin_token';
     const DJ_PHONE_KEY = 'ra_dj_phone';
     const LIVE_REFRESH_MS = 12000;
-    let guests = [];
-    let rsvpMedia = {
+    const EMPTY_RSVP_MEDIA = {
       songs: [],
       messages: [],
       counts: {
@@ -1207,6 +1206,9 @@ Rosanna and Andrew</textarea>
         lastSubmittedAt: null
       }
     };
+    let guests = [];
+    let rsvpMedia = { ...EMPTY_RSVP_MEDIA };
+    let mediaLoadIssue = '';
     let currentView = 'guests';
     let currentFilter = 'all';
     let waPersonQuery = '';
@@ -1425,29 +1427,43 @@ Rosanna and Andrew</textarea>
         document.getElementById('messages-tbody').innerHTML = `<tr><td colspan="3" class="media-empty">Syncing guest messages...</td></tr>`;
       }
       try {
-        const [guestRes, mediaRes] = await Promise.all([
-          fetch(`${CONVEX_HTTP_URL}/api/guests`, {
-            headers: authHeaders()
-          }),
-          fetch(`${CONVEX_HTTP_URL}/api/rsvp-media`, {
-            headers: authHeaders()
-          })
-        ]);
+        const guestRes = await fetch(`${CONVEX_HTTP_URL}/api/guests`, {
+          headers: authHeaders()
+        });
 
-        if (guestRes.status === 401 || mediaRes.status === 401) {
+        if (guestRes.status === 401) {
           await logout();
           throw new Error('Session expired. Please log in again.');
         }
         if (!guestRes.ok) throw new Error(await guestRes.text());
-        if (!mediaRes.ok) throw new Error(await mediaRes.text());
 
-        const [guestPayload, mediaPayload] = await Promise.all([
-          guestRes.json(),
-          mediaRes.json()
-        ]);
+        guests = await guestRes.json();
+        rsvpMedia = { ...EMPTY_RSVP_MEDIA };
+        mediaLoadIssue = '';
 
-        guests = guestPayload;
-        rsvpMedia = mediaPayload;
+        try {
+          const mediaRes = await fetch(`${CONVEX_HTTP_URL}/api/rsvp-media`, {
+            headers: authHeaders()
+          });
+
+          if (mediaRes.status === 401) {
+            await logout();
+            throw new Error('Session expired. Please log in again.');
+          }
+
+          if (mediaRes.ok) {
+            rsvpMedia = await mediaRes.json();
+          } else if (mediaRes.status === 404) {
+            mediaLoadIssue = 'The songs and messages endpoint is not deployed on Convex yet.';
+          } else {
+            mediaLoadIssue = 'Guest data loaded, but songs and messages are temporarily unavailable.';
+          }
+        } catch (mediaErr) {
+          if (String(mediaErr && mediaErr.message || '').includes('Session expired')) {
+            throw mediaErr;
+          }
+          mediaLoadIssue = 'Guest data loaded, but songs and messages could not be reached.';
+        }
 
         updateStats();
         renderTable();
@@ -1535,7 +1551,9 @@ Rosanna and Andrew</textarea>
       document.getElementById('messages-count-label').textContent = `${messages.length} note${messages.length === 1 ? '' : 's'}`;
 
       const songsBody = document.getElementById('songs-tbody');
-      songsBody.innerHTML = songs.length
+      songsBody.innerHTML = mediaLoadIssue && !songs.length
+        ? `<tr><td colspan="4" class="media-empty">${escapeHtml(mediaLoadIssue)}</td></tr>`
+        : songs.length
         ? songs.map((row) => {
           const status = String(row.attendance || 'submitted');
           const pillClass = {
@@ -1553,7 +1571,9 @@ Rosanna and Andrew</textarea>
         : `<tr><td colspan="4" class="media-empty">No song requests have been submitted yet.</td></tr>`;
 
       const messagesBody = document.getElementById('messages-tbody');
-      messagesBody.innerHTML = messages.length
+      messagesBody.innerHTML = mediaLoadIssue && !messages.length
+        ? `<tr><td colspan="3" class="media-empty">${escapeHtml(mediaLoadIssue)}</td></tr>`
+        : messages.length
         ? messages.map((row) => `<tr>
             <td><strong>${escapeHtml(row.display_name)}</strong></td>
             <td class="media-note-cell">${escapeHtml(truncateText(row.message, 160))}</td>
@@ -1561,7 +1581,9 @@ Rosanna and Andrew</textarea>
           </tr>`).join('')
         : `<tr><td colspan="3" class="media-empty">No guest messages have been submitted yet.</td></tr>`;
 
-      const summary = messages.length
+      const summary = mediaLoadIssue
+        ? `${mediaLoadIssue} Your guest list is still loading normally.`
+        : messages.length
         ? `You have ${messages.length} hidden message${messages.length === 1 ? '' : 's'} from your guests, plus ${songs.length} song request${songs.length === 1 ? '' : 's'} ready for the celebration.`
         : `The portal is ready. As soon as guests leave notes, you will be able to flip through them here and download the full collection.`;
       document.getElementById('vault-summary').textContent = summary;
