@@ -516,65 +516,61 @@
     var hint      = document.getElementById('seal-hint');
     var state     = 0;
 
-    /* ΓöÇΓöÇ SOFT FALLING HEARTS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
-    var heartChars = ['ΓÖÑ', 'ΓÖÑ', 'ΓÖÑ', 'Γ¥ñ', 'ΓÖÑ'];
-    var maxHearts  = 18;
-    // Soft rose, blush, dusty rose, deep blush ΓÇö all at low opacity
-    var heartColors = ['#c9768a', '#b85c72', '#d4a0b0', '#bf9b30', '#c07080'];
+    /* ─── SOFT FALLING HEARTS ───────────────────────────────────────────────── */
+    var heartChars = ['♥', '💖', '💕', '❤', '♥'];
+    var maxHearts  = 35; // Increased density
+    var heartColors = ['#c9768a', '#b85c72', '#d4a0b0', '#c07080', '#e8c4b8'];
 
     function spawnHeart() {
-      if (!overlay.parentNode) return;
+      if (!overlay || !overlay.parentNode) return;
       var el = document.createElement('span');
       el.className = 'heart';
       el.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
 
-      var size     = 10 + Math.random() * 16;
-      var left     = 5 + Math.random() * 90;
-      var dur      = 6 + Math.random() * 10;
-      var delay    = Math.random() * -16;
-      var maxOpac  = 0.15 + Math.random() * 0.22;  // 0.15ΓÇô0.37 very soft
-      var hue      = heartColors[Math.floor(Math.random() * heartColors.length)];
-      var sway     = (Math.random() - 0.5) * 40;
+      var size     = 12 + Math.random() * 20;
+      var left     = Math.random() * 100;
+      var dur      = 7 + Math.random() * 8;
+      var delay    = Math.random() * -15;
+      var maxOpac  = 0.2 + Math.random() * 0.4;
+      var color    = heartColors[Math.floor(Math.random() * heartColors.length)];
+      var sway     = (Math.random() - 0.5) * 60;
 
       el.style.cssText = [
         'font-size:' + size + 'px',
         'left:' + left + '%',
-        'color:' + hue,
+        'color:' + color,
         'animation-duration:' + dur + 's',
         'animation-delay:' + delay + 's',
         '--max-opac:' + maxOpac,
         '--sway:' + sway + 'px'
       ].join(';');
 
-      overlay.insertBefore(el, overlay.firstChild);
+      overlay.appendChild(el);
 
       setTimeout(function() {
         if (el.parentNode) el.parentNode.removeChild(el);
         if (overlay.querySelectorAll('.heart').length < maxHearts) spawnHeart();
-      }, (dur + Math.abs(delay)) * 1000 + 2000);
+      }, (dur + 2) * 1000);
     }
 
-    // Update keyframe to use CSS custom props for opacity
     (function patchKeyframes() {
       var style = document.createElement('style');
       style.textContent = [
         '@keyframes fallHeart {',
-        '  0%   { transform: translateY(0) translateX(0) rotate(-8deg) scale(0.7); opacity: 0; }',
-        '  5%   { opacity: var(--max-opac, 0.35); }',
-        '  50%  { transform: translateY(50vh) translateX(var(--sway, 20px)) rotate(8deg) scale(0.9); opacity: var(--max-opac, 0.35); }',
-        '  90%  { opacity: calc(var(--max-opac, 0.35) * 0.4); }',
-        '  100% { transform: translateY(105vh) translateX(calc(var(--sway, 20px) * 1.5)) rotate(15deg) scale(0.6); opacity: 0; }',
+        '  0%   { transform: translateY(-10vh) translateX(0) rotate(0deg) scale(0.5); opacity: 0; }',
+        '  10%  { opacity: var(--max-opac, 0.4); }',
+        '  50%  { transform: translateY(50vh) translateX(var(--sway, 20px)) rotate(180deg) scale(1); }',
+        '  100% { transform: translateY(110vh) translateX(calc(var(--sway, 20px) * 0.5)) rotate(360deg) scale(0.5); opacity: 0; }',
         '}'
       ].join('\n');
       document.head.appendChild(style);
     })();
 
-    // Seed initial hearts with staggered starts
     for (var i = 0; i < maxHearts; i++) {
-      (function(i) { setTimeout(spawnHeart, i * 350); })(i);
+      (function(i) { setTimeout(spawnHeart, i * 250); })(i);
     }
 
-    /* ΓöÇΓöÇ CARD INTERACTION ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
+    /* ─── CARD INTERACTION ───────────────────────────────────────────────────── */
     card.addEventListener('click', function () {
       if (state === 0) {
         card.classList.add('is-open');
@@ -589,7 +585,7 @@
           setTimeout(function () { 
             window.location.href = 'invitation.html'; 
           }, 1000);
-        }, 2200); // 2.2s allows the flip to resolve beautifully
+        }, 2500); // 2.5s allows for a fuller reveal
       }
     });
 

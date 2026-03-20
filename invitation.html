@@ -739,7 +739,7 @@
       text-align: center;
     }
 
-    .count-number { font-variant-numeric: tabular-nums; display: inline-block; min-width: 1.5em; 
+    .count-number { font-variant-numeric: tabular-nums; display: inline-block; min-width: 1.5em;  font-variant-numeric: tabular-nums; display: inline-block; min-width: 1.5em; 
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(3rem, 8vw, 6rem);
       font-weight: 300;
@@ -908,387 +908,15 @@
       transition-delay: 0.55s;
     }
 
-    /* Intro card opener */
-    body.intro-active {
-      overflow: hidden;
-    }
-
-    body.intro-active>*:not(#intro-overlay) {
-      filter: blur(7px);
-      opacity: 0.28;
-      transform: scale(1.01);
-      pointer-events: none;
-      user-select: none;
-      transition: filter 0.45s ease, opacity 0.45s ease, transform 0.45s ease;
-    }
-
-    #intro-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 3000;
-      display: grid;
-      place-items: center;
-      padding: 1.5rem;
-      transform: translateY(0) scale(1);
-      background: #2b2520;
-      /* Dark brown-black background for contrast */
-      transition: opacity 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.55s ease, transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    #intro-overlay.opening {
-      animation: introSlideUp 0.88s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    }
-
-    @keyframes introSlideUp {
-      to {
-        opacity: 0;
-        transform: translateY(-36px) scale(0.985);
-      }
-    }
-
-    #intro-overlay.is-hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .intro-stage {
-      position: relative;
-      width: min(90vw, 430px);
-      max-width: 100%;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(90px) scale(0.92) rotateX(10deg);
-      animation: introFloatIn 1.15s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-      margin: 0 auto;
-    }
-
-    @keyframes introFloatIn {
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1) rotateX(0deg);
-      }
-    }
-
-    #intro-overlay.opening .intro-stage {
-      opacity: 0;
-      transform: translateY(-36px) scale(0.96);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    .intro-blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(48px);
-      opacity: 0.34;
-      pointer-events: none;
-      animation: introBlobPulse 6s ease-in-out infinite;
-    }
-
-    .intro-blob.one {
-      width: 220px;
-      height: 220px;
-      left: -62px;
-      top: -42px;
-      background: rgba(232, 196, 184, 0.82);
-    }
-
-    .intro-blob.two {
-      width: 240px;
-      height: 240px;
-      right: -70px;
-      bottom: -58px;
-      background: rgba(212, 184, 150, 0.86);
-      animation-delay: 1.6s;
-    }
-
-    @keyframes introBlobPulse {
-
-      0%,
-      100% {
-        transform: scale(1);
-        opacity: 0.3;
-      }
-
-      50% {
-        transform: scale(1.08);
-        opacity: 0.44;
-      }
-    }
-
-    .intro-kicker {
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
-
-    /* Envelope Card Design */
-    .intro-card {
-      width: min(94vw, 430px);
-      height: min(78dvh, 640px);
-      margin: 0 auto 1rem;
-      perspective: 2000px;
-      cursor: pointer;
-      transform-style: preserve-3d;
-    }
-
-    .intro-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    #intro-overlay.flipped .intro-card-inner {
-      transform: rotateY(-180deg);
-    }
-
-    .intro-card-front,
-    .intro-card-back {
-      position: absolute;
-      inset: 0;
-      backface-visibility: hidden;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35), 0 10px 30px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Front - Envelope/Card style with photo */
-    .intro-card-front {
-      background: var(--ivory);
-      border: 1px solid rgba(201, 168, 76, 0.3);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .intro-card-front::before {
-      content: '';
-      position: absolute;
-      inset: 8px;
-      border: 2px solid rgba(201, 168, 76, 0.2);
-      border-radius: 4px;
-      pointer-events: none;
-    }
-
-    .intro-envelope-flap {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 35%;
-      background: var(--black);
-      clip-path: polygon(0 0, 50% 100%, 100% 0);
-      transform-origin: top center;
-      transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 2;
-    }
-
-    #intro-overlay.flipped .intro-envelope-flap {
-      transform: rotateX(-180deg);
-    }
-
-    .intro-envelope-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      padding-top: 40%;
-      text-align: center;
-    }
-
-    .intro-invite-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      color: #777;
-      font-style: italic;
-      margin-bottom: 0.5rem;
-    }
-
-    .intro-names-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.8rem;
-      color: var(--black);
-      line-height: 1.2;
-    }
-
-    .intro-date-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 1.2rem;
-      letter-spacing: 0.05em;
-      color: var(--gold);
-      margin-top: 1.5rem;
-      font-weight: 500;
-    }
-
-    .intro-tap-hint {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      animation: tapPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes tapPulse {
-
-      0%,
-      100% {
-        opacity: 0.6;
-        transform: translateX(-50%) translateY(0);
-      }
-
-      50% {
-        opacity: 1;
-        transform: translateX(-50%) translateY(-5px);
-      }
-    }
-
-    .intro-tap-hint span {
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--gold);
-      font-weight: 600;
-    }
-
-    .intro-tap-icon {
-      width: 36px;
-      height: 36px;
-      border: 1px solid rgba(201, 168, 76, 0.5);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--gold);
-      font-size: 1rem;
-    }
-
-    /* Back - Reveal photo */
-    .intro-card-back {
-      transform: rotateY(180deg);
-      background: #111;
-    }
-
-    .intro-card-back img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .intro-back-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      padding-bottom: 2rem;
-    }
-
-    .intro-back-caption {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
-      color: #fff;
-      text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-      margin-bottom: 0.5rem;
-    }
-
-    .intro-back-tap {
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.8);
-      animation: tapPulse 2s ease-in-out infinite;
-    }
-
-    .music-toggle {
-      position: fixed;
-      right: 1.5rem;
-      top: 1.5rem;
-      z-index: 3200;
-      width: 44px;
-      height: 44px;
-      border: 1px solid rgba(210, 158, 154, 0.4);
-      background: rgba(255, 255, 255, 0.9);
-      color: #d29e9a;
-      /* Red speaker color */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-8px);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .music-toggle.is-visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    .music-toggle:hover {
-      background: #fff;
-      border-color: #d29e9a;
-      transform: scale(1.05);
-    }
-
-    .music-toggle svg {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-      transition: transform 0.3s ease;
-    }
-
-    .music-toggle.is-muted .mute-line {
-      display: block;
-    }
-
-    .music-toggle .mute-line {
-      display: none;
-      stroke: #d29e9a;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-    }
-
-    body.intro-active .music-toggle {
-      top: auto;
-      bottom: 1rem;
-    }
-
     @media (prefers-reduced-motion: reduce) {
 
-      .intro-card-inner,
-      #intro-overlay,
-      body.intro-active>*:not(#intro-overlay) {
-        transition: none !important;
-      }
-    }
+      
 
     /* ─── RESPONSIVE ──────────────────────────────── */
     @media (max-width: 768px) {
-      .intro-stage {
-        width: min(94vw, 360px);
-      }
+      
 
-      .intro-card {
-        height: min(65dvh, 520px);
-      }
+      
 
       .intro-kicker {
         font-size: 0.62rem;
@@ -1381,35 +1009,9 @@
   </style>
 </head>
 
-<body class="intro-active">
+<body>
 
-  <div id="intro-overlay" aria-label="Open invitation card animation">
-    <div class="intro-stage">
-      <div class="intro-blob one" aria-hidden="true"></div>
-      <div class="intro-blob two" aria-hidden="true"></div>
-      <p class="intro-kicker">Rosanna and Andrew</p>
-      <div class="intro-card" id="intro-card" role="button" tabindex="0" aria-label="Open invitation">
-        <div class="intro-card-inner">
-          <div class="intro-card-front">
-            <div class="intro-envelope-flap"></div>
-            <div class="intro-envelope-body">
-              <p class="intro-invite-text">You Are Invited</p>
-              <h2 class="intro-names-text">Rosanna &amp; Andrew</h2>
-              <p class="intro-date-text">July 4, 2026 • San Ignacio, Belize</p>
-            </div>
-            <div class="intro-tap-hint">
-              <div class="intro-tap-icon">&#9755;</div>
-              <span>Tap To Open</span>
-            </div>
-          </div>
-          <div class="intro-card-back">
-            <img src="photos/photo3.gif" alt="Rosanna and Andrew" fetchpriority="high" />
-            <div class="intro-back-overlay">
-              <div class="intro-back-caption">Rosanna &amp; Andrew</div>
-              <div class="intro-back-tap">Tap To Enter</div>
-            </div>
-          </div>
-        </div>
+  
       </div>
     </div>
   </div>
@@ -1697,32 +1299,11 @@
   </div>
 
   <!-- ─── RSVP CTA ───────────────────────────────────── -->
-  <section id="rsvp-cta">
-    <div class="rsvp-box reveal">
-      <p class="section-eyebrow">You Are Cordially Invited</p>
-      <h2 class="section-title" style="font-size: 2.5rem; margin-bottom: 1.5rem;">Kindly Reply</h2>
-      <p class="rsvp-text">
-        Please let us know if you'll be joining us to celebrate.
-      </p>
-      <a href="rsvp.html" class="btn-gold">RSVP Now</a>
-      <div style="margin-top: 1.5rem;">
-        <a href="rsvp.html"
-          style="font-size: 0.7rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border-bottom: 1px solid rgba(203, 169, 124, 0.3); padding-bottom: 2px; opacity: 0.8; transition: opacity 0.3s;">Already
-          RSVP'd? Edit Response</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── WEDDING GIFT ──────────────────────────────── -->
   <section id="gift" style="padding: 6rem 1rem; background: var(--cream); text-align: center;">
     <div class="gift-container reveal" style="max-width: 600px; margin: 0 auto;">
       <p class="section-eyebrow">A Token of Love</p>
       <h2 class="section-title" style="font-size: 2.2rem; margin-bottom: 2rem;">Wedding Gift</h2>
-      <p
-        style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #555; margin-bottom: 3rem; line-height: 1.8;">
-        Your presence at our wedding is appreciated. However, should you wish to honor us with a gift, a contribution
-        towards our honeymoon and new life together would be most appreciated.
-      </p>
+      <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #555; margin-bottom: 3rem; line-height: 1.8;">Your presence at our wedding is appreciated. Should you wish to honor us with a gift, we would gratefully appreciate a monetary contribution toward our future together.</p>
 
       <!-- Interactive Gift Card Trigger (Luxury Redesign) -->
       <div class="gift-card-trigger" onclick="openGiftModal()" style="
@@ -1772,6 +1353,25 @@
       </div>
     </div>
   </section>
+
+<section id="rsvp-cta">
+    <div class="rsvp-box reveal">
+      <p class="section-eyebrow">You Are Cordially Invited</p>
+      <h2 class="section-title" style="font-size: 2.5rem; margin-bottom: 1.5rem;">Kindly Reply</h2>
+      <p class="rsvp-text">
+        Please let us know if you'll be joining us to celebrate.
+      </p>
+      <a href="rsvp.html" class="btn-gold">RSVP Now</a>
+      <div style="margin-top: 1.5rem;">
+        <a href="rsvp.html"
+          style="font-size: 0.7rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border-bottom: 1px solid rgba(203, 169, 124, 0.3); padding-bottom: 2px; opacity: 0.8; transition: opacity 0.3s;">Already
+          RSVP'd? Edit Response</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WEDDING GIFT ──────────────────────────────── -->
+  
 
   <!-- Gift Modal (Secret Card) -->
   <div id="gift-modal" class="modal-overlay" style="
@@ -1948,73 +1548,7 @@
     const introCard = document.getElementById('intro-card');
     const bgMusic = document.getElementById('bg-music');
     const musicToggle = document.getElementById('music-toggle');
-    let introOpened = false;
-    let introFlipped = false;
-    let introFlipTimer = null;
-
-    function syncMusicUi() {
-      if (!musicToggle || !bgMusic) return;
-      const isPlaying = !bgMusic.paused;
-      const isMuted = bgMusic.muted;
-      musicToggle.classList.toggle('is-visible', isPlaying);
-      musicToggle.classList.toggle('is-muted', isMuted);
-    }
-
-    async function startMusic() {
-      if (!bgMusic) return false;
-      try {
-        await bgMusic.play();
-        syncMusicUi();
-        return true;
-      } catch {
-        syncMusicUi();
-        return false;
-      }
-    }
-
-    function toggleMute() {
-      if (!bgMusic) return;
-      bgMusic.muted = !bgMusic.muted;
-      syncMusicUi();
-    }
-
-    function completeIntro() {
-      if (!introOverlay || introOpened) return;
-      introOpened = true;
-      introOverlay.classList.add('opening');
-      setTimeout(() => {
-        introOverlay.classList.add('is-hidden');
-        document.body.classList.remove('intro-active');
-      }, 860);
-    }
-
-    function openInvitation() {
-      if (!introOverlay || introOpened) return;
-      startMusic();
-      if (!introFlipped) {
-        introFlipped = true;
-        introOverlay.classList.add('flipped');
-        // Removed auto-dismiss timer so it stays until second click
-        return;
-      }
-      completeIntro();
-    }
-
-    // Best effort autoplay on load; browsers may block without interaction.
-    startMusic();
-    musicToggle?.addEventListener('click', toggleMute);
-    bgMusic?.addEventListener('play', syncMusicUi);
-    bgMusic?.addEventListener('pause', syncMusicUi);
-    bgMusic?.addEventListener('volumechange', syncMusicUi);
-    syncMusicUi();
-
-    introCard?.addEventListener('click', openInvitation);
-    introCard?.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openInvitation();
-      }
-    });
+    
     // Gift Modal Logic
     function openGiftModal() {
       const modal = document.getElementById('gift-modal');
