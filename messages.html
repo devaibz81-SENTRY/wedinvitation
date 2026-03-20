@@ -9,19 +9,21 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500&display=swap"
     rel="stylesheet" />
   <style>
     :root {
-      --ink: #1e1710;
+      --ink: #1d160f;
       --paper: #fffaf2;
-      --paper-dark: #f3eadf;
+      --paper-deep: #f2e8db;
       --gold: #c9a84c;
-      --gold-soft: rgba(201, 168, 76, 0.25);
-      --sand: #d9c5a8;
-      --mist: rgba(255, 250, 242, 0.78);
-      --shadow: rgba(17, 13, 9, 0.22);
-      --muted: rgba(30, 23, 16, 0.66);
+      --gold-soft: rgba(201, 168, 76, 0.22);
+      --cream: rgba(255, 250, 242, 0.88);
+      --mist: rgba(255, 252, 247, 0.78);
+      --muted: rgba(29, 22, 15, 0.66);
+      --shadow: rgba(18, 14, 10, 0.18);
+      --night: #100c08;
+      --night-soft: #1c1510;
     }
 
     * {
@@ -35,9 +37,15 @@
       font-family: 'Montserrat', sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(217, 197, 168, 0.45), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(201, 168, 76, 0.2), transparent 22%),
-        linear-gradient(180deg, #f5eee4 0%, #efe6da 100%);
+        radial-gradient(circle at top left, rgba(201, 168, 76, 0.18), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(218, 197, 167, 0.42), transparent 28%),
+        linear-gradient(180deg, #f5ede1 0%, #ece1d3 100%);
+    }
+
+    button,
+    a,
+    input {
+      font: inherit;
     }
 
     .hidden {
@@ -54,21 +62,22 @@
 
     .auth-card,
     .vault-shell {
-      width: min(1120px, 100%);
+      width: min(1160px, 100%);
     }
 
     .auth-card {
-      background: rgba(255, 250, 242, 0.92);
-      border: 1px solid var(--gold-soft);
-      box-shadow: 0 24px 40px var(--shadow);
-      padding: 3rem;
       text-align: center;
+      background: rgba(255, 250, 242, 0.94);
+      border: 1px solid var(--gold-soft);
+      box-shadow: 0 28px 48px var(--shadow);
+      padding: 3rem;
     }
 
     .auth-card h1,
     .vault-heading h1,
-    .message-paper h2,
-    .empty-paper h2 {
+    .intro-card h2,
+    .scene-title,
+    .empty-title {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 500;
     }
@@ -79,16 +88,17 @@
     }
 
     .auth-card p {
-      color: var(--muted);
       max-width: 34rem;
-      margin: 0 auto 1.5rem;
+      margin: 0 auto 1.4rem;
       line-height: 1.7;
+      color: var(--muted);
     }
 
-    .btn-row {
+    .btn-row,
+    .toolbar,
+    .scene-controls {
       display: flex;
       gap: 0.8rem;
-      justify-content: center;
       flex-wrap: wrap;
     }
 
@@ -98,13 +108,13 @@
       border: 1px solid var(--gold);
       background: var(--gold);
       color: #fff;
-      padding: 0.9rem 1.25rem;
+      text-decoration: none;
+      padding: 0.95rem 1.28rem;
       font-size: 0.72rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     }
 
     .ghost-btn {
@@ -117,6 +127,13 @@
       transform: translateY(-1px);
     }
 
+    .btn:disabled,
+    .ghost-btn:disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .vault-shell {
       position: relative;
       display: grid;
@@ -126,8 +143,8 @@
     .vault-topbar {
       display: flex;
       justify-content: space-between;
+      align-items: end;
       gap: 1rem;
-      align-items: center;
       flex-wrap: wrap;
     }
 
@@ -139,44 +156,33 @@
       display: inline-block;
       margin-bottom: 0.8rem;
       font-size: 0.62rem;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
-      color: rgba(30, 23, 16, 0.52);
+      color: rgba(29, 22, 15, 0.5);
     }
 
     .vault-heading h1 {
-      font-size: clamp(2.2rem, 6vw, 4rem);
-      line-height: 0.96;
-      margin-bottom: 0.8rem;
+      font-size: clamp(2.2rem, 6vw, 4.2rem);
+      line-height: 0.94;
+      margin-bottom: 0.9rem;
     }
 
     .vault-heading p {
-      color: var(--muted);
-      line-height: 1.75;
       max-width: 38rem;
+      line-height: 1.75;
+      color: var(--muted);
     }
 
     .toolbar {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
       justify-content: flex-end;
-    }
-
-    .toolbar .ghost-btn,
-    .toolbar .btn {
-      min-width: 170px;
-      text-align: center;
-      justify-content: center;
     }
 
     .vault-stage {
       position: relative;
-      min-height: 72vh;
       display: grid;
-      grid-template-columns: 0.42fr 0.58fr;
+      grid-template-columns: 0.4fr 0.6fr;
       gap: 1rem;
-      align-items: stretch;
+      min-height: 74vh;
     }
 
     .vault-sidebar,
@@ -184,13 +190,13 @@
       position: relative;
       overflow: hidden;
       border: 1px solid var(--gold-soft);
-      box-shadow: 0 28px 46px rgba(17, 13, 9, 0.12);
+      box-shadow: 0 28px 50px var(--shadow);
     }
 
     .vault-sidebar {
-      background:
-        linear-gradient(180deg, rgba(255, 252, 246, 0.92) 0%, rgba(246, 236, 223, 0.94) 100%);
       padding: 2rem;
+      background:
+        linear-gradient(180deg, rgba(255, 251, 245, 0.95) 0%, rgba(243, 233, 220, 0.95) 100%);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -201,58 +207,57 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at top right, rgba(201, 168, 76, 0.12), transparent 34%),
-        repeating-linear-gradient(135deg, transparent, transparent 13px, rgba(201, 168, 76, 0.03) 13px, rgba(201, 168, 76, 0.03) 26px);
+        radial-gradient(circle at top right, rgba(201, 168, 76, 0.12), transparent 36%),
+        repeating-linear-gradient(135deg, transparent, transparent 14px, rgba(201, 168, 76, 0.025) 14px, rgba(201, 168, 76, 0.025) 28px);
       pointer-events: none;
     }
 
-    .message-count {
+    .summary-block,
+    .stack-preview {
       position: relative;
       z-index: 1;
+    }
+
+    .message-count {
       margin-bottom: 1rem;
     }
 
     .message-count strong {
       display: block;
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.2rem, 10vw, 5rem);
+      font-size: clamp(3.4rem, 10vw, 5.6rem);
       font-weight: 500;
-      line-height: 0.9;
-      color: var(--ink);
+      line-height: 0.88;
+      margin-bottom: 0.35rem;
     }
 
     .message-count span,
-    .sidebar-copy p,
-    .message-meta,
-    .message-progress {
+    .summary-block p,
+    .scene-meta,
+    .scene-progress,
+    .scene-status {
       color: var(--muted);
     }
 
-    .sidebar-copy {
-      position: relative;
-      z-index: 1;
-    }
-
-    .sidebar-copy p {
+    .summary-block p {
       line-height: 1.8;
       margin-bottom: 1rem;
     }
 
     .stack-preview {
-      position: relative;
-      z-index: 1;
-      min-height: 220px;
+      min-height: 240px;
       margin-top: 1rem;
     }
 
     .stack-card {
       position: absolute;
-      inset: auto 0 0 auto;
-      width: min(100%, 240px);
-      min-height: 150px;
-      background: rgba(255, 255, 255, 0.9);
+      right: 0;
+      bottom: 0;
+      width: min(100%, 250px);
+      min-height: 160px;
+      background: rgba(255, 255, 255, 0.92);
       border: 1px solid rgba(201, 168, 76, 0.18);
-      box-shadow: 0 16px 28px rgba(17, 13, 9, 0.12);
+      box-shadow: 0 18px 32px rgba(18, 14, 10, 0.12);
       padding: 1rem;
       display: flex;
       flex-direction: column;
@@ -276,7 +281,7 @@
 
     .stack-card p {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
+      font-size: 1.08rem;
       line-height: 1.45;
     }
 
@@ -284,42 +289,98 @@
       font-size: 0.64rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: #8b6c36;
+      color: #8b6f40;
     }
 
     .vault-viewer {
+      padding: 2rem;
       background:
-        radial-gradient(circle at top left, rgba(255, 255, 255, 0.86), transparent 40%),
-        linear-gradient(180deg, #fef8ee 0%, #f4e8d7 100%);
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .message-paper,
-    .empty-paper {
-      position: relative;
-      background: rgba(255, 253, 249, 0.88);
-      border: 1px solid rgba(201, 168, 76, 0.24);
-      box-shadow: 0 28px 48px rgba(17, 13, 9, 0.12);
-      padding: 2rem;
-      min-height: 420px;
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.8), transparent 38%),
+        linear-gradient(180deg, #fef9ef 0%, #f3e7d5 100%);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
-    .message-paper::before,
-    .empty-paper::before {
+    .viewer-scene {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .scene-card,
+    .empty-card {
+      width: min(100%, 620px);
+      min-height: 470px;
+      position: relative;
+      border: 1px solid var(--gold-soft);
+      box-shadow: 0 30px 54px rgba(18, 14, 10, 0.14);
+      overflow: hidden;
+    }
+
+    .scene-card {
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .scene-card.clickable {
+      cursor: pointer;
+    }
+
+    .scene-card.clickable:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 34px 62px rgba(18, 14, 10, 0.18);
+    }
+
+    .sender-stage {
+      background:
+        radial-gradient(circle at top left, rgba(201, 168, 76, 0.08), transparent 30%),
+        linear-gradient(160deg, var(--night) 0%, var(--night-soft) 70%, #312416 100%);
+      color: #f7efe4;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sender-stage::before,
+    .sender-stage::after,
+    .message-stage::before,
+    .empty-card::before {
       content: "";
       position: absolute;
-      inset: 18px;
-      border: 1px solid rgba(201, 168, 76, 0.14);
       pointer-events: none;
     }
 
-    .message-progress {
+    .sender-stage::before {
+      inset: 18px;
+      border: 1px solid rgba(201, 168, 76, 0.22);
+    }
+
+    .sender-stage::after {
+      inset: 32px;
+      border: 1px solid rgba(201, 168, 76, 0.1);
+    }
+
+    .seal-mark {
+      align-self: flex-end;
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      display: grid;
+      place-items: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      color: rgba(247, 239, 228, 0.92);
+      background: radial-gradient(circle at 30% 30%, rgba(201, 168, 76, 0.28), rgba(201, 168, 76, 0.08));
+    }
+
+    .sender-copy {
+      max-width: 28rem;
+    }
+
+    .scene-progress {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
@@ -329,7 +390,7 @@
       margin-bottom: 1rem;
     }
 
-    .progress-dot {
+    .scene-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
@@ -337,20 +398,90 @@
       display: inline-block;
     }
 
-    .message-paper h2,
-    .empty-paper h2 {
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
-      line-height: 1;
-      margin-bottom: 1.1rem;
-      font-weight: 500;
+    .scene-title {
+      font-size: clamp(2.6rem, 7vw, 4.4rem);
+      line-height: 0.9;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    .sender-name {
+      display: block;
+      font-size: clamp(2.6rem, 7vw, 4.9rem);
+      line-height: 0.88;
+      margin-top: 0.35rem;
+    }
+
+    .scene-subtitle {
+      font-size: 0.76rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(247, 239, 228, 0.66);
+      margin-bottom: 1rem;
+    }
+
+    .scene-note {
+      max-width: 28rem;
+      line-height: 1.75;
+      color: rgba(247, 239, 228, 0.8);
+    }
+
+    .sender-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: end;
+      flex-wrap: wrap;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(247, 239, 228, 0.76);
+    }
+
+    .sender-action {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(247, 239, 228, 0.74);
+    }
+
+    .message-stage,
+    .empty-card {
+      background: rgba(255, 252, 247, 0.9);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .message-stage::before,
+    .empty-card::before {
+      inset: 18px;
+      border: 1px solid rgba(201, 168, 76, 0.14);
+    }
+
+    .message-stage .scene-title,
+    .empty-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 1rem;
+      font-style: normal;
     }
 
     .message-body {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      line-height: 1.55;
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      line-height: 1.58;
       white-space: pre-wrap;
-      color: #342819;
+      color: #372a1c;
     }
 
     .message-footer {
@@ -358,53 +489,40 @@
       justify-content: space-between;
       gap: 1rem;
       align-items: end;
-      margin-top: 2rem;
       flex-wrap: wrap;
+      margin-top: 2rem;
     }
 
-    .message-author {
+    .note-signature {
       display: flex;
       flex-direction: column;
       gap: 0.35rem;
     }
 
-    .message-author strong {
+    .note-signature strong {
       font-size: 0.78rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
     }
 
-    .message-meta {
+    .scene-meta {
       font-size: 0.78rem;
       line-height: 1.6;
     }
 
-    .viewer-controls {
-      display: flex;
-      justify-content: space-between;
-      gap: 0.8rem;
+    .scene-controls {
       align-items: center;
-      margin-top: 1.25rem;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 1.2rem;
     }
 
-    .control-buttons {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
+    .scene-status {
+      font-size: 0.82rem;
+      line-height: 1.6;
+      max-width: 28rem;
     }
 
-    .viewer-controls button {
-      min-width: 140px;
-    }
-
-    .viewer-controls button:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .vault-intro {
+    .intro-overlay {
       position: absolute;
       inset: 0;
       z-index: 4;
@@ -412,29 +530,28 @@
       align-items: center;
       justify-content: center;
       padding: 1rem;
-      background: rgba(15, 11, 7, 0.52);
-      backdrop-filter: blur(7px);
+      background: rgba(17, 13, 9, 0.54);
+      backdrop-filter: blur(8px);
     }
 
     .intro-card {
-      width: min(520px, 100%);
+      width: min(560px, 100%);
       background: rgba(255, 250, 242, 0.96);
-      border: 1px solid rgba(201, 168, 76, 0.22);
-      box-shadow: 0 28px 52px rgba(17, 13, 9, 0.24);
-      padding: 2rem;
+      border: 1px solid var(--gold-soft);
+      box-shadow: 0 34px 58px rgba(18, 14, 10, 0.22);
+      padding: 2.2rem;
       text-align: center;
     }
 
     .intro-card h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 6vw, 3rem);
-      font-weight: 500;
-      margin-bottom: 0.8rem;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      line-height: 0.95;
+      margin-bottom: 0.9rem;
     }
 
     .intro-card p {
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.75;
       margin-bottom: 1.4rem;
     }
 
@@ -457,21 +574,36 @@
       .vault-sidebar,
       .vault-viewer,
       .intro-card,
-      .message-paper,
-      .empty-paper {
+      .sender-stage,
+      .message-stage,
+      .empty-card {
         padding: 1.25rem;
       }
 
-      .toolbar .ghost-btn,
-      .toolbar .btn,
-      .viewer-controls button,
       .btn,
-      .ghost-btn {
+      .ghost-btn,
+      .toolbar .btn,
+      .toolbar .ghost-btn,
+      .scene-controls .btn,
+      .scene-controls .ghost-btn {
         width: 100%;
+        justify-content: center;
+        text-align: center;
       }
 
-      .message-paper::before,
-      .empty-paper::before {
+      .scene-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .scene-card,
+      .empty-card {
+        min-height: 420px;
+      }
+
+      .sender-stage::before,
+      .message-stage::before,
+      .empty-card::before {
         inset: 12px;
       }
     }
@@ -483,7 +615,7 @@
     <section id="auth-screen" class="auth-card hidden" aria-live="polite">
       <span class="kicker">Private Couple Portal</span>
       <h1>Message Vault Locked</h1>
-      <p>This page only opens with a valid admin session, so guest notes stay protected. Open the admin dashboard to
+      <p>This page only opens with a valid admin session, so guest messages stay private. Open the admin dashboard to
         sign in, then come right back here.</p>
       <div class="btn-row">
         <a class="btn" href="/admin">Open Admin</a>
@@ -494,11 +626,12 @@
     <main id="app" class="vault-shell hidden">
       <header class="vault-topbar">
         <div class="vault-heading">
-          <span class="kicker">Rosanna &amp; Andrew</span>
+          <span class="kicker">Rosanna and Andrew</span>
           <h1>Guest Message Vault</h1>
-          <p id="vault-copy">Loading your private collection of guest wishes...</p>
+          <p id="vault-copy">Loading your private guest presentation...</p>
         </div>
         <div class="toolbar">
+          <button class="ghost-btn" onclick="copyPresentationLink()">Copy Presentation Link</button>
           <button class="ghost-btn" onclick="downloadMessages('txt')">Download TXT</button>
           <button class="ghost-btn" onclick="downloadMessages('json')">Download JSON</button>
           <a class="btn" href="/admin">Back To Admin</a>
@@ -507,16 +640,15 @@
 
       <section class="vault-stage" aria-live="polite">
         <aside class="vault-sidebar">
-          <div class="message-count">
-            <span class="kicker">Hidden Notes</span>
-            <strong id="message-total">0</strong>
-            <span id="message-total-label">Messages from your guests</span>
-          </div>
-
-          <div class="sidebar-copy">
-            <p id="sidebar-summary">Guests are leaving memories, blessings, and warm wishes here. Once revealed, you
-              can move through them one by one like keepsakes in a private album.</p>
-            <p id="sidebar-hint">Use the buttons below or your keyboard arrow keys to flip through each note.</p>
+          <div class="summary-block">
+            <div class="message-count">
+              <span class="kicker">Hidden Notes</span>
+              <strong id="message-total">0</strong>
+              <span id="message-total-label">Messages waiting inside the vault</span>
+            </div>
+            <p id="sidebar-summary">Guests are leaving blessings, memories, and excitement here. Each note appears as a
+              private keepsake you can open one by one.</p>
+            <p id="sidebar-hint">You will first see who the note is from, then open it, then continue to the next one.</p>
           </div>
 
           <div id="stack-preview" class="stack-preview">
@@ -528,38 +660,32 @@
         </aside>
 
         <section class="vault-viewer">
-          <div id="viewer-frame" class="message-paper">
-            <div>
-              <div class="message-progress"><span class="progress-dot"></span><span id="message-progress">Message 1 of
-                  1</span></div>
-              <h2 id="message-title">Guest Message</h2>
-              <div id="message-body" class="message-body">Loading...</div>
-            </div>
-
-            <footer class="message-footer">
-              <div class="message-author">
-                <strong id="message-author">Guest Name</strong>
-                <span id="message-meta" class="message-meta">Submitted recently</span>
+          <div id="viewer-scene" class="viewer-scene">
+            <article class="empty-card">
+              <div>
+                <div class="scene-progress"><span class="scene-dot"></span><span>Preparing notes</span></div>
+                <h2 class="empty-title">Loading your vault</h2>
+                <div class="message-body">Please wait while the messages are prepared.</div>
               </div>
-            </footer>
+            </article>
           </div>
 
-          <div class="viewer-controls">
-            <span id="viewer-status" class="message-meta">Preparing your notes...</span>
-            <div class="control-buttons">
-              <button id="prev-btn" class="ghost-btn" onclick="moveMessage(-1)">Previous</button>
-              <button id="next-btn" class="btn" onclick="moveMessage(1)">Next</button>
+          <div class="scene-controls">
+            <span id="scene-status" class="scene-status">Preparing the interactive presentation...</span>
+            <div class="btn-row">
+              <button id="prev-btn" class="ghost-btn" onclick="handlePrevAction()">Previous</button>
+              <button id="primary-btn" class="btn" onclick="handlePrimaryAction()">Open Note</button>
             </div>
           </div>
         </section>
 
-        <div id="vault-intro" class="vault-intro hidden">
+        <div id="intro-overlay" class="intro-overlay hidden">
           <div class="intro-card">
             <span class="kicker">A Private Moment</span>
             <h2 id="intro-title">You have hidden messages from your guests</h2>
-            <p id="intro-copy">Open the vault when you're ready to read them.</p>
+            <p id="intro-copy">Open the vault when you are ready to reveal the first note.</p>
             <div class="btn-row">
-              <button id="reveal-btn" class="btn" onclick="revealVault()">Reveal Messages</button>
+              <button id="reveal-btn" class="btn" onclick="revealVault()">Begin The Presentation</button>
             </div>
           </div>
         </div>
@@ -573,6 +699,7 @@
     let adminToken = localStorage.getItem(SESSION_KEY) || '';
     let messages = [];
     let currentIndex = 0;
+    let currentStage = 'sender';
     let isRevealed = false;
 
     function escapeHtml(value) {
@@ -582,6 +709,11 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    function truncateText(value, max = 86) {
+      const text = String(value ?? '').trim();
+      return text.length > max ? `${text.slice(0, max - 1)}...` : text;
     }
 
     function formatAttendanceLabel(status) {
@@ -605,9 +737,15 @@
       });
     }
 
-    function truncateText(value, max = 90) {
-      const text = String(value ?? '').trim();
-      return text.length > max ? `${text.slice(0, max - 1)}...` : text;
+    function formatShortDate(value) {
+      if (!value) return '-';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value);
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      });
     }
 
     function authHeaders(extra = {}) {
@@ -626,6 +764,31 @@
       }
     }
 
+    async function copyText(text, successMessage) {
+      const value = String(text || '').trim();
+      if (!value) return;
+
+      try {
+        await navigator.clipboard.writeText(value);
+        alert(successMessage || 'Copied to clipboard.');
+      } catch {
+        const temp = document.createElement('textarea');
+        temp.value = value;
+        temp.setAttribute('readonly', 'readonly');
+        temp.style.position = 'absolute';
+        temp.style.left = '-9999px';
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        temp.remove();
+        alert(successMessage || 'Copied to clipboard.');
+      }
+    }
+
+    function copyPresentationLink() {
+      copyText(window.location.href, 'Presentation link copied.');
+    }
+
     function showAuthScreen() {
       document.getElementById('auth-screen').classList.remove('hidden');
       document.getElementById('app').classList.add('hidden');
@@ -636,23 +799,25 @@
       document.getElementById('app').classList.remove('hidden');
     }
 
-    function updateIntro() {
+    function updateSummary() {
       const count = messages.length;
       document.getElementById('message-total').textContent = count;
-      document.getElementById('message-total-label').textContent = `Message${count === 1 ? '' : 's'} from your guests`;
+      document.getElementById('message-total-label').textContent = count
+        ? `Message${count === 1 ? '' : 's'} waiting to be opened`
+        : 'No notes have arrived yet';
       document.getElementById('vault-copy').textContent = count
-        ? `You have ${count} private message${count === 1 ? '' : 's'} waiting. Flip through each note like a keepsake and download the full collection whenever you want.`
-        : `The private vault is ready. Once guests leave notes, they will appear here for a quiet read-through.`;
+        ? `You have ${count} hidden message${count === 1 ? '' : 's'} from your guests. Reveal the sender first, open the note, then continue through the collection one keepsake at a time.`
+        : 'The private presentation is ready. As soon as guests begin leaving notes, they will appear here.';
       document.getElementById('sidebar-summary').textContent = count
-        ? `Your guests have already shared ${count} heartfelt note${count === 1 ? '' : 's'} for the celebration. Each one stays tucked inside this private vault until you open it.`
-        : `This private vault will fill with blessings, jokes, memories, and sweet notes as guests respond.`;
+        ? `Each note starts as a sealed card with the guest name. Open it only when you are ready, then move on to the next sender.`
+        : `This private presentation will fill itself with sweet notes, blessings, and memories as RSVPs arrive.`;
       document.getElementById('intro-title').textContent = count
         ? `You have ${count} hidden message${count === 1 ? '' : 's'} from your guests`
         : 'Your vault is ready';
       document.getElementById('intro-copy').textContent = count
-        ? 'Open the vault when you are ready to reveal the first note.'
-        : 'There are no guest notes yet, but this page is ready as soon as they arrive.';
-      document.getElementById('reveal-btn').textContent = count ? 'Reveal Messages' : 'Open Vault';
+        ? 'Each step is interactive: reveal the sender, open the note, then continue to the next guest.'
+        : 'There are no guest messages yet, but this space is ready for them.';
+      document.getElementById('reveal-btn').textContent = count ? 'Begin The Presentation' : 'Open Vault';
     }
 
     function renderStackPreview() {
@@ -660,74 +825,144 @@
       const previewMessages = messages.slice(0, 3);
       stack.innerHTML = previewMessages.length
         ? previewMessages.map((row) => `<article class="stack-card">
-            <p>“${escapeHtml(truncateText(row.message, 72))}”</p>
+            <p>${escapeHtml(truncateText(row.message, 70))}</p>
             <small>${escapeHtml(row.display_name)}</small>
           </article>`).join('')
         : `<article class="stack-card">
-            <p>No guest messages yet. This stack will build itself as RSVPs come in.</p>
+            <p>No guest messages yet. This stack will build itself as responses come in.</p>
             <small>Wedding Vault</small>
           </article>`;
     }
 
-    function renderEmptyState() {
-      const viewer = document.getElementById('viewer-frame');
-      viewer.className = 'empty-paper';
-      viewer.innerHTML = `
-        <div>
-          <div class="message-progress"><span class="progress-dot"></span><span>Waiting for the first message</span></div>
-          <h2>Nothing hidden just yet</h2>
-          <div class="message-body">As guests submit notes for the couple, they will appear here in a private slideshow.</div>
-        </div>
-        <footer class="message-footer">
-          <div class="message-author">
-            <strong>Message Vault</strong>
-            <span class="message-meta">Protected by the admin session</span>
-          </div>
-        </footer>
-      `;
-      document.getElementById('viewer-status').textContent = 'No messages to browse yet.';
-      document.getElementById('prev-btn').disabled = true;
-      document.getElementById('next-btn').disabled = true;
+    function getCurrentMessage() {
+      return messages[currentIndex] || null;
     }
 
-    function renderMessage() {
+    function renderEmptyState() {
+      document.getElementById('viewer-scene').innerHTML = `
+        <article class="empty-card">
+          <div>
+            <div class="scene-progress"><span class="scene-dot"></span><span>Waiting for the first note</span></div>
+            <h2 class="empty-title">Nothing hidden just yet</h2>
+            <div class="message-body">As guests submit notes for the couple, they will appear here in this private presentation.</div>
+          </div>
+          <div class="message-footer">
+            <div class="note-signature">
+              <strong>Message Vault</strong>
+              <span class="scene-meta">Protected by your admin session</span>
+            </div>
+          </div>
+        </article>
+      `;
+      document.getElementById('scene-status').textContent = 'No messages to browse yet.';
+      document.getElementById('prev-btn').disabled = true;
+      document.getElementById('primary-btn').disabled = true;
+    }
+
+    function renderScene() {
       if (!messages.length) {
         renderEmptyState();
         return;
       }
 
-      const row = messages[currentIndex];
-      const viewer = document.getElementById('viewer-frame');
-      viewer.className = 'message-paper';
-      viewer.innerHTML = `
-        <div>
-          <div class="message-progress"><span class="progress-dot"></span><span>${escapeHtml(`Message ${currentIndex + 1} of ${messages.length}`)}</span></div>
-          <h2>Guest Message</h2>
-          <div class="message-body">${escapeHtml(row.message)}</div>
-        </div>
-        <footer class="message-footer">
-          <div class="message-author">
-            <strong>${escapeHtml(row.display_name)}</strong>
-            <span class="message-meta">${escapeHtml(formatAttendanceLabel(row.attendance))} · ${escapeHtml(formatDateTime(row.submitted_at))}</span>
-          </div>
-        </footer>
-      `;
+      const row = getCurrentMessage();
+      const scene = document.getElementById('viewer-scene');
+      const prevBtn = document.getElementById('prev-btn');
+      const primaryBtn = document.getElementById('primary-btn');
+      const canGoBack = currentStage === 'message' || currentIndex > 0;
 
-      document.getElementById('viewer-status').textContent = `${row.display_name} · ${formatDateTime(row.submitted_at)}`;
-      document.getElementById('prev-btn').disabled = currentIndex === 0;
-      document.getElementById('next-btn').disabled = currentIndex >= messages.length - 1;
+      prevBtn.disabled = !canGoBack;
+      primaryBtn.disabled = false;
+
+      if (currentStage === 'sender') {
+        primaryBtn.textContent = 'Open Note';
+        scene.innerHTML = `
+          <button class="scene-card sender-stage clickable" type="button" onclick="handlePrimaryAction()">
+            <div class="seal-mark">RA</div>
+            <div class="sender-copy">
+              <div class="scene-progress"><span class="scene-dot"></span><span>Guest ${currentIndex + 1} of ${messages.length}</span></div>
+              <div class="scene-subtitle">A hidden note is waiting from</div>
+              <h2 class="scene-title">Open when ready</h2>
+              <span class="sender-name">${escapeHtml(row.display_name)}</span>
+              <p class="scene-note">This note stays sealed until you click in. Reveal the guest first, then open their message.</p>
+            </div>
+            <div class="sender-footer">
+              <span class="meta-pill">${escapeHtml(formatAttendanceLabel(row.attendance))}</span>
+              <span class="sender-action">Click the name card to open</span>
+            </div>
+          </button>
+        `;
+        document.getElementById('scene-status').textContent = `${row.display_name} is next. Click the sender card or use Open Note.`;
+        return;
+      }
+
+      primaryBtn.textContent = currentIndex < messages.length - 1 ? 'Next Note' : 'Start Again';
+      scene.innerHTML = `
+        <article class="scene-card message-stage">
+          <div>
+            <div class="scene-progress"><span class="scene-dot"></span><span>Message ${currentIndex + 1} of ${messages.length}</span></div>
+            <h2 class="scene-title">A note from ${escapeHtml(row.display_name)}</h2>
+            <div class="message-body">${escapeHtml(row.message)}</div>
+          </div>
+          <footer class="message-footer">
+            <div class="note-signature">
+              <strong>${escapeHtml(row.display_name)}</strong>
+              <span class="scene-meta">${escapeHtml(formatAttendanceLabel(row.attendance))} | ${escapeHtml(formatDateTime(row.submitted_at))}</span>
+            </div>
+            <span class="scene-meta">Read through, then continue to the next guest.</span>
+          </footer>
+        </article>
+      `;
+      document.getElementById('scene-status').textContent = currentIndex < messages.length - 1
+        ? `You are reading ${row.display_name}'s note. Continue when you are ready for the next guest.`
+        : `You are on the final note from ${row.display_name}. Continue to restart the presentation.`;
     }
 
     function revealVault() {
       isRevealed = true;
-      document.getElementById('vault-intro').classList.add('hidden');
-      renderMessage();
+      currentStage = 'sender';
+      document.getElementById('intro-overlay').classList.add('hidden');
+      renderScene();
     }
 
-    function moveMessage(step) {
+    function handlePrimaryAction() {
       if (!messages.length) return;
-      currentIndex = Math.max(0, Math.min(messages.length - 1, currentIndex + step));
-      renderMessage();
+
+      if (!isRevealed) {
+        revealVault();
+        return;
+      }
+
+      if (currentStage === 'sender') {
+        currentStage = 'message';
+        renderScene();
+        return;
+      }
+
+      if (currentIndex < messages.length - 1) {
+        currentIndex += 1;
+      } else {
+        currentIndex = 0;
+      }
+
+      currentStage = 'sender';
+      renderScene();
+    }
+
+    function handlePrevAction() {
+      if (!messages.length) return;
+
+      if (currentStage === 'message') {
+        currentStage = 'sender';
+        renderScene();
+        return;
+      }
+
+      if (currentIndex > 0) {
+        currentIndex -= 1;
+        currentStage = 'sender';
+        renderScene();
+      }
     }
 
     function downloadFile(filename, type, content) {
@@ -775,41 +1010,59 @@
         const res = await fetch(`${CONVEX_HTTP_URL}/api/rsvp-media`, {
           headers: authHeaders()
         });
+
         if (res.status === 401) {
           adminToken = '';
           localStorage.removeItem(SESSION_KEY);
           showAuthScreen();
           return;
         }
+
         if (!res.ok) throw new Error(await res.text());
 
         const payload = await res.json();
         messages = Array.isArray(payload.messages) ? payload.messages : [];
-        updateIntro();
+        currentIndex = 0;
+        currentStage = 'sender';
+        isRevealed = false;
+
+        updateSummary();
         renderStackPreview();
-        renderMessage();
+        renderScene();
         showVault();
-        document.getElementById('vault-intro').classList.remove('hidden');
-      } catch (err) {
+
+        if (messages.length) {
+          document.getElementById('intro-overlay').classList.remove('hidden');
+          document.getElementById('primary-btn').disabled = true;
+          document.getElementById('prev-btn').disabled = true;
+        } else {
+          document.getElementById('intro-overlay').classList.add('hidden');
+        }
+      } catch {
         showAuthScreen();
       }
     }
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !document.getElementById('vault-intro').classList.contains('hidden')) {
-        revealVault();
+      if (document.getElementById('app').classList.contains('hidden')) return;
+
+      if (!document.getElementById('intro-overlay').classList.contains('hidden')) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          revealVault();
+        }
         return;
       }
 
-      if (document.getElementById('app').classList.contains('hidden')) return;
-      if (!isRevealed && (event.key === 'Enter' || event.key === ' ')) {
+      if (event.key === 'ArrowRight' || event.key === 'Enter') {
         event.preventDefault();
-        revealVault();
-        return;
+        handlePrimaryAction();
       }
-      if (!isRevealed) return;
-      if (event.key === 'ArrowRight') moveMessage(1);
-      if (event.key === 'ArrowLeft') moveMessage(-1);
+
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        handlePrevAction();
+      }
     });
 
     window.addEventListener('load', init);

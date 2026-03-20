@@ -538,6 +538,42 @@
       font-size: 0.84rem;
     }
 
+    .song-tools {
+      padding: 1rem 1.5rem 1.2rem;
+      border-bottom: 1px solid #efe8dd;
+      background: #fffdfa;
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .song-tools-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .song-tools-row input {
+      flex: 1 1 220px;
+      min-width: 220px;
+      padding: 0.66rem 0.78rem;
+      border: 1px solid #ddd3c2;
+      background: white;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      outline: none;
+    }
+
+    .song-tools-row input:focus {
+      border-color: var(--gold);
+    }
+
+    .song-help {
+      font-size: 0.73rem;
+      color: #70685c;
+      line-height: 1.55;
+    }
+
     /* WhatsApp Inbox Build */
     .wa-builder {
       background: white;
@@ -929,6 +965,7 @@
               flip through every message and download the collection.</p>
             <div class="vault-actions">
               <a class="btn-sm primary btn-link" href="/messages" target="_blank" rel="noopener">Open Message Vault</a>
+              <button class="btn-sm" onclick="copyVaultLink()">Copy Vault Link</button>
               <button class="btn-sm" onclick="downloadMessages()">Download Messages</button>
               <button class="btn-sm" onclick="downloadSongs()">Download Songs</button>
             </div>
@@ -970,6 +1007,14 @@
                 <h3>Song Requests</h3>
               </div>
               <div id="songs-count-label" class="media-count">0 requests</div>
+            </div>
+            <div class="song-tools">
+              <div class="song-tools-row">
+                <button class="btn-sm" onclick="copySongList()">Copy Song List</button>
+                <button class="btn-sm primary" onclick="sendSongsToDj()">Send To DJ WhatsApp</button>
+                <input id="dj-phone" type="tel" placeholder="DJ WhatsApp Number" oninput="saveDjPhone(this.value)" />
+              </div>
+              <div class="song-help">Save the DJ's WhatsApp number here once, then send the current playlist request list in one click.</div>
             </div>
             <div class="table-shell">
               <table>
@@ -1148,6 +1193,7 @@ Rosanna and Andrew</textarea>
     const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
     const WEDDING_URL = 'https://wedinvitation-ruddy.vercel.app';
     const SESSION_KEY = 'ra_admin_token';
+    const DJ_PHONE_KEY = 'ra_dj_phone';
     const LIVE_REFRESH_MS = 12000;
     let guests = [];
     let rsvpMedia = {
@@ -1165,6 +1211,7 @@ Rosanna and Andrew</textarea>
     let currentFilter = 'all';
     let waPersonQuery = '';
     let adminToken = localStorage.getItem(SESSION_KEY) || '';
+    let djPhone = localStorage.getItem(DJ_PHONE_KEY) || '';
     let refreshTimer = null;
 
     async function doLogin() {
@@ -1269,7 +1316,7 @@ Rosanna and Andrew</textarea>
       renderTable();
     }
 
-    // â”€â”€â”€ DATA SYNC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Data sync
     function escapeHtml(value) {
       return String(value ?? '')
         .replace(/&/g, '&amp;')
@@ -1310,6 +1357,65 @@ Rosanna and Andrew</textarea>
         hour: 'numeric',
         minute: '2-digit'
       });
+    }
+
+    async function copyText(value, successMessage) {
+      const text = String(value || '').trim();
+      if (!text) return;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        alert(successMessage || 'Copied to clipboard.');
+      } catch {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        temp.setAttribute('readonly', 'readonly');
+        temp.style.position = 'absolute';
+        temp.style.left = '-9999px';
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        temp.remove();
+        alert(successMessage || 'Copied to clipboard.');
+      }
+    }
+
+    function getVaultUrl() {
+      return `${String(WEDDING_URL || '').replace(/\/+$/, '')}/messages`;
+    }
+
+    function copyVaultLink() {
+      copyText(getVaultUrl(), 'Message vault link copied.');
+    }
+
+    function saveDjPhone(value) {
+      djPhone = String(value || '').trim();
+      localStorage.setItem(DJ_PHONE_KEY, djPhone);
+    }
+
+    function buildSongListText() {
+      const songs = Array.isArray(rsvpMedia.songs) ? rsvpMedia.songs : [];
+      if (!songs.length) return '';
+
+      const lines = songs.map((row, index) =>
+        `${index + 1}. ${row.display_name} - ${row.song_request}`
+      );
+
+      return [
+        'Wedding song request list',
+        'Rosanna and Andrew',
+        '',
+        ...lines,
+      ].join('\n');
+    }
+
+    function copySongList() {
+      const text = buildSongListText();
+      if (!text) {
+        alert('There are no song requests to copy yet.');
+        return;
+      }
+      copyText(text, 'Song list copied.');
     }
 
     async function fetchGuests(opts = { showLoading: true }) {
@@ -1420,6 +1526,10 @@ Rosanna and Andrew</textarea>
     function renderMediaView() {
       const songs = Array.isArray(rsvpMedia.songs) ? rsvpMedia.songs : [];
       const messages = Array.isArray(rsvpMedia.messages) ? rsvpMedia.messages : [];
+      const djPhoneInput = document.getElementById('dj-phone');
+      if (djPhoneInput && djPhoneInput.value !== djPhone) {
+        djPhoneInput.value = djPhone;
+      }
 
       document.getElementById('songs-count-label').textContent = `${songs.length} request${songs.length === 1 ? '' : 's'}`;
       document.getElementById('messages-count-label').textContent = `${messages.length} note${messages.length === 1 ? '' : 's'}`;
@@ -1460,11 +1570,11 @@ Rosanna and Andrew</textarea>
       const stack = messages.slice(0, 3);
       preview.innerHTML = stack.length
         ? stack.map((row) => `<article class="vault-card-mini">
-            <blockquote>“${escapeHtml(truncateText(row.message, 120))}”</blockquote>
-            <footer>${escapeHtml(row.display_name)} · ${escapeHtml(formatShortDate(row.submitted_at))}</footer>
+            <blockquote>"${escapeHtml(truncateText(row.message, 120))}"</blockquote>
+            <footer>${escapeHtml(row.display_name)} | ${escapeHtml(formatShortDate(row.submitted_at))}</footer>
           </article>`).join('')
         : `<article class="vault-card-mini">
-            <blockquote>No hidden notes yet — once guests start writing, this vault will fill beautifully.</blockquote>
+            <blockquote>No hidden notes yet - once guests start writing, this vault will fill beautifully.</blockquote>
             <footer>Wedding Memory Vault</footer>
           </article>`;
     }
@@ -1516,7 +1626,35 @@ Rosanna and Andrew</textarea>
       downloadBlob('wedding-song-requests.csv', 'text/csv;charset=utf-8', [header, ...rows].join('\n'));
     }
 
-    // â”€â”€â”€ ADDING FROM DASH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    function sendSongsToDj() {
+      const text = buildSongListText();
+      if (!text) {
+        alert('There are no song requests to send yet.');
+        return;
+      }
+
+      const input = document.getElementById('dj-phone');
+      const candidate = input ? input.value : djPhone;
+      let phone = normalizeWaPhone(candidate);
+
+      if (!phone) {
+        const entered = prompt('Enter the DJ WhatsApp number, including country code:');
+        phone = normalizeWaPhone(entered);
+        if (!phone) {
+          alert('A valid WhatsApp number is needed to send the song list.');
+          return;
+        }
+        djPhone = entered;
+        localStorage.setItem(DJ_PHONE_KEY, String(entered));
+        if (input) input.value = String(entered);
+      } else {
+        saveDjPhone(candidate);
+      }
+
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    // Adding from dashboard
     let editingGuestId = null;
 
     function openAddGuest() {
@@ -1591,7 +1729,7 @@ Rosanna and Andrew</textarea>
       }).catch(e => { alert('Failed: ' + e); btn.textContent = originalText; btn.disabled = false; });
     }
 
-    // â”€â”€â”€ WHATSAPP BUILDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // WhatsApp builder
     function generatePersonalLink(g) {
       const base = String(WEDDING_URL || '').replace(/\/+$/, '');
       if (!g || !g.first_name) return `${base}/`;
