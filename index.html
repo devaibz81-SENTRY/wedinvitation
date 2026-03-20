@@ -1752,7 +1752,7 @@
 </head>
 <body>
 
-  <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+  <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
        INTRO GIF OVERLAY
    ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
   <div id="intro-overlay">
@@ -1768,28 +1768,9 @@
     <source src="audio/MUSIC.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- MUSIC -->
-  <audio id="bg-music" preload="auto" loop>
-    <source src="audio/MUSIC.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- MUSIC TOGGLE -->
-  <button class="music-btn" id="musicBtn" aria-label="Toggle music">
-    <svg viewBox="0 0 24 24">
-      <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-      <line id="muteL" x1="1" y1="1" x2="23" y2="23" style="display:none;"></line>
-    </svg>
-  </button>
-
   <!-- LAYER 2: MAIN INVITATION SITE -->
   <div id="main-invitation-container">
-    
 
-  <audio id="bg-music" preload="auto" loop>
-    <source src="audio/Canon in D (Pachelbel's Canon) - Cello & Piano [BEST WEDDING VERSION]_01.mp3"
-      type="audio/mpeg" />
-  </audio>
   <button id="music-toggle" class="music-toggle" type="button" aria-label="Toggle background music">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
@@ -2293,24 +2274,18 @@
         site.style.opacity = '1';
         overlay.style.display = 'none';
         document.body.style.overflow = 'auto';
-        document.body.style.position = 'static';
+        document.body.style.position = 'static'; // Allow scrolling
         window.dispatchEvent(new Event('scroll'));
       }, 100);
     }
 
     function enterInvitation() {
-      if (!canEnter) return;
-      gifContainer.classList.add('exit');
-      setTimeout(function() {
-        site.style.display = 'block';
-        setTimeout(function() {
-          site.style.opacity = '1';
-          overlay.style.display = 'none';
-          document.body.style.overflow = 'auto';
-          document.body.style.position = 'static';
-          window.dispatchEvent(new Event('scroll'));
-        }, 100);
-      }, 1200);
+      if (state !== 2) return;
+      state = 3;
+      if (enterBtn) {
+        enterBtn.style.pointerEvents = 'none';
+      }
+      showInvitationSite();
     }
 
     card.addEventListener('click', function () {
