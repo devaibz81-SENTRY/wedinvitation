@@ -364,13 +364,13 @@
       background-color: var(--dark-elegant);
       background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
       clip-path: polygon(0 0, 100% 0, 50% 100%);
-      border-bottom: 1.5px solid var(--gold-solid);
       z-index: 15;
       transform-origin: top;
       transition: transform var(--transition-speed) cubic-bezier(0.7, 0, 0.3, 1);
       transform-style: preserve-3d;
       filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
       pointer-events: none;
+      overflow: visible;
     }
 
     /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
@@ -379,14 +379,12 @@
     .wax-seal {
       position: absolute;
       left: 50%;
-      top: 50%;           /* sits on the flap crease */
+      top: 50%;
       width: clamp(90px, 25vw, 120px);
       height: clamp(90px, 25vw, 120px);
       transform: translate(-50%, -50%);
       z-index: 30;
       cursor: pointer;
-      overflow: hidden;
-      border-radius: 50%;
       filter: drop-shadow(0 6px 14px rgba(0,0,0,0.75));
       transition: transform var(--transition-speed) cubic-bezier(0.7, 0, 0.3, 1),
                   opacity 0.4s ease 0.6s;
@@ -396,7 +394,6 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      border-radius: 50%;
       display: block;
     }
 
@@ -1663,6 +1660,62 @@
     body { overflow: hidden; background: var(--cream); }
     #main-invitation-container { display: none; opacity: 0; transition: opacity 1.2s ease; }
     
+    /* INTRO GIF ANIMATION */
+    .intro-gif-container {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      background: var(--cream);
+      cursor: pointer;
+    }
+    
+    .intro-gif {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      animation: gifScale 0.5s ease-out forwards;
+    }
+    
+    @keyframes gifScale {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    .tap-hint {
+      position: absolute;
+      bottom: 8vh;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--gold);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    
+    .intro-gif-container.playing .tap-hint {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .intro-gif-container.fade-out {
+      animation: fadeOutGif 1.5s ease-out forwards;
+    }
+    
+    @keyframes fadeOutGif {
+      0% { opacity: 1; }
+      100% { opacity: 0; pointer-events: none; }
+    }
+    
     /* Background Music Toggle override for merger */
     #music-toggle-container { position: fixed; bottom: 24px; right: 24px; z-index: 10001; }
   </style>
@@ -1673,55 +1726,11 @@
        INTRO OVERLAY
   ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
   <div id="intro-overlay">
-
-    <div class="intro-card" id="main-card">
-
-      <!-- ΓöÇΓöÇ LAYER 1: IVORY INVITATION (revealed) ΓöÇΓöÇ -->
-      <div class="inner-invitation">
-        <div class="gold-trim-container">
-          <div class="trim-corner trim-top-left"></div>
-          <div class="trim-corner trim-top-right"></div>
-          <div class="trim-corner trim-bottom-left"></div>
-          <div class="trim-corner trim-bottom-right"></div>
-
-          <div class="card-photo-frame">
-            <img src="photos/main-card-photo.gif" alt="Rosanna and Andrew" fetchpriority="high" decoding="async">
-          </div>
-
-          <div class="reveal-content">
-            <div class="reveal-name-zone">
-              <div class="reveal-names" aria-label="Rosanna and Andrew">
-                <span class="reveal-name"><span class="reveal-initial">R</span><span class="reveal-rest">osanna</span></span>
-                <span class="ampersand">&amp;</span>
-                <span class="reveal-name"><span class="reveal-initial">A</span><span class="reveal-rest">ndrew</span></span>
-              </div>
-            </div>
-            <div class="reveal-meta-zone">
-              <div class="reveal-sub">San Ignacio, Belize</div>
-              <div class="reveal-date" style="line-height: 1.4;">4th July 2026</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ΓöÇΓöÇ LAYER 2: ENVELOPE BASE ΓöÇΓöÇ -->
-      <div class="envelope-base">
-        <div class="envelope-gold-border"></div>
-      </div>
-
-      <!-- ΓöÇΓöÇ LAYER 3: TRIANGULAR FLAP ΓöÇΓöÇ -->
-      <div class="envelope-flap-tri"></div>
-
-      <!-- ΓöÇΓöÇ WAX SEAL (sits at flap centre) ΓöÇΓöÇ -->
-      <div class="wax-seal" id="wax-seal">
-        <img src="photos/wax-seal.png" alt="R&amp;A Wax Seal">
-      </div>
-
-      <button type="button" class="enter-card-btn" id="enter-card-btn">Tap To Enter</button>
-
-      <!-- ΓöÇΓöÇ CLICK HINT ΓöÇΓöÇ -->
-    </div><!-- /.intro-card -->
-  </div><!-- /#intro-overlay -->
+    <div class="intro-gif-container" id="intro-gif-container">
+      <img src="photos/invitation-3.gif" alt="Wedding Invitation" id="intro-gif" class="intro-gif">
+      <div class="tap-hint">Tap to open</div>
+    </div>
+  </div>
 
   <!-- MUSIC -->
   <audio id="bg-music" preload="auto" loop>
@@ -2168,13 +2177,56 @@
   </audio>
 
   <script>
-    /* --- CARD SCRIPTS --- */
-    var card      = document.getElementById('main-card');
+    /* --- INTRO GIF SCRIPTS --- */
+    var gifContainer = document.getElementById('intro-gif-container');
+    var introGif = document.getElementById('intro-gif');
     var overlay   = document.getElementById('intro-overlay');
     var site      = document.getElementById('main-invitation-container');
     var music     = document.getElementById('bg-music');
-    var enterBtn  = document.getElementById('enter-card-btn');
-    var state     = 0;
+    var hasPlayed = false;
+    
+    /* GIF animation ends and fades into invitation */
+    if (introGif) {
+      introGif.addEventListener('animationend', function() {
+        if (!hasPlayed) {
+          hasPlayed = true;
+          gifContainer.classList.add('playing');
+        }
+      });
+    }
+    
+    /* Click/tap to play GIF and transition to invitation */
+    if (gifContainer) {
+      gifContainer.addEventListener('click', function() {
+        if (!hasPlayed) {
+          hasPlayed = true;
+          introGif.src = 'photos/invitation-3.gif?' + Date.now();
+          introGif.style.animation = 'none';
+          introGif.offsetHeight;
+          introGif.style.animation = 'gifPlay 3s ease-out forwards';
+        } else {
+          gifContainer.classList.add('fade-out');
+          music.play().catch(function() {});
+          setTimeout(function() {
+            site.style.display = 'block';
+            setTimeout(function() {
+              site.style.opacity = '1';
+              overlay.style.display = 'none';
+              document.body.style.overflow = 'auto';
+              document.body.style.position = 'static';
+              window.dispatchEvent(new Event('scroll'));
+            }, 100);
+          }, 1400);
+        }
+      });
+    }
+    
+    /* Animation for GIF playback */
+    (function addGifAnimation() {
+      var s = document.createElement('style');
+      s.textContent = '@keyframes gifPlay { 0% { opacity: 0; transform: scale(0.8); } 10% { opacity: 1; transform: scale(1); } 70% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.05); } }';
+      document.head.appendChild(s);
+    })();
 
     // Falling leaf effect behind the intro card
     var leafChars = ['❦', '❧', '❦', '✤'];
