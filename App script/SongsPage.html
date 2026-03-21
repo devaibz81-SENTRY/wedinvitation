@@ -121,14 +121,15 @@
   <script>
     function loadSongs() {
       google.script.run
-        .withSuccessHandler(function(data) {
+        .withSuccessHandler(function(response) {
           const container = document.getElementById('songs');
           const countEl = document.getElementById('count');
           const emptyEl = document.getElementById('empty');
           
-          countEl.textContent = data.length;
+          const songs = response.data || [];
+          countEl.textContent = songs.length;
           
-          if (!data || data.length === 0) {
+          if (!songs || songs.length === 0) {
             container.style.display = 'none';
             emptyEl.style.display = 'block';
             return;
@@ -137,7 +138,7 @@
           emptyEl.style.display = 'none';
           container.style.display = 'flex';
           
-          container.innerHTML = data.map(function(song) {
+          container.innerHTML = songs.map(function(song) {
             return '<div class="song-card">' +
               '<div class="song-name">' + escapeHtml(song.content) + '</div>' +
               '<div class="guest-name">Requested by ' + escapeHtml(song.name) + '</div>' +

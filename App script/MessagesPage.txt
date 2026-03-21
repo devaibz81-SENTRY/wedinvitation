@@ -160,8 +160,8 @@
     
     function loadMessages() {
       google.script.run
-        .withSuccessHandler(function(data) {
-          messages = data || [];
+        .withSuccessHandler(function(response) {
+          messages = response.data || [];
           render();
         })
         .getSheetData('Messages');
