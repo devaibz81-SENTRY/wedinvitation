@@ -1557,10 +1557,11 @@
     var music = document.getElementById('bg-music');
     var introGif = document.getElementById('intro-gif');
     
-    // Pause GIF on last frame after animation
+    // Replace GIF with last frame after animation
     if (introGif) {
       introGif.addEventListener('animationend', function() {
-        introGif.style.animationPlayState = 'paused';
+        introGif.src = 'photos/invitation0.gif';
+        introGif.style.animation = 'none';
       });
     }
     
