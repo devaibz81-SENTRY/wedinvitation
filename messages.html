@@ -23,8 +23,16 @@
     .btn-next:hover { background: #c9a84c; }
     .btn:disabled { opacity: 0.3; cursor: not-allowed; }
     .loading { text-align: center; padding: 4rem 2rem; }
-    .spinner { width: 50px; height: 50px; border: 4px solid rgba(212, 184, 150, 0.3); border-top: 4px solid #d4b896; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .loader { --ANIMATION-DELAY-MULTIPLIER: 70ms; padding: 0; margin: 0 0 1rem 0; display: flex; flex-direction: row; justify-content: center; align-items: center; }
+    .loader span { padding: 0; margin: 0; letter-spacing: -5rem; animation-delay: 0s; transform: translateY(4rem); animation: hideAndSeek 1s alternate infinite cubic-bezier(0.86, 0, 0.07, 1); color: #d4b896; font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; }
+    .loader .l { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 0); }
+    .loader .o1 { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 1); }
+    .loader .a { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 2); }
+    .loader .d { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 3); }
+    .loader .i { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 4); }
+    .loader .n { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 5); }
+    .loader .g { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 6); }
+    @keyframes hideAndSeek { 0% { transform: translateY(4rem); } 100% { transform: translateY(0rem); } }
     .empty { text-align: center; padding: 4rem 2rem; }
     .dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(212, 184, 150, 0.3); transition: all 0.3s; }
@@ -34,7 +42,17 @@
 <body>
   <div class="container">
     <header><h1>Messages for Rosanna & Andrew</h1><p class="progress" id="progress">1 of 5</p></header>
-    <div class="loading" id="loading"><div class="spinner"></div><p>Loading messages...</p></div>
+    <div class="loading" id="loading">
+      <div class="loader">
+        <span class="l">L</span>
+        <span class="o1">o</span>
+        <span class="a">a</span>
+        <span class="d">d</span>
+        <span class="i">i</span>
+        <span class="n">n</span>
+        <span class="g">g</span>
+      </div>
+    </div>
     <div class="message-card" id="card" style="display:none;"><p class="message-text" id="message">Loading messages...</p><p class="message-author" id="author"></p></div>
     <div class="dots" id="dots" style="display:none;"></div>
     <div class="controls" id="controls" style="display:none;">
