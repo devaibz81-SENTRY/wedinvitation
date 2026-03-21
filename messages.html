@@ -22,6 +22,9 @@
     .btn-next { background: #d4b896; color: #1a1a2e; }
     .btn-next:hover { background: #c9a84c; }
     .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .loading { text-align: center; padding: 4rem 2rem; }
+    .spinner { width: 50px; height: 50px; border: 4px solid rgba(212, 184, 150, 0.3); border-top: 4px solid #d4b896; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .empty { text-align: center; padding: 4rem 2rem; }
     .dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(212, 184, 150, 0.3); transition: all 0.3s; }
@@ -31,9 +34,10 @@
 <body>
   <div class="container">
     <header><h1>Messages for Rosanna & Andrew</h1><p class="progress" id="progress">1 of 5</p></header>
-    <div class="message-card" id="card"><p class="message-text" id="message">Loading messages...</p><p class="message-author" id="author"></p></div>
-    <div class="dots" id="dots"></div>
-    <div class="controls">
+    <div class="loading" id="loading"><div class="spinner"></div><p>Loading messages...</p></div>
+    <div class="message-card" id="card" style="display:none;"><p class="message-text" id="message">Loading messages...</p><p class="message-author" id="author"></p></div>
+    <div class="dots" id="dots" style="display:none;"></div>
+    <div class="controls" id="controls" style="display:none;">
       <button class="btn btn-prev" id="prevBtn" onclick="prevMessage()">&#8592; Previous</button>
       <button class="btn btn-next" id="nextBtn" onclick="nextMessage()">Next &#8594;</button>
     </div>
@@ -51,19 +55,16 @@
       });
     
     function render() {
+      document.getElementById('loading').style.display = 'none';
       var card = document.getElementById('card');
       var empty = document.getElementById('empty');
       if (!messages.length) {
-        card.style.display = 'none';
-        document.querySelector('.controls').style.display = 'none';
-        document.querySelector('.dots').style.display = 'none';
         empty.style.display = 'block';
         document.getElementById('progress').textContent = '0 messages';
         return;
       }
-      empty.style.display = 'none';
       card.style.display = 'flex';
-      document.querySelector('.controls').style.display = 'flex';
+      document.getElementById('controls').style.display = 'flex';
       document.getElementById('dots').style.display = 'flex';
       updateDisplay();
     }
