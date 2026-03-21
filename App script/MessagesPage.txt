@@ -39,7 +39,7 @@
     <div style="text-align:center; margin-top: 2rem;"><a href="admin.html" style="display: inline-block; padding: 0.8rem 2rem; background: #d4b896; color: #1a1a2e; text-decoration: none; border-radius: 6px; font-size: 0.8rem; letter-spacing: 0.1em;">Back to Admin</a></div>
   </div>
   <script>
-    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLFObth4W0VrxmppN8hL9S58ZtjOzUUi75gQrW9Hl0AaIKOQauP3_J_NRTq4eAhUV5sw/exec';
+    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyt5l2wFdAb0aoPNVeuA5-IG-wBUexiymxuISdyNiYYc_uwFwD3c9BE4qGKOIPP3BumVg/exec';
     var messages = [], currentIndex = 0;
     
     fetch(APPS_SCRIPT_URL + '?sheet=Messages')

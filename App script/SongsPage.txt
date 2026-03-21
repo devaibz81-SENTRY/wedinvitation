@@ -31,7 +31,7 @@
     <div style="text-align:center;"><a href="admin.html" class="back-btn">Back to Admin</a></div>
   </div>
   <script>
-    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLFObth4W0VrxmppN8hL9S58ZtjOzUUi75gQrW9Hl0AaIKOQauP3_J_NRTq4eAhUV5sw/exec';
+    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyt5l2wFdAb0aoPNVeuA5-IG-wBUexiymxuISdyNiYYc_uwFwD3c9BE4qGKOIPP3BumVg/exec';
     
     function escapeHtml(text) {
       if (!text) return '';
