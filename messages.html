@@ -23,16 +23,17 @@
     .btn-next:hover { background: #c9a84c; }
     .btn:disabled { opacity: 0.3; cursor: not-allowed; }
     .loading { text-align: center; padding: 4rem 2rem; }
-    .loader { --ANIMATION-DELAY-MULTIPLIER: 70ms; padding: 0; margin: 0 0 1rem 0; display: flex; flex-direction: row; justify-content: center; align-items: center; }
-    .loader span { padding: 0; margin: 0; letter-spacing: -5rem; animation-delay: 0s; transform: translateY(4rem); animation: hideAndSeek 1s alternate infinite cubic-bezier(0.86, 0, 0.07, 1); color: #d4b896; font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; }
-    .loader .l { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 0); }
-    .loader .o1 { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 1); }
-    .loader .a { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 2); }
-    .loader .d { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 3); }
-    .loader .i { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 4); }
-    .loader .n { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 5); }
-    .loader .g { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 6); }
-    @keyframes hideAndSeek { 0% { transform: translateY(4rem); } 100% { transform: translateY(0rem); } }
+    .loader { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px; }
+    .loading-text { color: #d4b896; font-size: 14pt; font-weight: 600; margin-left: 10px; }
+    .dot { margin-left: 3px; animation: blink 1.5s infinite; }
+    .dot:nth-child(2) { animation-delay: 0.3s; }
+    .dot:nth-child(3) { animation-delay: 0.6s; }
+    .loading-bar-background { --height: 30px; display: flex; align-items: center; box-sizing: border-box; padding: 5px; width: 200px; height: var(--height); background-color: #2a2a4e; box-shadow: #0c0c0c -2px 2px 4px 0px inset; border-radius: calc(var(--height) / 2); }
+    .loading-bar { position: relative; display: flex; justify-content: center; flex-direction: column; --height: 20px; width: 0%; height: var(--height); overflow: hidden; background: linear-gradient(0deg, #d4b896 0%, #f0dcc0 100%); border-radius: calc(var(--height) / 2); animation: loading 2s ease-out infinite; }
+    .white-bars-container { position: absolute; display: flex; align-items: center; gap: 18px; }
+    .white-bar { background: linear-gradient(-45deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%); width: 10px; height: 45px; opacity: 0.3; rotate: 45deg; }
+    @keyframes loading { 0% { width: 0; } 80% { width: 100%; } 100% { width: 100%; } }
+    @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
     .empty { text-align: center; padding: 4rem 2rem; }
     .dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(212, 184, 150, 0.3); transition: all 0.3s; }
@@ -44,13 +45,16 @@
     <header><h1>Messages for Rosanna & Andrew</h1><p class="progress" id="progress">1 of 5</p></header>
     <div class="loading" id="loading">
       <div class="loader">
-        <span class="l">L</span>
-        <span class="o1">o</span>
-        <span class="a">a</span>
-        <span class="d">d</span>
-        <span class="i">i</span>
-        <span class="n">n</span>
-        <span class="g">g</span>
+        <div class="loading-bar-background">
+          <div class="loading-bar">
+            <div class="white-bars-container">
+              <div class="white-bar"></div>
+              <div class="white-bar"></div>
+              <div class="white-bar"></div>
+            </div>
+          </div>
+        </div>
+        <div class="loading-text">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
       </div>
     </div>
     <div class="message-card" id="card" style="display:none;"><p class="message-text" id="message">Loading messages...</p><p class="message-author" id="author"></p></div>
