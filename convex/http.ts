@@ -207,6 +207,24 @@ http.route({
 });
 
 http.route({
+  path: "/api/playlist",
+  method: "OPTIONS",
+  handler: httpAction(async () => noContent()),
+});
+
+http.route({
+  path: "/api/playlist",
+  method: "GET",
+  handler: httpAction(async (ctx) => {
+    const payload = await ctx.runQuery(api.rsvps.listMedia, {});
+    return json({
+      songs: payload.songs || [],
+      counts: { totalSongs: (payload.songs || []).length }
+    });
+  }),
+});
+
+http.route({
   path: "/api/guest/delete",
   method: "OPTIONS",
   handler: httpAction(async () => noContent()),
