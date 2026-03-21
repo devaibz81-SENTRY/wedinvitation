@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Song Requests - R&A Wedding</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #faf8f5 0%, #f0ede8 100%); min-height: 100vh; padding: 2rem; }
+    .container { max-width: 800px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 3rem; }
+    h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: #2f2418; margin-bottom: 0.5rem; }
+    .subtitle { font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: #8b7444; }
+    .song-count { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .song-count strong { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #c9a84c; }
+    .song-list { display: flex; flex-direction: column; gap: 1rem; }
+    .song-card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid #c9a84c; }
+    .song-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: #2f2418; margin-bottom: 0.5rem; }
+    .guest-name { font-size: 0.75rem; color: #8b7444; text-transform: uppercase; letter-spacing: 0.1em; }
+    .empty { text-align: center; padding: 4rem 2rem; color: #8b8276; }
+    .empty-icon { font-size: 4rem; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header><h1>Song Requests</h1><p class="subtitle">Rosanna & Andrew's Wedding</p></header>
+    <div class="song-count"><strong id="count">0</strong> songs requested</div>
+    <div class="song-list" id="songs"></div>
+    <div class="empty" id="empty" style="display:none;"><div class="empty-icon">&#127925;</div><p>No song requests yet!</p></div>
+  </div>
+  <script>
+    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyt5l2wFdAb0aoPNVeuA5-IG-wBUexiymxuISdyNiYYc_uwFwD3c9BE4qGKOIPP3BumVg/exec';
+    
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    
+    fetch(APPS_SCRIPT_URL + '?sheet=Songs')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        var songs = data.data || [];
+        document.getElementById('count').textContent = songs.length;
+        if (!songs.length) {
+          document.getElementById('songs').style.display = 'none';
+          document.getElementById('empty').style.display = 'block';
+          return;
+        }
+        document.getElementById('empty').style.display = 'none';
+        document.getElementById('songs').style.display = 'flex';
+        document.getElementById('songs').innerHTML = songs.map(function(s) {
+          return '<div class="song-card"><div class="song-name">' + escapeHtml(s.content) + '</div><div class="guest-name">Requested by ' + escapeHtml(s.name) + '</div></div>';
+        }).join('');
+      });
+  </script>
+</body>
+</html>
