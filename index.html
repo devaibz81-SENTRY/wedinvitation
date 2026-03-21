@@ -1555,6 +1555,14 @@
     var enterPrompt = document.getElementById('enter-prompt');
     var overlay = document.getElementById('intro-overlay');
     var music = document.getElementById('bg-music');
+    var introGif = document.getElementById('intro-gif');
+    
+    // Pause GIF on last frame after animation
+    if (introGif) {
+      introGif.addEventListener('animationend', function() {
+        introGif.style.animationPlayState = 'paused';
+      });
+    }
     
     // Show enter prompt after 4 seconds
     setTimeout(function() {
