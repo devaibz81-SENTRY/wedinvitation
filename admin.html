@@ -971,6 +971,10 @@
                  style="display: inline-block; padding: 0.8rem 2rem; background: var(--gold); color: white; text-decoration: none; border-radius: 6px; font-size: 0.8rem; letter-spacing: 0.1em;">
                 OPEN SONG LIST
               </a>
+              <br><br>
+              <button onclick="shareWithDj()" style="padding: 0.8rem 2rem; background: #25D366; color: white; border: none; border-radius: 6px; font-size: 0.8rem; cursor: pointer; letter-spacing: 0.1em;">
+                📱 Share with DJ
+              </button>
             </div>
             
             <!-- MESSAGES BUTTON -->
@@ -982,6 +986,10 @@
                  style="display: inline-block; padding: 0.8rem 2rem; background: var(--gold); color: white; text-decoration: none; border-radius: 6px; font-size: 0.8rem; letter-spacing: 0.1em;">
                 READ MESSAGES
               </a>
+              <br><br>
+              <button onclick="downloadMessages()" style="padding: 0.8rem 2rem; background: #3498db; color: white; border: none; border-radius: 6px; font-size: 0.8rem; cursor: pointer; letter-spacing: 0.1em;">
+                📥 Download Messages
+              </button>
             </div>
           </div>
       </div>
@@ -1270,6 +1278,33 @@ Rosanna and Andrew</textarea>
 
     function copyVaultLink() {
       copyText(getVaultUrl(), 'Message vault link copied.');
+    }
+
+    function shareWithDj() {
+      const songLink = 'https://wedinvitation-ruddy.vercel.app/songs.html';
+      const text = `Hey! Here are our wedding song requests:\n\n${songLink}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function downloadMessages() {
+      const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyt5l2wFdAb0aoPNVeuA5-IG-wBUexiymxuISdyNiYYc_uwFwD3c9BE4qGKOIPP3BumVg/exec';
+      fetch(APPS_SCRIPT_URL + '?sheet=Messages')
+        .then(res => res.json())
+        .then(data => {
+          const messages = data.data || [];
+          if (!messages.length) {
+            alert('No messages to download.');
+            return;
+          }
+          const content = messages.map((m, i) => `${i + 1}. ${m.name}\n"${m.content}"\n`).join('\n');
+          const blob = new Blob([`Wedding Guest Messages\nRosanna & Andrew\n\n${content}`], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'wedding-messages.txt';
+          a.click();
+          URL.revokeObjectURL(url);
+        });
     }
 
     async function fetchGuests(opts = { showLoading: true }) {
