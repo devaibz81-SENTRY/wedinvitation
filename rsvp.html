@@ -922,6 +922,7 @@
 
     // â”€â”€â”€ Convex Config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJBWfNaniznnRzGhYXdOGcGfeG61WvWkTRkqAi3MXq1h2ZnZbQ1R2T98EtmtPWuQAHQQ/exec';
 
     // â”€â”€â”€ Read URL params for personalisation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const gUrl = new URL(window.location.href);
@@ -1165,6 +1166,24 @@
         error.expectedName = parsed?.expectedName || undefined;
         throw error;
       }
+      
+      // Also post song and message to Google Sheets
+      const guestName = `${payload.first_name} ${payload.last_name}`;
+      if (payload.song_request) {
+        fetch(`${APPS_SCRIPT_URL}?sheet=Songs`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: guestName, content: payload.song_request })
+        }).catch(() => {});
+      }
+      if (payload.message) {
+        fetch(`${APPS_SCRIPT_URL}?sheet=Messages`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: guestName, content: payload.message })
+        }).catch(() => {});
+      }
+      
       return parsed ?? {};
     }
 

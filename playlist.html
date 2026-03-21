@@ -78,14 +78,13 @@
   </div>
 
   <script>
-    const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJBWfNaniznnRzGhYXdOGcGfeG61WvWkTRkqAi3MXq1h2ZnZbQ1R2T98EtmtPWuQAHQQ/exec';
     
     async function loadPlaylist() {
       try {
-        const res = await fetch(`${CONVEX_HTTP_URL}/api/playlist`);
-        if (!res.ok) throw new Error('Failed to load');
+        const res = await fetch(`${APPS_SCRIPT_URL}?sheet=Songs`);
         const data = await res.json();
-        const songs = data.songs || [];
+        const songs = data.data || [];
         
         const content = document.getElementById('content');
         
@@ -96,8 +95,8 @@
         
         content.innerHTML = '<ul class="song-list">' + songs.map(s => `
           <li class="song-item">
-            <div class="song-name">${escapeHtml(s.song_request)}</div>
-            <div class="song-guest">Requested by ${escapeHtml(s.display_name)}</div>
+            <div class="song-name">${escapeHtml(s.content)}</div>
+            <div class="song-guest">Requested by ${escapeHtml(s.name)}</div>
           </li>
         `).join('') + '</ul>';
         
@@ -108,7 +107,7 @@
     
     function escapeHtml(text) {
       const div = document.createElement('div');
-      div.textContent = text;
+      div.textContent = text || '';
       return div.innerHTML;
     }
     
