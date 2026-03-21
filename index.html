@@ -12,8 +12,7 @@
     rel="stylesheet" />
   <link rel="preload" as="image" href="photos/main-card-photo.gif" fetchpriority="high" />
   <link rel="preload" as="image" href="photos/cheers.gif" />
-  <link rel="preload" as="image" href="photos/dinner.gif" />
-  <link rel="preload" as="image" href="photos/story-photo.gif" />
+
   <style>
     :root {
       --black: #2b2520;
@@ -1176,7 +1175,6 @@
   <!-- NAV -->
   <nav>
     <a href="#story">Story</a>
-    <a href="#gallery">Gallery</a>
     <a href="#details">Details</a>
     <a href="rsvp.html">RSVP</a>
   </nav>
@@ -1251,50 +1249,9 @@
     </div>
   </div>
 
-  <!-- ─── PHOTO GALLERY ─────────────────────────────── -->
-  <div id="gallery">
-    <p class="section-eyebrow reveal">Our Moments</p>
-    <h2 class="section-title reveal" style="color: var(--ivory);">A Love Story in Frames</h2>
-
-    <div class="gallery-grid stagger">
-
-      <div class="photo-frame reveal">
-        <div class="photo-inner">
-          <div class="photo-placeholder">
-            <img src="photos/dinner.gif" alt="Rosanna and Andrew at dinner" loading="lazy" decoding="async" />
-          </div>
-          <div class="photo-caption">A glance that says everything</div>
-        </div>
-      </div>
-
-      <div class="photo-frame tall reveal">
-        <div class="photo-inner">
-          <div class="photo-placeholder">
-            <img class="gallery-main-photo" src="photos/main-card-photo.gif" alt="Rosanna and Andrew together" loading="lazy" decoding="async" />
-          </div>
-          <div class="photo-caption">Two hearts, one story</div>
-        </div>
-      </div>
-
-      <div class="photo-frame large reveal">
-        <div class="photo-inner">
-          <div class="photo-placeholder">
-            <img src="photos/cheers.gif" alt="Rosanna and Andrew celebrating" loading="lazy" decoding="async" />
-          </div>
-          <div class="photo-caption">Together forever begins here</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
+  <!-- ─── GALLERY (REMOVED - Only main and cheers photos used) ── -->
+  
   <!-- ─── OUR STORY ─────────────────────────────────── -->
-  <section class="story-lead-in reveal" aria-label="Story photo">
-    <div class="story-lead-card">
-      <img src="photos/story-photo.gif" alt="Rosanna and Andrew story portrait" loading="lazy" decoding="async" />
-    </div>
-  </section>
-
   <section id="story">
     <div class="story-text">
       <p class="section-eyebrow reveal">How It All Began</p>
@@ -1377,7 +1334,7 @@
     <div class="story-visual reveal">
       <div class="story-img-wrap">
         <div class="story-placeholder">
-          <img src="photos/story-photo.gif" alt="Rosanna and Andrew story photo" loading="lazy" decoding="async" />
+          <img src="photos/cheers.gif" alt="Rosanna and Andrew celebrating" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="story-img-accent"></div>
@@ -1691,8 +1648,6 @@
       const mediaSources = [
         'photos/main-card-photo.gif',
         'photos/cheers.gif',
-        'photos/dinner.gif',
-        'photos/story-photo.gif',
         'photos/new_dress_code.jpeg'
       ];
       const warm = () => {
