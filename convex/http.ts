@@ -186,7 +186,7 @@ http.route({
     if (!(await requireAdmin(ctx, request))) {
       return json({ ok: false, error: "Unauthorized" }, 401);
     }
-    const payload = await ctx.runQuery(internal.rsvps.listMedia, {});
+    const payload = await ctx.runQuery(api.rsvps.listMedia, {});
     return json(payload);
   }),
 });
