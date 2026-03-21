@@ -718,6 +718,28 @@
       background: radial-gradient(circle at center, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 72%);
     }
 
+    /* ─── MAIN PHOTO SECTION ───────────────────────────── */
+    .main-photo-section {
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .photo-rounded-holder {
+      width: min(90vw, 400px);
+      aspect-ratio: 3/4;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      border: 3px solid var(--gold);
+    }
+    
+    .photo-rounded-holder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .story-lead-in {
       margin-top: 2rem;
       margin-bottom: 4rem;
@@ -1251,6 +1273,13 @@
 
   <!-- ─── GALLERY (REMOVED - Only main and cheers photos used) ── -->
   
+  <!-- ─── MAIN PHOTO ─────────────────────────────────── -->
+  <section class="main-photo-section reveal">
+    <div class="photo-rounded-holder">
+      <img src="photos/main-card-photo.gif" alt="Rosanna and Andrew" loading="eager" decoding="async" />
+    </div>
+  </section>
+  
   <!-- ─── OUR STORY ─────────────────────────────────── -->
   <section id="story">
     <div class="story-text">
@@ -1332,12 +1361,9 @@
     </div>
 
     <div class="story-visual reveal">
-      <div class="story-img-wrap">
-        <div class="story-placeholder">
-          <img src="photos/cheers.gif" alt="Rosanna and Andrew celebrating" loading="lazy" decoding="async" />
-        </div>
+      <div class="photo-rounded-holder">
+        <img src="photos/cheers.gif" alt="Rosanna and Andrew celebrating" loading="lazy" decoding="async" />
       </div>
-      <div class="story-img-accent"></div>
     </div>
   </section>
 
