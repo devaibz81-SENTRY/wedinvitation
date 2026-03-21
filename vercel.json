@@ -5,6 +5,7 @@
     { "src": "/", "dest": "/index.html" },
     { "src": "/rsvp", "dest": "/rsvp.html" },
     { "src": "/admin", "dest": "/admin.html" },
-    { "src": "/messages", "dest": "/messages.html" }
+    { "src": "/messages", "dest": "/messages.html" },
+    { "src": "/playlist", "dest": "/playlist.html" }
   ]
 }
