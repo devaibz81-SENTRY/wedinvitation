@@ -11,7 +11,6 @@
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400&display=swap"
     rel="stylesheet" />
   <link rel="preload" as="image" href="photos/main-card-photo.gif" fetchpriority="high" />
-  <link rel="preload" as="image" href="photos/cheers.gif" />
 
   <style>
     :root {
@@ -1271,7 +1270,7 @@
     </div>
   </div>
 
-  <!-- ─── GALLERY (REMOVED - Only main and cheers photos used) ── -->
+  <!-- ─── GALLERY (REMOVED) ── -->
   
   <!-- ─── MAIN PHOTO ─────────────────────────────────── -->
   <section class="main-photo-section reveal">
@@ -1358,12 +1357,6 @@
         </p>
       </div>
       <div class="story-signature reveal">Rosanna &amp; Andrew</div>
-    </div>
-
-    <div class="story-visual reveal">
-      <div class="photo-rounded-holder">
-        <img src="photos/cheers.gif" alt="Rosanna and Andrew celebrating" loading="lazy" decoding="async" />
-      </div>
     </div>
   </section>
 
@@ -1564,11 +1557,6 @@
     var overlay = document.getElementById('intro-overlay');
     var music = document.getElementById('bg-music');
     
-    // Start music automatically when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      music.play().catch(function(e) { console.log('Music autoplay blocked:', e); });
-    });
-    
     // Show enter prompt after 4 seconds
     setTimeout(function() {
       if (enterPrompt) {
@@ -1576,9 +1564,10 @@
       }
     }, 4000);
     
-    // Click to enter invitation
+    // Click to enter invitation + play music
     if (gifContainer) {
       gifContainer.onclick = function() {
+        music.play().catch(function(e) { console.log('Music play error:', e); });
         gifContainer.classList.add('exit');
         setTimeout(function() {
           overlay.style.display = 'none';
@@ -1671,7 +1660,6 @@
     function primeMediaCache() {
       const mediaSources = [
         'photos/main-card-photo.gif',
-        'photos/cheers.gif',
         'photos/new_dress_code.jpeg'
       ];
       const warm = () => {

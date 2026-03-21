@@ -1,11 +1,30 @@
 /**
  * Wedding Songs & Messages - Google Apps Script
- * Handles: GET ?sheet=Songs|Messages | POST ?sheet=Songs|Messages
+ * Handles: 
+ *   GET ?sheet=Songs|Messages - Returns JSON data
+ *   GET ?page=songs - Returns HTML song list page
+ *   GET ?page=messages - Returns HTML interactive messages page
+ *   POST ?sheet=Songs|Messages - Adds entry to sheet
  */
 
 function doGet(e) {
   try {
     const params = (e && e.parameter) ? e.parameter : {};
+    
+    // Handle HTML page requests
+    if (params.page === 'songs') {
+      return HtmlService.createHtmlOutputFromFile('SongsPage')
+        .setTitle('Song Requests - R&A Wedding')
+        .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    }
+    
+    if (params.page === 'messages') {
+      return HtmlService.createHtmlOutputFromFile('MessagesPage')
+        .setTitle('Guest Messages - R&A Wedding')
+        .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    }
+    
+    // Default: Return JSON data
     const sheetName = params.sheet || 'Songs';
     return jsonOut({ data: getSheetData(sheetName), sheet: sheetName });
   } catch (err) {

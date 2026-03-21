@@ -957,110 +957,33 @@
 
       <!-- SONGS & MESSAGES VIEW -->
       <div id="view-media" style="display:none;">
-        <div class="vault-hero">
-          <div class="vault-copy">
-            <span class="vault-kicker">Private Couple Portal</span>
-            <h2>Message Vault</h2>
-            <p id="vault-summary">Your guests have shared hidden notes and playlist picks. Open the private vault to
-              flip through every message and download the collection.</p>
-            <div class="vault-actions">
-              <a class="btn-sm primary btn-link" href="/messages" target="_blank" rel="noopener">Open Message Vault</a>
-              <button class="btn-sm" onclick="copyVaultLink()">Copy Vault Link</button>
-              <button class="btn-sm" onclick="downloadMessages()">Download Messages</button>
-              <button class="btn-sm" onclick="downloadSongs()">Download Songs</button>
+        <div style="max-width: 800px; margin: 0 auto; text-align: center; padding: 3rem 1rem;">
+          <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--black); margin-bottom: 2rem;">Songs & Messages</h2>
+          <p style="color: #888; margin-bottom: 2rem;">Guest song requests and messages are stored in Google Sheets.</p>
+          
+          <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+            <!-- SONGS BUTTON -->
+            <div style="background: white; border: 1px solid #e8e2d8; border-radius: 12px; padding: 2rem; min-width: 280px; text-align: center;">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">🎵</div>
+              <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--gold);">Song List</h3>
+              <p style="font-size: 0.85rem; color: #888; margin-bottom: 1.5rem;">View all song requests from guests</p>
+              <a href="https://script.google.com/macros/s/AKfycbyPTcKCSIuT8VUzuKbQ8IWbKD72VxD0kruNweGlLqoWB8zMJQT6R033VZMHIZfvLajTjg/exec?page=songs" target="_blank" 
+                 style="display: inline-block; padding: 0.8rem 2rem; background: var(--gold); color: white; text-decoration: none; border-radius: 6px; font-size: 0.8rem; letter-spacing: 0.1em;">
+                OPEN SONG LIST
+              </a>
+            </div>
+            
+            <!-- MESSAGES BUTTON -->
+            <div style="background: white; border: 1px solid #e8e2d8; border-radius: 12px; padding: 2rem; min-width: 280px; text-align: center;">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">💌</div>
+              <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--gold);">Messages</h3>
+              <p style="font-size: 0.85rem; color: #888; margin-bottom: 1.5rem;">Read guest messages one by one</p>
+              <a href="https://script.google.com/macros/s/AKfycbyPTcKCSIuT8VUzuKbQ8IWbKD72VxD0kruNweGlLqoWB8zMJQT6R033VZMHIZfvLajTjg/exec?page=messages" target="_blank" 
+                 style="display: inline-block; padding: 0.8rem 2rem; background: var(--gold); color: white; text-decoration: none; border-radius: 6px; font-size: 0.8rem; letter-spacing: 0.1em;">
+                READ MESSAGES
+              </a>
             </div>
           </div>
-          <div class="vault-preview">
-            <div id="vault-preview-stack" class="vault-stack">
-              <div class="vault-card-mini">
-                <blockquote>Loading guest notes...</blockquote>
-                <footer>Wedding Memory Vault</footer>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card blue">
-            <div class="stat-label">Guest Messages</div>
-            <div class="stat-num" id="media-messages">0</div>
-          </div>
-          <div class="stat-card yellow">
-            <div class="stat-label">Song Requests</div>
-            <div class="stat-num" id="media-songs">0</div>
-          </div>
-          <div class="stat-card green">
-            <div class="stat-label">Message Senders</div>
-            <div class="stat-num" id="media-senders">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Latest Note</div>
-            <div class="stat-num" id="media-latest" style="font-size:1.35rem;">-</div>
-          </div>
-        </div>
-
-        <div class="media-layout">
-          <section class="media-panel">
-            <div class="media-panel-head">
-              <div>
-                <span class="media-kicker">Playlist Requests</span>
-                <h3>Song Requests</h3>
-              </div>
-              <div id="songs-count-label" class="media-count">0 requests</div>
-            </div>
-            <div class="song-tools">
-              <div class="song-tools-row">
-                <button class="btn-sm" onclick="copySongList()">Copy Song List</button>
-                <button class="btn-sm primary" onclick="sendSongsToDj()">Send To DJ WhatsApp</button>
-                <input id="dj-phone" type="tel" placeholder="DJ WhatsApp Number" oninput="saveDjPhone(this.value)" />
-              </div>
-              <div class="song-help">Save the DJ's WhatsApp number here once, then send the current playlist request list in one click.</div>
-            </div>
-            <div class="table-shell">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Guest</th>
-                    <th>Song Request</th>
-                    <th>Status</th>
-                    <th>Submitted</th>
-                  </tr>
-                </thead>
-                <tbody id="songs-tbody">
-                  <tr>
-                    <td colspan="4" class="media-empty">Loading song requests...</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <section class="media-panel">
-            <div class="media-panel-head">
-              <div>
-                <span class="media-kicker">Recent Notes</span>
-                <h3>Guest Messages</h3>
-              </div>
-              <div id="messages-count-label" class="media-count">0 notes</div>
-            </div>
-            <div class="table-shell">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Guest</th>
-                    <th>Message</th>
-                    <th>Submitted</th>
-                  </tr>
-                </thead>
-                <tbody id="messages-tbody">
-                  <tr>
-                    <td colspan="3" class="media-empty">Loading guest messages...</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
       </div>
 
       <!-- WHATSAPP VIEW -->
@@ -1193,27 +1116,12 @@ Rosanna and Andrew</textarea>
     const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
     const WEDDING_URL = 'https://wedinvitation-ruddy.vercel.app';
     const SESSION_KEY = 'ra_admin_token';
-    const DJ_PHONE_KEY = 'ra_dj_phone';
     const LIVE_REFRESH_MS = 12000;
-    const EMPTY_RSVP_MEDIA = {
-      songs: [],
-      messages: [],
-      counts: {
-        totalRsvps: 0,
-        songCount: 0,
-        messageCount: 0,
-        uniqueMessageSenders: 0,
-        lastSubmittedAt: null
-      }
-    };
     let guests = [];
-    let rsvpMedia = { ...EMPTY_RSVP_MEDIA };
-    let mediaLoadIssue = '';
     let currentView = 'guests';
     let currentFilter = 'all';
     let waPersonQuery = '';
     let adminToken = localStorage.getItem(SESSION_KEY) || '';
-    let djPhone = localStorage.getItem(DJ_PHONE_KEY) || '';
     let refreshTimer = null;
 
     async function doLogin() {
@@ -1328,37 +1236,11 @@ Rosanna and Andrew</textarea>
         .replace(/'/g, '&#39;');
     }
 
-    function truncateText(value, max = 120) {
-      const text = String(value ?? '').trim();
-      return text.length > max ? `${text.slice(0, max - 1)}...` : text;
-    }
-
-    function formatAttendanceLabel(status) {
-      return {
-        attending: 'Attending',
-        declined: 'Declined',
-        later: 'Ask Later'
-      }[status] || 'Submitted';
-    }
-
     function formatShortDate(value) {
       if (!value) return '-';
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return String(value);
       return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    }
-
-    function formatLongDateTime(value) {
-      if (!value) return 'No submissions yet';
-      const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return String(value);
-      return date.toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit'
-      });
     }
 
     async function copyText(value, successMessage) {
@@ -1390,41 +1272,9 @@ Rosanna and Andrew</textarea>
       copyText(getVaultUrl(), 'Message vault link copied.');
     }
 
-    function saveDjPhone(value) {
-      djPhone = String(value || '').trim();
-      localStorage.setItem(DJ_PHONE_KEY, djPhone);
-    }
-
-    function buildSongListText() {
-      const songs = Array.isArray(rsvpMedia.songs) ? rsvpMedia.songs : [];
-      if (!songs.length) return '';
-
-      const lines = songs.map((row, index) =>
-        `${index + 1}. ${row.display_name} - ${row.song_request}`
-      );
-
-      return [
-        'Wedding song request list',
-        'Rosanna and Andrew',
-        '',
-        ...lines,
-      ].join('\n');
-    }
-
-    function copySongList() {
-      const text = buildSongListText();
-      if (!text) {
-        alert('There are no song requests to copy yet.');
-        return;
-      }
-      copyText(text, 'Song list copied.');
-    }
-
     async function fetchGuests(opts = { showLoading: true }) {
       if (opts.showLoading) {
         document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">Syncing with Convex...</td></tr>`;
-        document.getElementById('songs-tbody').innerHTML = `<tr><td colspan="4" class="media-empty">Syncing song requests...</td></tr>`;
-        document.getElementById('messages-tbody').innerHTML = `<tr><td colspan="3" class="media-empty">Syncing guest messages...</td></tr>`;
       }
       try {
         const guestRes = await fetch(`${CONVEX_HTTP_URL}/api/guests`, {
@@ -1438,42 +1288,13 @@ Rosanna and Andrew</textarea>
         if (!guestRes.ok) throw new Error(await guestRes.text());
 
         guests = await guestRes.json();
-        rsvpMedia = { ...EMPTY_RSVP_MEDIA };
-        mediaLoadIssue = '';
-
-        try {
-          const mediaRes = await fetch(`${CONVEX_HTTP_URL}/api/rsvp-media`, {
-            headers: authHeaders()
-          });
-
-          if (mediaRes.status === 401) {
-            await logout();
-            throw new Error('Session expired. Please log in again.');
-          }
-
-          if (mediaRes.ok) {
-            rsvpMedia = await mediaRes.json();
-          } else if (mediaRes.status === 404) {
-            mediaLoadIssue = 'The songs and messages endpoint is not deployed on Convex yet.';
-          } else {
-            mediaLoadIssue = 'Guest data loaded, but songs and messages are temporarily unavailable.';
-          }
-        } catch (mediaErr) {
-          if (String(mediaErr && mediaErr.message || '').includes('Session expired')) {
-            throw mediaErr;
-          }
-          mediaLoadIssue = 'Guest data loaded, but songs and messages could not be reached.';
-        }
 
         updateStats();
         renderTable();
-        renderMediaView();
         updateWaPreview();
         updateSyncLabel();
       } catch (err) {
         document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;color:red;padding:2rem;">Error loading data from Convex.</td></tr>`;
-        document.getElementById('songs-tbody').innerHTML = `<tr><td colspan="4" class="media-empty">Unable to load song requests right now.</td></tr>`;
-        document.getElementById('messages-tbody').innerHTML = `<tr><td colspan="3" class="media-empty">Unable to load guest messages right now.</td></tr>`;
       }
     }
 
@@ -1493,14 +1314,6 @@ Rosanna and Andrew</textarea>
       document.getElementById('st-attending').textContent = att;
       document.getElementById('st-declined').textContent = dec;
       document.getElementById('st-later').textContent = lat;
-
-      const counts = rsvpMedia.counts || {};
-      document.getElementById('media-messages').textContent = counts.messageCount || 0;
-      document.getElementById('media-songs').textContent = counts.songCount || 0;
-      document.getElementById('media-senders').textContent = counts.uniqueMessageSenders || 0;
-      document.getElementById('media-latest').textContent = counts.lastSubmittedAt
-        ? formatShortDate(counts.lastSubmittedAt)
-        : '-';
     }
 
     function renderTable() {
@@ -1540,140 +1353,8 @@ Rosanna and Andrew</textarea>
     }
 
     function renderMediaView() {
-      const songs = Array.isArray(rsvpMedia.songs) ? rsvpMedia.songs : [];
-      const messages = Array.isArray(rsvpMedia.messages) ? rsvpMedia.messages : [];
-      const djPhoneInput = document.getElementById('dj-phone');
-      if (djPhoneInput && djPhoneInput.value !== djPhone) {
-        djPhoneInput.value = djPhone;
-      }
-
-      document.getElementById('songs-count-label').textContent = `${songs.length} request${songs.length === 1 ? '' : 's'}`;
-      document.getElementById('messages-count-label').textContent = `${messages.length} note${messages.length === 1 ? '' : 's'}`;
-
-      const songsBody = document.getElementById('songs-tbody');
-      songsBody.innerHTML = mediaLoadIssue && !songs.length
-        ? `<tr><td colspan="4" class="media-empty">${escapeHtml(mediaLoadIssue)}</td></tr>`
-        : songs.length
-        ? songs.map((row) => {
-          const status = String(row.attendance || 'submitted');
-          const pillClass = {
-            attending: 'pill-attending',
-            declined: 'pill-declined',
-            later: 'pill-later'
-          }[status] || 'pill-invited';
-          return `<tr>
-            <td><strong>${escapeHtml(row.display_name)}</strong></td>
-            <td class="media-note-cell">${escapeHtml(row.song_request)}</td>
-            <td><span class="status-pill ${pillClass}">${escapeHtml(formatAttendanceLabel(status))}</span></td>
-            <td>${escapeHtml(formatLongDateTime(row.submitted_at))}</td>
-          </tr>`;
-        }).join('')
-        : `<tr><td colspan="4" class="media-empty">No song requests have been submitted yet.</td></tr>`;
-
-      const messagesBody = document.getElementById('messages-tbody');
-      messagesBody.innerHTML = mediaLoadIssue && !messages.length
-        ? `<tr><td colspan="3" class="media-empty">${escapeHtml(mediaLoadIssue)}</td></tr>`
-        : messages.length
-        ? messages.map((row) => `<tr>
-            <td><strong>${escapeHtml(row.display_name)}</strong></td>
-            <td class="media-note-cell">${escapeHtml(truncateText(row.message, 160))}</td>
-            <td>${escapeHtml(formatLongDateTime(row.submitted_at))}</td>
-          </tr>`).join('')
-        : `<tr><td colspan="3" class="media-empty">No guest messages have been submitted yet.</td></tr>`;
-
-      const summary = mediaLoadIssue
-        ? `${mediaLoadIssue} Your guest list is still loading normally.`
-        : messages.length
-        ? `You have ${messages.length} hidden message${messages.length === 1 ? '' : 's'} from your guests, plus ${songs.length} song request${songs.length === 1 ? '' : 's'} ready for the celebration.`
-        : `The portal is ready. As soon as guests leave notes, you will be able to flip through them here and download the full collection.`;
-      document.getElementById('vault-summary').textContent = summary;
-
-      const preview = document.getElementById('vault-preview-stack');
-      const stack = messages.slice(0, 3);
-      preview.innerHTML = stack.length
-        ? stack.map((row) => `<article class="vault-card-mini">
-            <blockquote>"${escapeHtml(truncateText(row.message, 120))}"</blockquote>
-            <footer>${escapeHtml(row.display_name)} | ${escapeHtml(formatShortDate(row.submitted_at))}</footer>
-          </article>`).join('')
-        : `<article class="vault-card-mini">
-            <blockquote>No hidden notes yet - once guests start writing, this vault will fill beautifully.</blockquote>
-            <footer>Wedding Memory Vault</footer>
-          </article>`;
-    }
-
-    function downloadBlob(filename, type, content) {
-      const blob = new Blob([content], { type });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
-    }
-
-    function downloadMessages() {
-      const messages = Array.isArray(rsvpMedia.messages) ? rsvpMedia.messages : [];
-      if (!messages.length) {
-        alert('There are no guest messages to download yet.');
-        return;
-      }
-
-      const body = messages.map((row, index) => (
-        `${index + 1}. ${row.display_name}\n` +
-        `Status: ${formatAttendanceLabel(row.attendance)}\n` +
-        `Submitted: ${formatLongDateTime(row.submitted_at)}\n\n` +
-        `${row.message}\n`
-      )).join('\n----------------------------------------\n\n');
-
-      downloadBlob('wedding-guest-messages.txt', 'text/plain;charset=utf-8', body);
-    }
-
-    function downloadSongs() {
-      const songs = Array.isArray(rsvpMedia.songs) ? rsvpMedia.songs : [];
-      if (!songs.length) {
-        alert('There are no song requests to download yet.');
-        return;
-      }
-
-      const header = 'Guest,Song Request,Attendance,Submitted';
-      const rows = songs.map((row) => [
-        `"${String(row.display_name || '').replace(/"/g, '""')}"`,
-        `"${String(row.song_request || '').replace(/"/g, '""')}"`,
-        `"${String(formatAttendanceLabel(row.attendance)).replace(/"/g, '""')}"`,
-        `"${String(formatLongDateTime(row.submitted_at)).replace(/"/g, '""')}"`
-      ].join(','));
-
-      downloadBlob('wedding-song-requests.csv', 'text/csv;charset=utf-8', [header, ...rows].join('\n'));
-    }
-
-    function sendSongsToDj() {
-      const text = buildSongListText();
-      if (!text) {
-        alert('There are no song requests to send yet.');
-        return;
-      }
-
-      const input = document.getElementById('dj-phone');
-      const candidate = input ? input.value : djPhone;
-      let phone = normalizeWaPhone(candidate);
-
-      if (!phone) {
-        const entered = prompt('Enter the DJ WhatsApp number, including country code:');
-        phone = normalizeWaPhone(entered);
-        if (!phone) {
-          alert('A valid WhatsApp number is needed to send the song list.');
-          return;
-        }
-        djPhone = entered;
-        localStorage.setItem(DJ_PHONE_KEY, String(entered));
-        if (input) input.value = String(entered);
-      } else {
-        saveDjPhone(candidate);
-      }
-
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+      // Media view now shows simple buttons to external Google Apps Script pages
+      // No local rendering needed - view-media div contains static HTML
     }
 
     // Adding from dashboard

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      min-height: 100vh;
+      color: #f5f0e8;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-style: italic;
+      color: #d4b896;
+      margin-bottom: 0.5rem;
+    }
+    .progress {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: rgba(245, 240, 232, 0.5);
+    }
+    .message-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 184, 150, 0.2);
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      text-align: center;
+      position: relative;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+    }
+    .message-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      line-height: 1.6;
+      color: #f5f0e8;
+      margin-bottom: 1.5rem;
+    }
+    .message-author {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #d4b896;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      transition: all 0.3s;
+    }
+    .btn-prev {
+      background: rgba(255, 255, 255, 0.1);
+      color: #f5f0e8;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .btn-prev:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .btn-next {
+      background: #d4b896;
+      color: #1a1a2e;
+    }
+    .btn-next:hover {
+      background: #c9a84c;
+    }
+    .btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    .empty {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(212, 184, 150, 0.3);
+      transition: all 0.3s;
+    }
+    .dot.active {
+      background: #d4b896;
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Messages for Rosanna & Andrew</h1>
+      <p class="progress" id="progress">1 of 5</p>
+    </header>
+    
+    <div class="message-card" id="card">
+      <p class="message-text" id="message">Loading messages...</p>
+      <p class="message-author" id="author"></p>
+    </div>
+    
+    <div class="dots" id="dots"></div>
+    
+    <div class="controls">
+      <button class="btn btn-prev" id="prevBtn" onclick="prevMessage()">&#8592; Previous</button>
+      <button class="btn btn-next" id="nextBtn" onclick="nextMessage()">Next &#8594;</button>
+    </div>
+    
+    <div class="empty" id="empty" style="display:none;">
+      <div class="empty-icon">&#128140;</div>
+      <p>No messages yet!</p>
+      <p style="font-size:0.85rem;margin-top:0.5rem;opacity:0.7;">Messages from guests will appear here.</p>
+    </div>
+    
+    <div style="text-align:center; margin-top: 2rem;">
+      <a href="admin.html" style="display: inline-block; padding: 0.8rem 2rem; background: #d4b896; color: #1a1a2e; text-decoration: none; border-radius: 6px; font-size: 0.8rem; letter-spacing: 0.1em;">Back to Admin</a>
+    </div>
+  </div>
+  
+  <script>
+    var messages = [];
+    var currentIndex = 0;
+    
+    function loadMessages() {
+      google.script.run
+        .withSuccessHandler(function(data) {
+          messages = data || [];
+          render();
+        })
+        .getSheetData('Messages');
+    }
+    
+    function render() {
+      const card = document.getElementById('card');
+      const empty = document.getElementById('empty');
+      const messageEl = document.getElementById('message');
+      const authorEl = document.getElementById('author');
+      const progressEl = document.getElementById('progress');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const dotsEl = document.getElementById('dots');
+      
+      if (messages.length === 0) {
+        card.style.display = 'none';
+        document.querySelector('.controls').style.display = 'none';
+        document.querySelector('.dots').style.display = 'none';
+        empty.style.display = 'block';
+        document.getElementById('progress').textContent = '0 messages';
+        return;
+      }
+      
+      empty.style.display = 'none';
+      card.style.display = 'flex';
+      document.querySelector('.controls').style.display = 'flex';
+      dotsEl.style.display = 'flex';
+      
+      updateDisplay();
+    }
+    
+    function updateDisplay() {
+      const messageEl = document.getElementById('message');
+      const authorEl = document.getElementById('author');
+      const progressEl = document.getElementById('progress');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const dotsEl = document.getElementById('dots');
+      
+      const msg = messages[currentIndex];
+      messageEl.textContent = '"' + msg.content + '"';
+      authorEl.textContent = '— ' + msg.name;
+      progressEl.textContent = (currentIndex + 1) + ' of ' + messages.length;
+      
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === messages.length - 1;
+      
+      dotsEl.innerHTML = messages.map(function(_, i) {
+        return '<div class="dot' + (i === currentIndex ? ' active' : '') + '"></div>';
+      }).join('');
+    }
+    
+    function prevMessage() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateDisplay();
+      }
+    }
+    
+    function nextMessage() {
+      if (currentIndex < messages.length - 1) {
+        currentIndex++;
+        updateDisplay();
+      }
+    }
+    
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') prevMessage();
+      if (e.key === 'ArrowRight') nextMessage();
+    });
+    
+    loadMessages();
+  </script>
+</body>
+</html>
