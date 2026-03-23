@@ -66,10 +66,18 @@
       max-width: 100vw;
       overflow: hidden;
       z-index: 9999;
-      background: var(--cream);
+      background: linear-gradient(135deg, var(--cream) 0%, var(--champagne) 50%, var(--cream) 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 6s ease infinite;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
     
     .intro-gif-container {
@@ -93,12 +101,36 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      animation: introBgPulse 4s ease-in-out infinite;
+    }
+    
+    @keyframes introBgPulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
     }
     
     .loading-text {
       color: #8b7444;
       font-size: 14pt;
       font-weight: 600;
+    }
+    
+    .loading-invite-text {
+      position: absolute;
+      bottom: 12vh;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      color: var(--gold);
+      text-align: center;
+      opacity: 0.85;
+      animation: pulseFade 2.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulseFade {
+      0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(0.98); }
+      50% { opacity: 0.9; transform: translateX(-50%) scale(1); }
     }
     
     .dot {
@@ -324,17 +356,29 @@
       margin-bottom: 2rem;
       font-weight: 500;
       opacity: 0;
-      animation: fadeUp 1s ease 0.3s forwards;
+      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
     }
 
     .hero-names {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-size: clamp(3.5rem, 10vw, 7rem);
       font-weight: 400;
       line-height: 1.1;
       color: var(--gold);
       position: relative;
       z-index: 1;
+      opacity: 0;
+      animation: heroNamesReveal 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
+    }
+
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes heroNamesReveal {
+      from { opacity: 0; transform: translateY(40px) scale(0.92); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .hero-ampersand {
@@ -345,7 +389,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       opacity: 0;
-      animation: fadeUp 1.2s ease 1s forwards;
+      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards;
     }
 
     .hero-date {
@@ -357,7 +401,7 @@
       color: #2d4c32;
       letter-spacing: 0.09em;
       opacity: 0;
-      animation: fadeUp 1s ease 1.4s forwards;
+      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
     }
 
     .hero-location {
@@ -368,7 +412,7 @@
       opacity: 0;
       font-weight: 500;
       margin-top: 0.6rem;
-      animation: fadeUp 1s ease 1.7s forwards;
+      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1.8s forwards;
     }
 
     .hero-divider {
@@ -378,7 +422,7 @@
       margin: 2.5rem auto;
       width: fit-content;
       opacity: 0;
-      animation: fadeUp 1s ease 2s forwards;
+      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.1s forwards;
     }
 
     .hero-divider span {
@@ -400,7 +444,7 @@
       display: block;
       margin: 0.25rem auto 0.9rem;
       opacity: 0;
-      animation: fadeUp 1s ease 1.35s forwards;
+      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1.4s forwards;
     }
 
     .hero-flourish path {
@@ -410,7 +454,7 @@
       stroke-linecap: round;
       stroke-dasharray: 220;
       stroke-dashoffset: 220;
-      animation: flourishDraw 2.2s ease 1.6s forwards, flourishGlow 3.4s ease-in-out 3.8s infinite;
+      animation: flourishDraw 2.2s cubic-bezier(0.22, 1, 0.36, 1) 1.6s forwards, flourishGlow 3.4s ease-in-out 3.8s infinite;
     }
 
     @keyframes flourishDraw {
@@ -435,7 +479,6 @@
       display: inline-block;
       margin-top: 2rem;
       margin-bottom: 5rem;
-      /* added bottom margin to avoid scroll overlap */
       padding: 0.9rem 3rem;
       background: var(--black);
       border: 1px solid var(--black);
@@ -449,7 +492,7 @@
       position: relative;
       overflow: hidden;
       opacity: 0;
-      animation: fadeUp 1s ease 2.2s forwards;
+      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.4s forwards;
       transition: background 0.4s, transform 0.3s;
     }
 
@@ -469,7 +512,7 @@
       align-items: center;
       gap: 0.5rem;
       opacity: 0;
-      animation: fadeUp 1s ease 3s forwards;
+      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.8s forwards;
     }
 
     .scroll-hint span {
@@ -1089,30 +1132,49 @@
 
     .reveal {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+      transform: translateY(40px) scale(0.95);
+      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), 
+                  transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .reveal.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
+    }
+
+    /* Enhanced fade up reveal for hero content */
+    .fade-up-enhance {
+      opacity: 0;
+      transform: translateY(50px);
+      animation: fadeUpEnhance 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes fadeUpEnhance {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Stagger children */
     .stagger .reveal:nth-child(1) {
-      transition-delay: 0.1s;
+      transition-delay: 0.05s;
     }
 
     .stagger .reveal:nth-child(2) {
-      transition-delay: 0.25s;
+      transition-delay: 0.15s;
     }
 
     .stagger .reveal:nth-child(3) {
-      transition-delay: 0.4s;
+      transition-delay: 0.25s;
     }
 
     .stagger .reveal:nth-child(4) {
-      transition-delay: 0.55s;
+      transition-delay: 0.35s;
+    }
+    
+    .stagger .reveal:nth-child(5) {
+      transition-delay: 0.45s;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1241,6 +1303,7 @@
           </div>
         </div>
         <div class="loading-text">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+        <div class="loading-invite-text">You are invited.</div>
       </div>
       <!-- GIF content (hidden until loaded) -->
       <canvas id="intro-canvas"></canvas>
@@ -1302,7 +1365,7 @@
       4th July 2026
     </p>
     <p class="hero-location"
-      style="opacity: 0; animation: fadeUp 1s ease 2.1s forwards; color: var(--black); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">
+      style="opacity: 0; animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2s forwards; color: var(--black); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">
       Belize
     </p>
 
@@ -1315,8 +1378,8 @@
   </section>
 
   <!-- ─── COUNTDOWN ─────────────────────────────────── -->
-  <div id="countdown">
-    <p class="section-eyebrow">Days Until We Say I Do</p>
+  <div id="countdown" class="reveal">
+    <p class="section-eyebrow reveal">Days Until We Say I Do</p>
     <div class="countdown-wrapper">
       <div class="count-block">
         <span class="count-number" id="cd-days">--</span>
@@ -1483,9 +1546,9 @@
   <!-- ─── RSVP CTA ───────────────────────────────────── -->
   <section id="gift" style="padding: 6rem 1rem; background: var(--cream); text-align: center;">
     <div class="gift-container reveal" style="max-width: 600px; margin: 0 auto;">
-      <p class="section-eyebrow">A Token of Love</p>
-      <h2 class="section-title" style="font-size: 2.2rem; margin-bottom: 2rem;">Wedding Gift</h2>
-      <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #555; margin-bottom: 3rem; line-height: 1.8;">Your presence at our wedding is appreciated. Should you wish to honor us with a gift, we would appreciate a monetary contribution toward our future together.</p>
+      <p class="section-eyebrow reveal">A Token of Love</p>
+      <h2 class="section-title reveal" style="font-size: 2.2rem; margin-bottom: 2rem;">Wedding Gift</h2>
+      <p class="reveal" style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #555; margin-bottom: 3rem; line-height: 1.8;">Your presence at our wedding is appreciated. Should you wish to honor us with a gift, we would appreciate a monetary contribution toward our future together.</p>
 
       <!-- Interactive Gift Card Trigger (Luxury Redesign) -->
       <div class="gift-card-trigger" onclick="openGiftModal()" style="
