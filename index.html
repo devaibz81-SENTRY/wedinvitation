@@ -1748,7 +1748,7 @@
         // Play music
         music.play().catch(function(e) { console.log('Music play error:', e); });
         
-        // Auto transition after 5.7 seconds
+        // Auto transition after 5 seconds
         setTimeout(function() {
           // Fade out overlay
           gifContainer.classList.add('exit');
@@ -1759,7 +1759,7 @@
             overlay.style.display = 'none';
             document.body.style.overflow = 'auto';
           }, 500);
-        }, 5000);
+        }, 5200);
       };
     }
 
