@@ -1525,9 +1525,12 @@
         if (introStarted) return;
         introStarted = true;
         
-        // Swap to animated GIF
-        introGif.src = 'photos/intro.gif';
-        introGif.classList.add('animate-in');
+        // Preload animated GIF then swap
+        var animatedGif = new Image();
+        animatedGif.src = 'photos/intro.gif?t=' + Date.now();
+        animatedGif.onload = function() {
+          introGif.src = animatedGif.src;
+        };
         
         // Play music
         music.play().catch(function(e) { console.log('Music play error:', e); });
