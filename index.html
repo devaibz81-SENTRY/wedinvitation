@@ -117,20 +117,15 @@
     
     .loading-invite-text {
       position: absolute;
-      bottom: 12vh;
+      bottom: 15vh;
       left: 50%;
       transform: translateX(-50%);
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-size: clamp(2rem, 6vw, 3.5rem);
       color: var(--gold);
       text-align: center;
-      opacity: 0.85;
-      animation: pulseFade 2.5s ease-in-out infinite;
-    }
-    
-    @keyframes pulseFade {
-      0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(0.98); }
-      50% { opacity: 0.9; transform: translateX(-50%) scale(1); }
+      opacity: 0.9;
+      text-shadow: 0 2px 20px rgba(201, 169, 124, 0.3);
     }
     
     .dot {
@@ -194,10 +189,49 @@
     
     #intro-canvas {
       max-width: 100%;
-      max-width: 100%;
       max-height: 100%;
       object-fit: contain;
       animation: gifScale 0.6s ease-out forwards;
+    }
+    
+    .tap-hint {
+      position: absolute;
+      bottom: 12vh;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: tapPulse 2s ease-in-out infinite;
+    }
+    
+    .tap-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+    
+    .tap-arrow {
+      width: 20px;
+      height: 20px;
+      border-right: 2px solid var(--gold);
+      border-bottom: 2px solid var(--gold);
+      transform: rotate(45deg);
+      animation: tapBounce 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes tapPulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    
+    @keyframes tapBounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(5px); }
     }
     
     .intro-gif {
@@ -1308,6 +1342,11 @@
       <!-- GIF content (hidden until loaded) -->
       <canvas id="intro-canvas"></canvas>
       <img src="photos/intro.gif" alt="Wedding Invitation" id="intro-gif" class="intro-gif" style="display: none;">
+      <!-- Tap hint (shown after GIF loads) -->
+      <div id="tap-hint" class="tap-hint" style="display: none;">
+        <span class="tap-text">Tap to begin</span>
+        <div class="tap-arrow"></div>
+      </div>
     </div>
   </div>
 
@@ -1693,11 +1732,13 @@
     var mainContent = document.getElementById('main-content');
     var music = document.getElementById('bg-music');
     var introStarted = false;
+    var gifLoaded = false;
     
     // Load GIF and draw first frame to canvas
     var gifImg = new Image();
     gifImg.src = 'photos/intro.gif';
     gifImg.onload = function() {
+      gifLoaded = true;
       // Hide loading, show static first frame
       introLoading.style.display = 'none';
       introCanvas.style.display = 'block';
@@ -1705,13 +1746,26 @@
       introCanvas.height = gifImg.height;
       var ctx = introCanvas.getContext('2d');
       ctx.drawImage(gifImg, 0, 0);
+      // Add tap hint now that GIF is ready
+      var tapHint = document.getElementById('tap-hint');
+      if (tapHint) {
+        tapHint.style.display = 'block';
+      }
     };
     
-    // Click to start intro
+    // Click to start intro - ONLY works after GIF is loaded
     if (gifContainer) {
       gifContainer.onclick = function() {
+        // Block click until GIF is fully loaded
+        if (!gifLoaded) return;
         if (introStarted) return;
         introStarted = true;
+        
+        // Hide tap hint
+        var tapHint = document.getElementById('tap-hint');
+        if (tapHint) {
+          tapHint.style.display = 'none';
+        }
         
         // Show GIF and hide canvas
         introGif.style.display = 'block';
