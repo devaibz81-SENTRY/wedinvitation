@@ -1341,7 +1341,7 @@ Rosanna and Andrew</textarea>
     }
 
     function updateStats() {
-      const att = guests.filter(g => g.attendance === 'attending').length;
+      const att = guests.filter(g => g.attendance === 'attending').reduce((sum, g) => sum + (Number(g.max_party) || 1), 0);
       const dec = guests.filter(g => g.attendance === 'declined').length;
       const lat = guests.filter(g => g.attendance === 'later').length;
       const totalSeats = guests.reduce((sum, g) => sum + (Number(g.max_party) || 1), 0);
