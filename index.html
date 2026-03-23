@@ -402,6 +402,7 @@
       opacity: 0;
       animation: heroNamesReveal 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s forwards;
       transform-origin: center top;
+      text-shadow: 0 4px 30px rgba(212, 175, 55, 0.4);
     }
 
     @keyframes heroFadeUp {
@@ -600,6 +601,7 @@
       text-align: center;
       margin-bottom: 3rem;
       color: var(--gold);
+      text-shadow: 0 2px 20px rgba(212, 175, 55, 0.3);
     }
 
     /* ─── PHOTO GALLERY ───────────────────────────── */
@@ -1138,10 +1140,11 @@
     }
 
     footer .footer-names {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
       margin-bottom: 1rem;
-      color: var(--champagne);
+      color: var(--gold);
+      text-shadow: 0 2px 20px rgba(212, 175, 55, 0.3);
     }
 
     footer p {
@@ -1399,12 +1402,12 @@
     </div>
 
     <p class="hero-date"
-      style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 500; color: var(--gold);">
+      style="font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 5vw, 3rem); font-weight: 400; color: var(--gold); text-shadow: 0 2px 15px rgba(212, 175, 55, 0.3);">
       4th July 2026
     </p>
     <p class="hero-location"
-      style="opacity: 0; animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2s forwards; color: var(--black); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">
-      Belize
+      style="opacity: 0; animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2s forwards; color: var(--black); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1rem, 2.5vw, 1.2rem); letter-spacing: 0.1em;">
+      San Ignacio, Belize
     </p>
 
     <div class="scroll-hint">
@@ -1714,9 +1717,10 @@
 
   <!-- ─── FOOTER ────────────────────────────────────── -->
   <footer>
-    <div class="footer-names">Andrew &amp; Rosanna</div>
-    <p style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">4th July 2026 - San Ignacio, Belize</p>
-    <p style="margin-top: 1rem;">With love</p>
+    <div class="footer-names" style="font-family: 'Great Vibes', cursive;">Andrew &amp; Rosanna</div>
+    <p style="font-family: 'Great Vibes', cursive; font-size: clamp(1.5rem, 4vw, 2.5rem); color: var(--gold);">4th July 2026</p>
+    <p style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem; opacity: 0.8;">San Ignacio, Belize</p>
+    <p style="margin-top: 1.5rem;">With love</p>
   </footer>
 
   <script>
