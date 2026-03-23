@@ -194,14 +194,13 @@
     
     .tap-hint {
       position: absolute;
-      bottom: 8%;
+      bottom: calc(50% + 60px);
       left: 0;
       right: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
       animation: tapPulse 2s ease-in-out infinite;
       text-align: center;
       pointer-events: none;
@@ -215,15 +214,6 @@
       color: var(--gold);
       font-weight: 500;
       text-align: center;
-    }
-    
-    .tap-arrow {
-      width: 20px;
-      height: 20px;
-      border-right: 2px solid var(--gold);
-      border-bottom: 2px solid var(--gold);
-      transform: rotate(45deg);
-      animation: tapBounce 1.5s ease-in-out infinite;
     }
     
     @keyframes tapPulse {
@@ -548,9 +538,7 @@
       left: 0;
       right: 0;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
+      justify-content: center;
       opacity: 0;
       animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.8s forwards;
     }
@@ -561,27 +549,6 @@
       text-transform: uppercase;
       opacity: 0.75;
       font-weight: 500;
-    }
-
-    .scroll-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--gold), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes scrollPulse {
-
-      0%,
-      100% {
-        opacity: 1;
-        transform: scaleY(1);
-      }
-
-      50% {
-        opacity: 0.4;
-        transform: scaleY(0.6);
-      }
     }
 
     /* ─── SECTION SHARED ──────────────────────────── */
@@ -1416,9 +1383,8 @@
       San Ignacio, Belize
     </p>
 
-    <div class="scroll-hint" style="margin-top: 3rem;">
+    <div class="scroll-hint" style="margin-top: 2.5rem;">
       <span>Scroll</span>
-      <div class="scroll-line"></div>
     </div>
   </section>
 
