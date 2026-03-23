@@ -1519,18 +1519,18 @@
     var music = document.getElementById('bg-music');
     var introStarted = false;
     
+    // Preload animated GIF on page load
+    var introGifPreload = new Image();
+    introGifPreload.src = 'photos/intro.gif';
+    
     // Click to start intro
     if (gifContainer) {
       gifContainer.onclick = function() {
         if (introStarted) return;
         introStarted = true;
         
-        // Preload animated GIF then swap
-        var animatedGif = new Image();
-        animatedGif.src = 'photos/intro.gif?t=' + Date.now();
-        animatedGif.onload = function() {
-          introGif.src = animatedGif.src;
-        };
+        // Swap to preloaded animated GIF
+        introGif.src = introGifPreload.src;
         
         // Play music
         music.play().catch(function(e) { console.log('Music play error:', e); });
