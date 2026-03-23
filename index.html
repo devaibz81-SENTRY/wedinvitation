@@ -402,7 +402,8 @@
       position: relative;
       z-index: 1;
       opacity: 0;
-      animation: heroNamesReveal 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
+      animation: heroNamesReveal 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s forwards;
+      transform-origin: center top;
     }
 
     @keyframes heroFadeUp {
@@ -411,8 +412,16 @@
     }
 
     @keyframes heroNamesReveal {
-      from { opacity: 0; transform: translateY(40px) scale(0.92); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      0% { 
+        opacity: 0; 
+        transform: translateY(80px) scale(0.9); 
+        filter: blur(8px);
+      }
+      100% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+        filter: blur(0);
+      }
     }
 
     .hero-ampersand {
@@ -423,7 +432,20 @@
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       opacity: 0;
-      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards;
+      animation: ampersandReveal 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.1s forwards;
+    }
+    
+    @keyframes ampersandReveal {
+      0% { 
+        opacity: 0; 
+        transform: translateY(50px) scale(0.8); 
+        letter-spacing: 0.5em;
+      }
+      100% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+        letter-spacing: normal;
+      }
     }
 
     .hero-date {
@@ -478,7 +500,12 @@
       display: block;
       margin: 0.25rem auto 0.9rem;
       opacity: 0;
-      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1.4s forwards;
+      animation: flourishReveal 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.5s forwards;
+    }
+    
+    @keyframes flourishReveal {
+      0% { opacity: 0; transform: scaleX(0); }
+      100% { opacity: 1; transform: scaleX(1); }
     }
 
     .hero-flourish path {
@@ -488,7 +515,7 @@
       stroke-linecap: round;
       stroke-dasharray: 220;
       stroke-dashoffset: 220;
-      animation: flourishDraw 2.2s cubic-bezier(0.22, 1, 0.36, 1) 1.6s forwards, flourishGlow 3.4s ease-in-out 3.8s infinite;
+      animation: flourishDraw 2s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards, flourishGlow 3.4s ease-in-out 3.5s infinite;
     }
 
     @keyframes flourishDraw {
@@ -507,32 +534,6 @@
       50% {
         opacity: 1;
       }
-    }
-
-    .hero-cta {
-      display: inline-block;
-      margin-top: 2rem;
-      margin-bottom: 5rem;
-      padding: 0.9rem 3rem;
-      background: var(--black);
-      border: 1px solid var(--black);
-      color: white;
-      text-decoration: none;
-      font-size: 0.78rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-weight: 600;
-      font-family: 'Cormorant Garamond', serif;
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.4s forwards;
-      transition: background 0.4s, transform 0.3s;
-    }
-
-    .hero-cta:hover {
-      background: var(--black);
-      transform: translateY(-2px);
     }
 
     /* Scroll indicator */
@@ -1407,8 +1408,6 @@
       style="opacity: 0; animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2s forwards; color: var(--black); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem;">
       Belize
     </p>
-
-    <a href="rsvp.html" class="hero-cta">Kindly Reply</a>
 
     <div class="scroll-hint">
       <span>Scroll</span>
