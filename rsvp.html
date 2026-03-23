@@ -1328,32 +1328,18 @@
       canvas.height = h;
       const ctx = canvas.getContext('2d');
 
-      const topGlow = ctx.createLinearGradient(0, 0, w, h);
-      topGlow.addColorStop(0, '#f8f2e7');
-      topGlow.addColorStop(1, '#ecdfcc');
-      ctx.fillStyle = topGlow;
+      // Clean ivory white background
+      ctx.fillStyle = '#FFFFF0';
       ctx.fillRect(0, 0, w, h);
 
-      // Soft decorative circles.
-      ctx.fillStyle = 'rgba(201, 168, 76, 0.08)';
-      ctx.beginPath();
-      ctx.arc(180, 170, 140, 0, Math.PI * 2);
-      ctx.arc(510, 78, 62, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = 'rgba(138, 111, 47, 0.08)';
-      ctx.beginPath();
-      ctx.arc(w - 180, h - 180, 180, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Decorative frame.
-      ctx.strokeStyle = '#c9a84c';
-      ctx.lineWidth = 3;
+      // Subtle decorative frame
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 2;
       ctx.strokeRect(24, 24, w - 48, h - 48);
       ctx.lineWidth = 1;
-      ctx.strokeRect(44, 44, w - 88, h - 88);
+      ctx.strokeRect(40, 40, w - 80, h - 80);
 
-      // Right-side photo panel.
+      // Right-side photo panel
       const photoX = 980;
       const photoY = 74;
       const photoW = 560;
@@ -1362,7 +1348,7 @@
       ctx.save();
       ctx.clip();
       try {
-        const photo = await loadImage('photos/photo2.gif');
+        const photo = await loadImage('photos/main-card-photo.gif');
         const ratio = Math.max(photoW / photo.width, photoH / photo.height);
         const drawW = photo.width * ratio;
         const drawH = photo.height * ratio;
@@ -1376,39 +1362,39 @@
       ctx.restore();
 
       drawRoundedRectPath(ctx, photoX, photoY, photoW, photoH, 26);
-      ctx.strokeStyle = 'rgba(201,168,76,0.7)';
+      ctx.strokeStyle = '#000000';
       ctx.lineWidth = 2;
       ctx.stroke();
 
       const leftX = 92;
       const leftWidth = 840;
       const statusMap = {
-        attending: { bg: '#e7f6ec', border: '#2f855a', text: '#1f5f40' },
-        declined: { bg: '#fdeaea', border: '#c0392b', text: '#8f2b20' },
-        later: { bg: '#fdf3e5', border: '#d68c00', text: '#8b5e00' },
+        attending: { bg: '#e8f5e9', border: '#000000', text: '#000000' },
+        declined: { bg: '#ffebee', border: '#000000', text: '#000000' },
+        later: { bg: '#fff8e1', border: '#000000', text: '#000000' },
       };
       const statusStyle = statusMap[card.attendance] || statusMap.later;
       const guestNames = Array.isArray(card.guestNames) && card.guestNames.length
         ? card.guestNames
         : [card.fullName];
 
-      // Header.
-      ctx.fillStyle = '#8d6f2f';
+      // Header - all black
+      ctx.fillStyle = '#000000';
       ctx.font = '600 20px Montserrat, sans-serif';
       ctx.fillText('RSVP CONFIRMATION CARD', leftX, 110);
 
-      ctx.fillStyle = '#1f1b16';
+      ctx.fillStyle = '#000000';
       ctx.font = '72px "Great Vibes", "Times New Roman", serif';
       ctx.fillText('Rosanna & Andrew', leftX, 196);
 
-      ctx.fillStyle = '#33483b';
+      ctx.fillStyle = '#000000';
       ctx.font = 'italic 32px "Cormorant Garamond", Georgia, serif';
       ctx.fillText(EVENT_DATE_TEXT, leftX, 244);
       ctx.font = '600 20px Montserrat, sans-serif';
       ctx.fillText(EVENT_LOCATION_TEXT, leftX, 280);
 
-      // Guest names block.
-      ctx.fillStyle = '#1f1b16';
+      // Guest names block - all black
+      ctx.fillStyle = '#000000';
       ctx.font = '600 22px Montserrat, sans-serif';
       ctx.fillText(guestNames.length > 1 ? 'Guests' : 'Guest', leftX, 340);
 
@@ -1416,18 +1402,18 @@
       const maxNameWidth = leftWidth - 48;
       const displayNames = guestNames.slice(0, 4);
       for (const name of displayNames) {
-        ctx.fillStyle = '#2a2420';
+        ctx.fillStyle = '#000000';
         const usedSize = drawFittedScriptName(ctx, name, leftX, namesY, maxNameWidth, 62, 38);
         namesY += usedSize + 16;
       }
       if (guestNames.length > displayNames.length) {
-        ctx.fillStyle = '#6b5a3a';
+        ctx.fillStyle = '#333333';
         ctx.font = '500 18px Montserrat, sans-serif';
         ctx.fillText(`+${guestNames.length - displayNames.length} more`, leftX, namesY + 4);
         namesY += 24;
       }
 
-      // RSVP status pill.
+      // RSVP status pill - clean black
       const statusY = namesY + 16;
       const statusW = leftWidth - 30;
       const statusH = 60;
@@ -1442,16 +1428,16 @@
       ctx.font = '700 24px "Cormorant Garamond", Georgia, serif';
       ctx.fillText(attendanceLabel(card.attendance), leftX + 20, statusY + 38);
 
-      // Detail rows.
+      // Detail rows - all black
       let rowY = statusY + 98;
       const rowGap = 42;
       const valueX = leftX + 190;
       const valueWidth = leftWidth - 220;
       const addRow = (label, value) => {
-        ctx.fillStyle = '#8d6f2f';
+        ctx.fillStyle = '#000000';
         ctx.font = '600 17px Montserrat, sans-serif';
         ctx.fillText(label, leftX, rowY);
-        ctx.fillStyle = '#2b2520';
+        ctx.fillStyle = '#000000';
         ctx.font = '600 21px "Cormorant Garamond", Georgia, serif';
         ctx.fillText(fitText(ctx, value, valueWidth), valueX, rowY);
         rowY += rowGap;
@@ -1461,7 +1447,7 @@
       addRow('Validated', new Date(card.submittedAt).toLocaleString());
       addRow('Reference', String(card.guestId).slice(-8).toUpperCase());
 
-      ctx.fillStyle = '#6b5a3a';
+      ctx.fillStyle = '#333333';
       ctx.font = '500 17px Montserrat, sans-serif';
       ctx.fillText(COUPLE_NAMES, leftX, h - 96);
       ctx.fillText('Please present this card with your RSVP confirmation.', leftX, h - 64);
