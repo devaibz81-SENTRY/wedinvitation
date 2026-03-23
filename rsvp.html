@@ -276,24 +276,32 @@
       justify-content: center;
       min-height: 118px;
       padding: 1.2rem 0.85rem;
-      border: 1px solid rgba(0, 0, 0, 0.15);
+      border: 2px solid var(--black);
+      border-radius: 12px;
+      background: var(--black);
+      color: var(--ivory);
       cursor: pointer;
       text-align: center;
-      transition: border-color 0.3s, background 0.3s;
+      transition: all 0.3s ease;
     }
 
     .attend-label:hover {
       border-color: var(--gold);
+      background: var(--gold);
+      color: var(--black);
     }
 
     .attend-option input:checked+.attend-label {
       border-color: var(--gold);
-      background: rgba(201, 168, 76, 0.08);
+      background: var(--gold);
+      color: var(--black);
     }
 
     .attend-icon {
       font-size: 1.5rem;
       margin-bottom: 0.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
     }
 
     .attend-text {
@@ -301,17 +309,17 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       white-space: nowrap;
+      font-weight: 600;
     }
 
     .attend-sub {
       font-size: 0.67rem;
-      color: #888;
       margin-top: 0.32rem;
-      font-style: italic;
       letter-spacing: 0;
       text-transform: none;
       font-family: 'Cormorant Garamond', serif;
       white-space: nowrap;
+      opacity: 0.8;
     }
 
     /* â”€â”€â”€ PARTY MEMBERS â”€â”€â”€ */
