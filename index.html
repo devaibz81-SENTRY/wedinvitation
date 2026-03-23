@@ -320,18 +320,7 @@
       padding: 80px 1.5rem 3rem;
       position: relative;
       overflow: hidden;
-    }
-
-    /* Animated background petals */
-    #hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(212, 175, 55, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
-      animation: auraShift 12s ease-in-out infinite alternate;
+      background: var(--black);
     }
 
     @keyframes auraShift {
@@ -549,6 +538,7 @@
       text-transform: uppercase;
       opacity: 0.75;
       font-weight: 500;
+      color: var(--ivory);
     }
 
     /* ─── SECTION SHARED ──────────────────────────── */
@@ -980,9 +970,23 @@
     #countdown {
       text-align: center;
       padding: 5rem 2rem;
-      background: var(--ivory);
+      background: var(--cream);
       border-top: 1px solid rgba(212, 175, 55, 0.2);
       border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    #countdown::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(212, 175, 55, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+      animation: auraShift 12s ease-in-out infinite alternate;
+      pointer-events: none;
     }
 
     .countdown-wrapper {
@@ -1748,7 +1752,7 @@
         // Play music
         music.play().catch(function(e) { console.log('Music play error:', e); });
         
-        // Auto transition after 5 seconds
+        // Auto transition after 5.3 seconds
         setTimeout(function() {
           // Fade out overlay
           gifContainer.classList.add('exit');
@@ -1759,7 +1763,7 @@
             overlay.style.display = 'none';
             document.body.style.overflow = 'auto';
           }, 500);
-        }, 5200);
+        }, 5300);
       };
     }
 
