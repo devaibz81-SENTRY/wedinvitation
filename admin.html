@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - R&A Wedding Management</title>
+  <title>Admin - A&R Wedding Management</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500&display=swap"
@@ -870,7 +870,7 @@
   <div id="login-overlay">
     <div class="login-box">
       <h2>Wedding Admin</h2>
-      <p>Rosanna &amp; Andrew - 2026</p>
+      <p>Andrew &amp; Rosanna - 2026</p>
       <input type="password" id="admin-pass" class="login-input" placeholder="Enter Password"
         onkeydown="if(event.key==='Enter') doLogin()" />
       <button class="login-btn" onclick="doLogin()">Enter</button>
@@ -881,7 +881,7 @@
   <!-- Sidebar -->
   <div id="sidebar">
     <div class="sidebar-brand">
-      <div class="brand-name">Rosanna &amp; Andrew</div>
+      <div class="brand-name">Andrew &amp; Rosanna</div>
     </div>
     <div class="nav-label">Management</div>
     <div class="nav-item active" onclick="showView('guests', event)">Guests Data</div>
@@ -1297,7 +1297,7 @@ Rosanna and Andrew</textarea>
             return;
           }
           const content = messages.map((m, i) => `${i + 1}. ${m.name}\n"${m.content}"\n`).join('\n');
-          const blob = new Blob([`Wedding Guest Messages\nRosanna & Andrew\n\n${content}`], { type: 'text/plain' });
+          const blob = new Blob([`Wedding Guest Messages\nAndrew & Rosanna\n\n${content}`], { type: 'text/plain' });
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
