@@ -14,17 +14,17 @@
 
   <style>
     :root {
-      --black: #0a0a0a;
-      /* Rich Black */
-      --ivory: #FFFFF0;
-      /* Classic Ivory */
-      --champagne: #d4af37;
-      /* Golden Champagne */
-      --green: #2e8b57;
-      /* Flora Green */
-      --gold: #d4af37;
-      /* Golden Champagne */
-      --cream: #f8f8f5;
+      --black: #000000;
+      /* Black */
+      --ivory: #FAF5EF;
+      /* Ivory */
+      --champagne: #7e7cce;
+      /* Flora */
+      --green: #7e7cce;
+      /* Flora */
+      --gold: #7e7cce;
+      /* Flora */
+      --cream: #FAF5EF;
       /* Background Tint */
     }
 
@@ -123,7 +123,7 @@
       color: var(--gold);
       text-align: center;
       opacity: 0.9;
-      text-shadow: 0 2px 20px rgba(212, 175, 55, 0.3);
+      text-shadow: 0 2px 20px rgba(126, 124, 206, 0.3);
     }
     
     .dot {
@@ -282,7 +282,7 @@
       padding: 1.4rem 1rem;
       background: rgba(250, 247, 242, 0.88);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      border-bottom: 1px solid rgba(126, 124, 206, 0.2);
       font-size: 0.78rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -295,7 +295,7 @@
       justify-content: center;
       min-width: 96px;
       padding: 0.5rem 0.85rem;
-      border: 1px solid rgba(212, 175, 55, 0.25);
+      border: 1px solid rgba(126, 124, 206, 0.25);
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.45);
       white-space: nowrap;
@@ -332,9 +332,9 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(212, 175, 55, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(46, 139, 87, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(126, 124, 206, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(126, 124, 206, 0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(126, 124, 206, 0.08) 0%, transparent 50%);
       animation: auraShift 12s ease-in-out infinite alternate;
     }
 
@@ -630,7 +630,7 @@
       position: relative;
       overflow: hidden;
       background: #1a1a1a;
-      border: 1px solid rgba(212, 175, 55, 0.24);
+      border: 1px solid rgba(126, 124, 206, 0.24);
       border-radius: 12px;
       cursor: pointer;
     }
@@ -640,14 +640,14 @@
       content: '';
       position: absolute;
       inset: clamp(6px, 1vw, 10px);
-      border: 1px solid rgba(212, 175, 55, 0.3);
+      border: 1px solid rgba(126, 124, 206, 0.3);
       border-radius: 8px;
       pointer-events: none;
       transition: border-color 0.4s;
     }
 
     .photo-frame:hover::after {
-      border-color: rgba(212, 175, 55, 0.8);
+      border-color: rgba(126, 124, 206, 0.8);
     }
 
     .photo-frame.large {
@@ -715,7 +715,7 @@
 
     /* Placeholder before real images added */
     .photo-placeholder-text {
-      color: rgba(212, 175, 55, 0.78);
+      color: rgba(126, 124, 206, 0.78);
       font-size: 0.7rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -727,7 +727,7 @@
     .photo-placeholder-icon {
       width: 40px;
       height: 40px;
-      border: 1px solid rgba(212, 175, 55, 0.3);
+      border: 1px solid rgba(126, 124, 206, 0.3);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -735,7 +735,7 @@
       margin-bottom: 1rem;
       font-size: 1rem;
       font-weight: 700;
-      color: rgba(212, 175, 55, 0.92);
+      color: rgba(126, 124, 206, 0.92);
     }
 
     /* Caption slide-up */
@@ -1006,8 +1006,8 @@
       text-align: center;
       padding: 5rem 2rem;
       background: var(--ivory);
-      border-top: 1px solid rgba(212, 175, 55, 0.2);
-      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      border-top: 1px solid rgba(126, 124, 206, 0.2);
+      border-bottom: 1px solid rgba(126, 124, 206, 0.2);
     }
 
     .countdown-wrapper {
@@ -1600,7 +1600,7 @@
 
         <!-- Inner Border Frame -->
         <div style="
-          position: absolute; inset: 12px; border: 1px solid rgba(212, 175, 55, 0.5);
+          position: absolute; inset: 12px; border: 1px solid rgba(126, 124, 206, 0.5);
           pointer-events: none;
         "></div>
 
@@ -1806,7 +1806,7 @@
 
     // Floating Petals
     const container = document.getElementById('petals-container');
-    const colors = ['#2e8b57', '#3d9970', '#d4af37', '#5f9ea0'];
+    const colors = ['#7e7cce', '#9490d3', '#6b69bb', '#000000'];
     for (let i = 0; i < 18; i++) {
       const p = document.createElement('div');
       p.className = 'petal';
