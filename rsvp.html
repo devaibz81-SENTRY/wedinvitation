@@ -11,15 +11,17 @@
     rel="stylesheet" />
   <style>
     :root {
-      --black: #2b2520;
-      --ivory: #f6efeb;
-      --champagne: #e2d5be;
-      --blush: #d29e9a;
-      --green: #8da38b;
-      --gold: #cba97c;
-      --cream: #faf5f0;
+      --black: #000000;
+      --ivory: #FAF5EF;
+      --champagne: #F7E7CE;
+      --gold: #d4af37;
+      --cream: #FAF5EF;
       --error: #c0392b;
       --success: #27ae60;
+    }
+    
+    * {
+      accent-color: var(--gold);
     }
 
     *,
@@ -94,9 +96,11 @@
     }
 
     .rsvp-hero h1 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Great Vibes', cursive;
       font-size: clamp(2.5rem, 7vw, 4.5rem);
       margin-bottom: 1rem;
+      color: var(--gold);
+      text-shadow: 0 2px 20px rgba(212, 175, 55, 0.3);
     }
 
     .rsvp-hero p {
@@ -251,8 +255,86 @@
       appearance: none;
       background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c9a84c'/%3E%3C/svg%3E") no-repeat right 0.5rem center;
     }
+    
+    /* MESSAGE AREA */
+    .form-group textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 1rem;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--black);
+      background: white;
+      resize: vertical;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+    }
+    
+    .form-group textarea::placeholder {
+      color: #999;
+      font-style: italic;
+    }
+    
+    /* NUMBER PAD */
+    .number-pad-container {
+      display: none;
+      margin-top: 0.5rem;
+      background: var(--black);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    
+    .number-pad-container.active {
+      display: block;
+    }
+    
+    .number-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    
+    .num-btn {
+      background: var(--ivory);
+      border: none;
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 1.3rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      color: var(--black);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .num-btn:hover {
+      background: var(--champagne);
+    }
+    
+    .num-btn:active {
+      transform: scale(0.95);
+      background: var(--gold);
+    }
+    
+    .num-btn.delete {
+      background: rgba(255,255,255,0.1);
+      color: var(--ivory);
+      font-size: 0.9rem;
+    }
+    
+    .num-btn.delete:hover {
+      background: rgba(255,255,255,0.2);
+    }
 
-    /* â”€â”€â”€ ATTENDANCE â”€â”€â”€ */
+    /* ATTENDANCE */
     .attendance-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -792,7 +874,23 @@
           </div>
           <div class="form-group">
             <label for="phone">WhatsApp Number</label>
-            <input type="tel" id="phone" placeholder="+501 000 0000" />
+            <input type="tel" id="phone" placeholder="+501 000 0000" onclick="toggleNumberPad()" onfocus="toggleNumberPad()" readonly />
+            <div class="number-pad-container" id="number-pad">
+              <div class="number-pad">
+                <button type="button" class="num-btn" onclick="appendDigit('1')">1</button>
+                <button type="button" class="num-btn" onclick="appendDigit('2')">2</button>
+                <button type="button" class="num-btn" onclick="appendDigit('3')">3</button>
+                <button type="button" class="num-btn" onclick="appendDigit('4')">4</button>
+                <button type="button" class="num-btn" onclick="appendDigit('5')">5</button>
+                <button type="button" class="num-btn" onclick="appendDigit('6')">6</button>
+                <button type="button" class="num-btn" onclick="appendDigit('7')">7</button>
+                <button type="button" class="num-btn" onclick="appendDigit('8')">8</button>
+                <button type="button" class="num-btn" onclick="appendDigit('9')">9</button>
+                <button type="button" class="num-btn" onclick="appendDigit('+')">+</button>
+                <button type="button" class="num-btn" onclick="appendDigit('0')">0</button>
+                <button type="button" class="num-btn delete" onclick="deleteDigit()">DEL</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -832,6 +930,15 @@
       <div class="form-section" id="party-section" style="display:none">
         <div class="form-section-title"><span>03</span> Your Party</div>
         <div id="party-members-list"></div>
+      </div>
+
+      <!-- 3. MESSAGE -->
+      <div class="form-section" id="message-section">
+        <div class="form-section-title"><span>03</span> Leave Us a Message</div>
+        <div class="form-group">
+          <label for="message">Words of Wisdom, Congratulations, or Well Wishes</label>
+          <textarea id="message" placeholder="Share your love, advice, or wishes for Andrew & Rosanna..."></textarea>
+        </div>
       </div>
 
       <!-- 4. A LITTLE EXTRA -->
@@ -1021,6 +1128,41 @@
     }
 
     // â”€â”€â”€ Attendance change â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Number pad functions
+    function toggleNumberPad() {
+      const pad = document.getElementById('number-pad');
+      if (pad) {
+        pad.classList.add('active');
+      }
+    }
+
+    function appendDigit(digit) {
+      const phoneInput = document.getElementById('phone');
+      if (phoneInput) {
+        if (digit === '+' && !phoneInput.value.includes('+')) {
+          phoneInput.value += '+';
+        } else if (digit !== '+') {
+          phoneInput.value += digit;
+        }
+      }
+    }
+
+    function deleteDigit() {
+      const phoneInput = document.getElementById('phone');
+      if (phoneInput) {
+        phoneInput.value = phoneInput.value.slice(0, -1);
+      }
+    }
+
+    // Close number pad when clicking outside
+    document.addEventListener('click', function(e) {
+      const pad = document.getElementById('number-pad');
+      const phoneInput = document.getElementById('phone');
+      if (pad && !pad.contains(e.target) && e.target !== phoneInput) {
+        pad.classList.remove('active');
+      }
+    });
+
     function onAttendanceChange() {
       const val = document.querySelector('input[name="attendance"]:checked')?.value;
       const showFull = val === 'attending';
