@@ -72,15 +72,17 @@
       position: fixed;
       inset: 0;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
     }
     
     .intro-gif {
-      max-width: 95vw;
-      max-height: 85vh;
+      max-width: 100%;
+      max-height: 100vh;
       object-fit: contain;
+    }
+    
+    .intro-gif.animate-in {
       animation: gifScale 0.6s ease-out forwards;
     }
     
@@ -89,63 +91,21 @@
       to { transform: scale(1); opacity: 1; }
     }
     
-    .invited-text {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(2rem, 6vw, 4rem);
-      color: var(--gold);
-      letter-spacing: 0.05em;
-      margin-bottom: 2vh;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      animation: fadeInUp 1s ease-out 0.5s both;
-    }
-    
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .enter-prompt {
-      position: absolute;
-      bottom: 10vh;
-      left: 50%;
-      transform: translateX(-50%);
-      color: var(--gold);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
-    }
-    
-    .enter-prompt.visible {
-      opacity: 1;
-      pointer-events: auto;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
-    }
-    
-    .intro-gif-container.exit .intro-gif {
-      animation: flyOff 1s ease-in forwards;
-    }
-    
-    @keyframes flyOff {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-120vh) scale(0.6); opacity: 0; }
-    }
-    
     .intro-gif-container.exit {
-      animation: fadeOutBg 0.8s ease-out 0.5s forwards;
+      animation: fadeOutBg 1s ease-out forwards;
     }
     
     @keyframes fadeOutBg {
       to { opacity: 0; pointer-events: none; }
+    }
+    
+    .main-content {
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+    
+    .main-content.visible {
+      opacity: 1;
     }
 
     /* ─── NAV ─────────────────────────────────────── */
@@ -1174,9 +1134,7 @@
   <!-- INTRO GIF OVERLAY -->
   <div id="intro-overlay">
     <div class="intro-gif-container" id="intro-gif-container">
-      <div class="invited-text">You are Invited</div>
-      <img src="photos/invitation-3.gif" alt="Wedding Invitation" id="intro-gif" class="intro-gif">
-      <div class="enter-prompt" id="enter-prompt">Tap to Enter</div>
+      <img src="photos/start-frame.gif" alt="Wedding Invitation" id="intro-gif" class="intro-gif animate-in">
     </div>
   </div>
 
@@ -1192,6 +1150,9 @@
       <line class="mute-line" x1="1" y1="1" x2="23" y2="23"></line>
     </svg>
   </button>
+
+  <!-- MAIN CONTENT WRAPPER -->
+  <div class="main-content" id="main-content">
 
   <!-- NAV -->
   <nav>
@@ -1552,26 +1513,37 @@
   <script>
     // ─── GIF INTRO SCRIPTS ─────────────────────────────────
     var gifContainer = document.getElementById('intro-gif-container');
-    var enterPrompt = document.getElementById('enter-prompt');
     var overlay = document.getElementById('intro-overlay');
+    var introGif = document.getElementById('intro-gif');
+    var mainContent = document.getElementById('main-content');
     var music = document.getElementById('bg-music');
+    var introStarted = false;
     
-    // Show enter prompt after 4 seconds
-    setTimeout(function() {
-      if (enterPrompt) {
-        enterPrompt.classList.add('visible');
-      }
-    }, 4000);
-    
-    // Click to enter invitation + play music
+    // Click to start intro
     if (gifContainer) {
       gifContainer.onclick = function() {
+        if (introStarted) return;
+        introStarted = true;
+        
+        // Swap to animated GIF
+        introGif.src = 'photos/intro.gif';
+        introGif.classList.add('animate-in');
+        
+        // Play music
         music.play().catch(function(e) { console.log('Music play error:', e); });
-        gifContainer.classList.add('exit');
+        
+        // Auto transition after 6 seconds
         setTimeout(function() {
-          overlay.style.display = 'none';
-          document.body.style.overflow = 'auto';
-        }, 1000);
+          // Fade out overlay
+          gifContainer.classList.add('exit');
+          
+          // Fade in main content
+          setTimeout(function() {
+            mainContent.classList.add('visible');
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+          }, 500);
+        }, 6000);
       };
     }
 
@@ -1730,6 +1702,9 @@
       }
     }
   </script>
+
+  </div><!-- end main-content -->
+
 </body>
 
 </html>
