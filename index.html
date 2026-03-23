@@ -14,19 +14,17 @@
 
   <style>
     :root {
-      --black: #2b2520;
-      /* Soft brown-black */
-      --ivory: #f6efeb;
-      /* Nude/warm ivory */
-      --champagne: #e2d5be;
-      /* Champagne/Sand */
-      --blush: #d29e9a;
-      /* Dusty Rose */
-      --green: #8da38b;
-      /* Sage Green */
-      --gold: #cba97c;
-      /* Muted Light Gold */
-      --cream: #faf5f0;
+      --black: #0a0a0a;
+      /* Rich Black */
+      --ivory: #FFFFF0;
+      /* Classic Ivory */
+      --champagne: #d4af37;
+      /* Golden Champagne */
+      --green: #2e8b57;
+      /* Flora Green */
+      --gold: #d4af37;
+      /* Golden Champagne */
+      --cream: #f8f8f5;
       /* Background Tint */
     }
 
@@ -110,7 +108,7 @@
     }
     
     .loading-text {
-      color: #8b7444;
+      color: var(--champagne);
       font-size: 14pt;
       font-weight: 600;
     }
@@ -125,7 +123,7 @@
       color: var(--gold);
       text-align: center;
       opacity: 0.9;
-      text-shadow: 0 2px 20px rgba(201, 169, 124, 0.3);
+      text-shadow: 0 2px 20px rgba(212, 175, 55, 0.3);
     }
     
     .dot {
@@ -197,8 +195,8 @@
     .tap-hint {
       position: absolute;
       bottom: 12vh;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 0;
+      right: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -211,15 +209,15 @@
       font-size: 0.75rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--champagne);
       font-weight: 500;
     }
     
     .tap-arrow {
       width: 20px;
       height: 20px;
-      border-right: 2px solid var(--gold);
-      border-bottom: 2px solid var(--gold);
+      border-right: 2px solid var(--champagne);
+      border-bottom: 2px solid var(--champagne);
       transform: rotate(45deg);
       animation: tapBounce 1.5s ease-in-out infinite;
     }
@@ -284,7 +282,7 @@
       padding: 1.4rem 1rem;
       background: rgba(250, 247, 242, 0.88);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
       font-size: 0.78rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -297,7 +295,7 @@
       justify-content: center;
       min-width: 96px;
       padding: 0.5rem 0.85rem;
-      border: 1px solid rgba(201, 168, 76, 0.25);
+      border: 1px solid rgba(212, 175, 55, 0.25);
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.45);
       white-space: nowrap;
@@ -334,9 +332,9 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(232, 196, 184, 0.25) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(212, 184, 150, 0.2) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(58, 92, 63, 0.08) 0%, transparent 50%);
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(212, 175, 55, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(46, 139, 87, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
       animation: auraShift 12s ease-in-out infinite alternate;
     }
 
@@ -540,8 +538,8 @@
     .scroll-hint {
       position: absolute;
       bottom: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 0;
+      right: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -632,7 +630,7 @@
       position: relative;
       overflow: hidden;
       background: #1a1a1a;
-      border: 1px solid rgba(201, 168, 76, 0.24);
+      border: 1px solid rgba(212, 175, 55, 0.24);
       border-radius: 12px;
       cursor: pointer;
     }
@@ -642,14 +640,14 @@
       content: '';
       position: absolute;
       inset: clamp(6px, 1vw, 10px);
-      border: 1px solid rgba(201, 168, 76, 0.3);
+      border: 1px solid rgba(212, 175, 55, 0.3);
       border-radius: 8px;
       pointer-events: none;
       transition: border-color 0.4s;
     }
 
     .photo-frame:hover::after {
-      border-color: rgba(201, 168, 76, 0.8);
+      border-color: rgba(212, 175, 55, 0.8);
     }
 
     .photo-frame.large {
@@ -717,7 +715,7 @@
 
     /* Placeholder before real images added */
     .photo-placeholder-text {
-      color: rgba(201, 168, 76, 0.78);
+      color: rgba(212, 175, 55, 0.78);
       font-size: 0.7rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -729,7 +727,7 @@
     .photo-placeholder-icon {
       width: 40px;
       height: 40px;
-      border: 1px solid rgba(201, 168, 76, 0.3);
+      border: 1px solid rgba(212, 175, 55, 0.3);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -737,7 +735,7 @@
       margin-bottom: 1rem;
       font-size: 1rem;
       font-weight: 700;
-      color: rgba(201, 168, 76, 0.92);
+      color: rgba(212, 175, 55, 0.92);
     }
 
     /* Caption slide-up */
@@ -782,7 +780,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.15rem;
       line-height: 2;
-      color: #3a3a3a;
+      color: #1a1a1a;
     }
 
     .story-body p+p {
@@ -1008,8 +1006,8 @@
       text-align: center;
       padding: 5rem 2rem;
       background: var(--ivory);
-      border-top: 1px solid rgba(201, 168, 76, 0.2);
-      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
 
     .countdown-wrapper {
@@ -1586,12 +1584,12 @@
     <div class="gift-container reveal" style="max-width: 600px; margin: 0 auto;">
       <p class="section-eyebrow reveal">A Token of Love</p>
       <h2 class="section-title reveal" style="font-size: 2.2rem; margin-bottom: 2rem;">Wedding Gift</h2>
-      <p class="reveal" style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #555; margin-bottom: 3rem; line-height: 1.8;">Your presence at our wedding is appreciated. Should you wish to honor us with a gift, we would appreciate a monetary contribution toward our future together.</p>
+      <p class="reveal" style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #333; margin-bottom: 3rem; line-height: 1.8;">Your presence at our wedding is appreciated. Should you wish to honor us with a gift, we would appreciate a monetary contribution toward our future together.</p>
 
       <!-- Interactive Gift Card Trigger (Luxury Redesign) -->
       <div class="gift-card-trigger" onclick="openGiftModal()" style="
         width: 100%; max-width: 340px; height: 190px; margin: 0 auto;
-        background: #1a1512; border-radius: 4px; border: 1px solid #cba97c;
+        background: var(--black); border-radius: 4px; border: 1px solid var(--champagne);
         box-shadow: 0 20px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column;
         align-items: center; justify-content: center; cursor: pointer;
         transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
@@ -1602,26 +1600,26 @@
 
         <!-- Inner Border Frame -->
         <div style="
-          position: absolute; inset: 12px; border: 1px solid rgba(203, 169, 124, 0.5);
+          position: absolute; inset: 12px; border: 1px solid rgba(212, 175, 55, 0.5);
           pointer-events: none;
         "></div>
 
         <!-- Corner Accents -->
         <div
-          style="position: absolute; top: 12px; left: 12px; width: 15px; height: 15px; border-top: 2px solid #cba97c; border-left: 2px solid #cba97c;">
+          style="position: absolute; top: 12px; left: 12px; width: 15px; height: 15px; border-top: 2px solid var(--champagne); border-left: 2px solid var(--champagne);">
         </div>
         <div
-          style="position: absolute; top: 12px; right: 12px; width: 15px; height: 15px; border-top: 2px solid #cba97c; border-right: 2px solid #cba97c;">
+          style="position: absolute; top: 12px; right: 12px; width: 15px; height: 15px; border-top: 2px solid var(--champagne); border-right: 2px solid var(--champagne);">
         </div>
         <div
-          style="position: absolute; bottom: 12px; left: 12px; width: 15px; height: 15px; border-bottom: 2px solid #cba97c; border-left: 2px solid #cba97c;">
+          style="position: absolute; bottom: 12px; left: 12px; width: 15px; height: 15px; border-bottom: 2px solid var(--champagne); border-left: 2px solid var(--champagne);">
         </div>
         <div
-          style="position: absolute; bottom: 12px; right: 12px; width: 15px; height: 15px; border-bottom: 2px solid #cba97c; border-right: 2px solid #cba97c;">
+          style="position: absolute; bottom: 12px; right: 12px; width: 15px; height: 15px; border-bottom: 2px solid var(--champagne); border-right: 2px solid var(--champagne);">
         </div>
 
         <div
-          style="font-size: 2.2rem; color: #cba97c; margin-bottom: 1rem; filter: drop-shadow(0 0 8px rgba(203,169,124,0.4));">
+          style="font-size: 2.2rem; color: var(--champagne); margin-bottom: 1rem; filter: drop-shadow(0 0 8px rgba(212,175,55,0.4));">
           <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
             <polyline points="20 12 20 22 4 22 4 12"></polyline>
             <rect x="2" y="7" width="20" height="5"></rect>
@@ -1631,7 +1629,7 @@
           </svg>
         </div>
         <span
-          style="font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; color: #cba97c; font-weight: 500; text-shadow: 0 0 5px rgba(203,169,124,0.3);">Open
+          style="font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--champagne); font-weight: 500; text-shadow: 0 0 5px rgba(212,175,55,0.3);">Open
           Gift Card</span>
       </div>
     </div>
@@ -1700,7 +1698,7 @@
       </div>
 
       <p
-        style="font-size: 0.85rem; color: #777; font-family: 'Cormorant Garamond', serif; font-style: italic; margin-top: 2rem;">
+        style="font-size: 0.85rem; color: #555; font-family: 'Cormorant Garamond', serif; font-style: italic; margin-top: 2rem;">
         With gratitude, <br /> Andrew & Rosanna
       </p>
     </div>
@@ -1752,9 +1750,9 @@
       }
     };
     
-    // Click to start intro - ONLY works after GIF is loaded
-    if (gifContainer) {
-      gifContainer.onclick = function() {
+    // Click anywhere on overlay to start intro - ONLY works after GIF is loaded
+    if (overlay) {
+      overlay.onclick = function(e) {
         // Block click until GIF is fully loaded
         if (!gifLoaded) return;
         if (introStarted) return;
@@ -1808,7 +1806,7 @@
 
     // Floating Petals
     const container = document.getElementById('petals-container');
-    const colors = ['#8da38b', '#d29e9a', '#e2d5be', '#cba97c'];
+    const colors = ['#2e8b57', '#3d9970', '#d4af37', '#5f9ea0'];
     for (let i = 0; i < 18; i++) {
       const p = document.createElement('div');
       p.className = 'petal';
