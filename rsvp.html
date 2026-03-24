@@ -669,28 +669,34 @@
     }
 
     .confirm-box {
-      background: var(--cream);
+      background: #111;
       padding: 2.5rem;
+      border: 1px solid rgba(255, 255, 240, 0.2);
       border-radius: 12px;
       max-width: 480px;
       width: 90%;
       text-align: center;
       animation: fadeInScale 0.3s ease-out;
+      color: #FFFFF0;
     }
 
     .confirm-box h3 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.8rem;
       margin-bottom: 1rem;
+      color: #FFFFF0;
     }
 
     #confirm-content {
       text-align: left;
       margin: 1rem 0;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      line-height: 1.9;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #FFFFF0;
     }
+    #confirm-content p { color: #FFFFF0; margin-bottom: 0.5rem; }
+    #confirm-content strong { color: var(--gold); }
 
     .confirm-actions {
       display: flex;
@@ -709,15 +715,16 @@
     }
 
     .btn-edit {
-      border: 2px solid var(--gold);
+      border: 1px solid #FFFFF0;
       background: transparent;
-      color: var(--black);
+      color: #FFFFF0;
     }
 
     .btn-confirm {
       border: none;
-      background: var(--gold);
-      color: white;
+      background: #FFFFF0;
+      color: #000;
+      font-weight: 600;
     }
 
     .btn-confirm:hover {
