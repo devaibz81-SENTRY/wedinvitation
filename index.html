@@ -1434,452 +1434,152 @@
     #hero::before { display: none !important; }
 
   
-    /* --- FLIP CLOCK STYLES --- */
-    .countdown-wrapper {
-      display: flex;
-      justify-content: center;
-      gap: 15px !important;
-      flex-wrap: wrap;
-    }
-    .count-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .count-number {
-      background: #2a2a2a;
-      border-radius: 5px;
-      box-shadow: inset 0 15px 50px #202020, 0 3px 10px #111;
-      position: relative;
-      display: inline-block;
-      min-width: clamp(70px, 15vw, 100px);
-      height: clamp(80px, 18vw, 120px);
-      line-height: clamp(80px, 18vw, 120px);
-      color: #eeeeee;
-      font-size: clamp(2rem, 6vw, 4rem) !important;
-      font-family: Arial, sans-serif !important;
-      text-shadow: 0 1px 2px #333;
-      border-top: 1px solid #393939;
-      border-bottom: 1px solid #111;
-      margin-bottom: 10px;
-    }
-    .count-number::before {
-      border-bottom: 2px solid #000;
-      content: "";
-      height: 1px;
-      left: 0;
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      z-index: 10;
-    }
-    .count-label {
-      font-size: 0.65rem !important;
-      letter-spacing: 0.3em !important;
-      color: var(--black) !important;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-  </style>
-</head>
-
-<body>
-
-  <!-- INTRO GIF OVERLAY -->
-  <div id="intro-overlay">
-    <div class="intro-gif-container" id="intro-gif-container">
-      <!-- Loading state -->
-      <div id="intro-loading" class="intro-loading">
-        <div class="loading-bar-background">
-          <div class="loading-bar">
-            <div class="white-bars-container">
-              <div class="white-bar"></div>
-              <div class="white-bar"></div>
-              <div class="white-bar"></div>
-            </div>
-          </div>
-        </div>
-        <div class="loading-text">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
-        <div class="loading-invite-text">You are invited.</div>
-      </div>
-      <!-- GIF content (hidden until loaded) -->
-      <canvas id="intro-canvas"></canvas>
-      <img src="photos/intro.gif" alt="Wedding Invitation" id="intro-gif" class="intro-gif" style="display: none;">
-      <!-- Tap hint (shown after GIF loads) -->
-      <div id="tap-hint" class="tap-hint" style="display: none;">
-        <span class="tap-text">Tap to begin</span>
-        <div class="tap-arrow"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MUSIC -->
-  <audio id="bg-music" preload="auto" loop>
-    <source src="audio/MUSIC.mp3" type="audio/mpeg" />
-  </audio>
-  <button id="music-toggle" class="music-toggle" type="button" aria-label="Toggle background music">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round"></path>
-      <line class="mute-line" x1="1" y1="1" x2="23" y2="23"></line>
-    </svg>
-  </button>
-
-  <!-- MAIN CONTENT WRAPPER -->
-  <div class="main-content" id="main-content">
-
-  <!-- NAV -->
-  <nav>
-    <a href="#story">Story</a>
-    <a href="#details">Details</a>
-    <a href="rsvp.html">RSVP</a>
-  </nav>
-
-  <!-- FLOATING PETALS -->
-  <div id="petals-container" aria-hidden="true"></div>
-
-  <!-- ─── HERO ─────────────────────────────────────── -->
-  <section id="hero">
-    <p class="hero-eyebrow">Together with their families</p>
-
-    <h1 class="hero-names">
-      Andrew
-      <span class="hero-ampersand">&amp;</span>
-      Rosanna
-    </h1>
-    <svg class="hero-flourish" viewBox="0 0 360 34" aria-hidden="true" focusable="false">
-      <path d="M8 17c36-15 72-15 108 0s72 15 108 0 72-15 128 0"></path>
-      <path d="M160 17h40"></path>
-    </svg>
-
-    <p class="hero-date">Request the pleasure of your company to celebrate their wedding</p>
-
-    <div class="hero-divider">
-      <span></span>
-      <svg width="10" height="10" viewBox="0 0 10 10">
-        <circle cx="5" cy="5" r="2" fill="#c9a84c" />
-      </svg>
-      <span></span>
-    </div>
-
-    <p class="hero-date"
-      style="font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 5vw, 3rem); font-weight: 400; color: var(--gold); text-shadow: 0 2px 15px rgba(212, 175, 55, 0.3);">
-      4th July 2026
-    </p>
-    <p class="hero-location"
-      style="opacity: 0; animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2s forwards; color: var(--black); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(0.9rem, 2.5vw, 1.1rem); letter-spacing: 0.1em; margin-top: 0.5rem;">
-      San Ignacio, Belize
-    </p>
-
-    <div class="scroll-hint" style="margin-top: 2.5rem;">
-      <span>Scroll</span>
-    </div>
-  </section>
-
-  <!-- ─── COUNTDOWN ─────────────────────────────────── -->
-  <div id="countdown" class="reveal">
-    <p class="section-eyebrow reveal"><span id="countdown-title">Days Until We Say I Do</span></p>
-    <div class="countdown-wrapper">
-      <div class="count-block">
-        <span class="count-number" id="cd-days">--</span>
-        <div class="count-label">Days</div>
-      </div>
-      <div class="count-sep">:</div>
-      <div class="count-block">
-        <span class="count-number" id="cd-hours">--</span>
-        <div class="count-label">Hours</div>
-      </div>
-      <div class="count-sep">:</div>
-      <div class="count-block">
-        <span class="count-number" id="cd-mins">--</span>
-        <div class="count-label">Minutes</div>
-      </div>
-      <div class="count-sep">:</div>
-      <div class="count-block">
-        <span class="count-number" id="cd-secs">--</span>
-        <div class="count-label">Seconds</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── GALLERY (REMOVED) ── -->
-  
-  <!-- ─── MAIN PHOTO ─────────────────────────────────── -->
-  <section class="main-photo-section reveal">
-    <div class="photo-rounded-holder">
-      <img src="photos/main-card-photo.gif" alt="Andrew and Rosanna" loading="eager" decoding="async" />
-    </div>
-  </section>
-  
-  <!-- ─── OUR STORY ─────────────────────────────────── -->
-  <section id="story">
-    <div class="story-text">
-      <p class="section-eyebrow reveal">How It All Began</p>
-      <h2 class="section-title reveal">Our Love Story - Andrew (Passy) and Rose</h2>
-      <div class="story-body">
-        <p class="reveal">
-          Over Fifteen years ago, our story began in the most unexpected and beautiful way. when our paths crossed At
-          first, we were simply friends learning each other, laughing together, sharing conversations that seemed to
-          stretch on forever. Neither of us knew then that those simple moments were quietly laying the foundation for a
-          love that would grow far beyond what we could imagine. Somewhere along the way, friendship turned into
-          something deeper. We didn’t just fall in love, we grew into it.
-        </p>
-        <p class="reveal">
-          Rose was completely head over heels, and Passy was just as swept away and determined. From very early on,
-          there was this unspoken feeling between us that somehow our lives were meant to be connected. It wasn’t
-          something we forced or planned. It was simply something we felt in our hearts, that no matter where life took
-          us, we would somehow find our way back to each other.
-        </p>
-        <p class="reveal">
-          And life did take us on a journey. Like any love story that lasts through the years, ours was not perfect. We
-          experienced incredible highs. Moments filled with laughter, adventure, and memories that will stay with us
-          forever. But we also faced challenges that tested us in ways we never expected. There were difficult seasons,
-          moments of hurt, and times when the road felt uncertain.
-        </p>
-        <p class="reveal">
-          Yet somehow, love kept bringing us back.<br />
-          Because underneath everything, there was always a friendship that refused to break.<br />
-          One of the most powerful chapters of our story came during one of the hardest times the world has faced, the
-          COVID pandemic. While so many things around us felt uncertain, we made a decision that would change our lives
-          forever. We chose to put our differences aside and build something together.
-        </p>
-        <p class="reveal">
-          Because we knew one thing for sure, if we could trust anyone, it was each other.
-        </p>
-        <p class="reveal">
-          So together, we took a leap of faith and created a business. What began as an idea soon became something much
-          bigger than we ever expected. Working side by side showed us a different side of our love. We saw each other’s
-          strength, resilience, and dedication in ways we had never experienced before.
-        </p>
-        <p class="reveal">
-          And through that journey, something beautiful happened. A deeper respect was born between us.
-        </p>
-        <p class="reveal">
-          Not just the kind of love that comes from passion, but the kind that comes from truly knowing someone,
-          standing beside them through storms, growing together, and choosing each other again and again.
-        </p>
-        <p class="reveal">
-          After fifteen plus years of friendship, love, challenges, growth, and dreams, we have come to realize
-          something very simple yet very powerful:
-        </p>
-        <p class="reveal">
-          <strong>God was guiding our story all along.</strong>
-        </p>
-        <p class="reveal">
-          Now, with grateful hearts and a love stronger than ever, we are choosing to begin a new chapter together, with
-          God at the center of our lives and our marriage.
-        </p>
-        <p class="reveal">
-          Our journey has not always been easy, but it has always been real. Every lesson, every challenge, every moment
-          has shaped the love we share today.
-        </p>
-        <p class="reveal">
-          And if the past fifteen years have taught us anything, it is this:
-        </p>
-        <blockquote class="reveal" style="background: #000000; color: #ffffff; padding: 3rem 2rem; border-radius: 12px; text-align: center; margin: 4rem auto; font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 3vw, 1.35rem); font-style: italic; box-shadow: 0 10px 30px rgba(0,0,0,0.15); max-width: 550px; line-height: 1.8; position: relative;">
-          <div style="font-size: 1.5rem; margin-bottom: 0.8rem; color: #ffffff; opacity: 0.8;">❦</div>
-          <p style="margin: 0;">"Love isn’t just about the good moments.<br />
-          It’s about choosing each other through everything."</p>
-          <div style="font-size: 1.5rem; margin-top: 0.8rem; color: #ffffff; opacity: 0.8; transform: rotate(180deg);">❦</div>
-        </blockquote>
-        <p class="reveal">
-          Today we stand here not just as two people in love, but as best friends, partners, and believers in a future
-          that God has prepared for us.
-        </p>
-        <p class="reveal">
-          <em>And this is only the beginning of the rest of our story.</em>
-        </p>
-      </div>
-      <div class="story-signature reveal">Andrew &amp; Rosanna</div>
-    </div>
-  </section>
-
-  <!-- ─── DETAILS ───────────────────────────────────── -->
-  <div id="details">
-    <div class="details-inner">
-      <p class="section-eyebrow reveal">What You Need to Know</p>
-      <h2 class="section-title reveal" style="color: var(--ivory);">Wedding Details</h2>
-
-      <div class="details-grid stagger">
-        <div class="detail-card reveal">
-          <span class="detail-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 3v18M3 12h18M6.5 6.5l11 11M17.5 6.5l-11 11"></path>
-            </svg>
-          </span>
-          <div class="detail-label">Ceremony</div>
-          <div class="detail-value">Sacred Heart Church</div>
-          <div class="detail-sub">4th July 2026 at 2:00 PM</div>
-        </div>
-        <div class="detail-card reveal">
-          <span class="detail-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 3v18M3 12h18M6.5 6.5l11 11M17.5 6.5l-11 11"></path>
-            </svg>
-          </span>
-          <div class="detail-label">Reception</div>
-          <div class="detail-value">The Gully Grill</div>
-          <div class="detail-sub">Cocktail Hour: 4:00 PM - 6:30 PM | Followed by Dinner and Dancing</div>
-        </div>
-        <div class="detail-card reveal">
-          <span class="detail-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 3v18M3 12h18M6.5 6.5l11 11M17.5 6.5l-11 11"></path>
-            </svg>
-          </span>
-          <div class="detail-label">Dress Code</div>
-          <div class="detail-value">Tropical Formal</div>
-          <div class="detail-sub">Sage, Dusty Rose, Champagne</div>
-        </div>
-      </div>
-      <div class="detail-card reveal"
-        style="grid-column: 1 / -1; padding: 2rem; background: transparent; border: none; align-items: center;">
-        <h3
-          style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--ivory); margin-bottom: 1.5rem; text-align: center;">
-          Dress Code Inspiration</h3>
-        <img src="photos/new_dress_code.jpeg" alt="Tropical Formal Dress Code Inspiration"
-          style="width: 100%; max-width: 800px; height: auto; border-radius: 12px; border: 1px solid rgba(201,168,76,0.4); display: block; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5);"
-          loading="lazy" />
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── RSVP CTA ───────────────────────────────────── -->
-  <section id="gift" style="padding: 6rem 1rem; background: var(--cream); text-align: center;">
-    <div class="gift-container reveal" style="max-width: 600px; margin: 0 auto;">
-      <p class="section-eyebrow reveal">A Token of Love</p>
-      <h2 class="section-title reveal" style="font-size: 2.2rem; margin-bottom: 2rem;">Wedding Gift</h2>
-      <p class="reveal" style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #333; margin-bottom: 3rem; line-height: 1.8;">Your presence at our wedding is appreciated. Should you wish to honor us with a gift, we would appreciate a monetary contribution toward our future together.</p>
-
-      <!-- Interactive Gift Card Trigger (Luxury Redesign) -->
-      <div class="gift-card-trigger" onclick="openGiftModal()" style="
-        width: 100%; max-width: 340px; height: 190px; margin: 0 auto;
-        background: var(--black); border-radius: 4px; border: 1px solid var(--champagne);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column;
-        align-items: center; justify-content: center; cursor: pointer;
-        transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
-        position: relative; overflow: hidden;
-      ">
-        <!-- Shimmering Border Layer -->
-        <div class="shimmer-gold" style="position: absolute; inset: 0; opacity: 0.15; pointer-events: none;"></div>
-
-        <!-- Inner Border Frame -->
-        <div style="
-          position: absolute; inset: 12px; border: 1px solid rgba(212, 175, 55, 0.5);
-          pointer-events: none;
-        "></div>
-
-        <!-- Corner Accents -->
-        <div
-          style="position: absolute; top: 12px; left: 12px; width: 15px; height: 15px; border-top: 2px solid var(--champagne); border-left: 2px solid var(--champagne);">
-        </div>
-        <div
-          style="position: absolute; top: 12px; right: 12px; width: 15px; height: 15px; border-top: 2px solid var(--champagne); border-right: 2px solid var(--champagne);">
-        </div>
-        <div
-          style="position: absolute; bottom: 12px; left: 12px; width: 15px; height: 15px; border-bottom: 2px solid var(--champagne); border-left: 2px solid var(--champagne);">
-        </div>
-        <div
-          style="position: absolute; bottom: 12px; right: 12px; width: 15px; height: 15px; border-bottom: 2px solid var(--champagne); border-right: 2px solid var(--champagne);">
-        </div>
-
-        <div
-          style="font-size: 2.2rem; color: var(--champagne); margin-bottom: 1rem; filter: drop-shadow(0 0 8px rgba(212,175,55,0.4));">
-          <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-            <polyline points="20 12 20 22 4 22 4 12"></polyline>
-            <rect x="2" y="7" width="20" height="5"></rect>
-            <line x1="12" y1="22" x2="12" y2="7"></line>
-            <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
-            <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
-          </svg>
-        </div>
-        <span
-          style="font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--champagne); font-weight: 500; text-shadow: 0 0 5px rgba(212,175,55,0.3);">Open
-          Gift Card</span>
-      </div>
-    </div>
-  </section>
-
-<section id="rsvp-cta">
-    <div class="rsvp-box reveal">
-      <p class="section-eyebrow">You Are Cordially Invited</p>
-      <h2 class="section-title" style="font-size: 2.5rem; margin-bottom: 1.5rem;">Kindly Reply</h2>
-      <p class="rsvp-text">
-        Please let us know if you'll be joining us to celebrate.
-      </p>
-      <a href="rsvp.html" class="btn-gold">RSVP Now</a>
-      <div style="margin-top: 1.5rem;">
-        <a href="rsvp.html"
-          style="font-size: 0.7rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border-bottom: 1px solid rgba(203, 169, 124, 0.3); padding-bottom: 2px; opacity: 0.8; transition: opacity 0.3s;">Already
-          RSVP'd? Edit Response</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── WEDDING GIFT ──────────────────────────────── -->
-  
-
-  <!-- Gift Modal (Secret Card) -->
-  <div id="gift-modal" class="modal-overlay" style="
-    position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-    z-index: 10000; display: none; align-items: center; justify-content: center; padding: 2rem;
-  ">
-    <div class="secret-card" style="
-      background: white; width: 100%; max-width: 400px; padding: 3rem 2rem;
-      border-radius: 16px; position: relative; text-align: center;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.3); transform: translateY(30px); opacity: 0;
-      transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid var(--gold);
-    ">
-      <button onclick="closeGiftModal()" style="
-        position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none;
-        font-size: 1.5rem; color: #888; cursor: pointer; padding: 0.5rem; line-height: 1;
-      ">&times;</button>
-
-      <p class="section-eyebrow" style="margin-bottom: 1.5rem;">For Your Kindness</p>
-      <h3
-        style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--black); margin-bottom: 2rem; font-style: italic;">
-        Banking Details</h3>
-
-            <div style="background: var(--cream); padding: 2rem; border-radius: 8px; text-align: left; margin-bottom: 1rem;">
-        <div style="margin-bottom: 1.5rem; cursor: pointer; transition: opacity 0.2s;" onclick="copySpecificInput('Rosanna Depaz / Andrew Haylock', 'copy-name-hint')" onmouseover="this.style.opacity=0.7" onmouseout="this.style.opacity=1">
-          <label
-            style="display: flex; justify-content: space-between; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 0.5rem;">Account
-            Name <span id="copy-name-hint" style="color: #ccc; font-weight: 600;">(Click/Tap to Copy)</span></label>
-          <div style="font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--black);">Rosanna Depaz / Andrew Haylock</div>
-        </div>
-        <div style="margin-bottom: 1.5rem;">
-          <label
-            style="display: block; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 0.5rem;">Bank</label>
-          <div style="font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--black);">Belize Bank</div>
-        </div>
-        <div style="cursor: pointer; transition: opacity 0.2s;" onclick="copySpecificInput('150816010140000', 'copy-num-hint')" onmouseover="this.style.opacity=0.7" onmouseout="this.style.opacity=1">
-          <label
-            style="display: flex; justify-content: space-between; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 0.5rem;">Account
-            Number <span id="copy-num-hint" style="color: #ccc; font-weight: 600;">(Click/Tap to Copy)</span></label>
-          <div
-            style="font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--black); letter-spacing: 0.05em;">
-            150816010140000</div>
-        </div>
-      </div>
-
-      <p
-        style="font-size: 0.85rem; color: #555; font-family: 'Cormorant Garamond', serif; font-style: italic; margin-top: 2rem;">
-        With gratitude, <br /> Andrew & Rosanna
-      </p>
-    </div>
-  </div>
-
-  <style>
-    .gift-card-trigger:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      border-color: var(--black);
-    }
-  
     
-    /* --- COLOR & TRIM OVERRIDES V2 --- */
+/* --- CARLOS-VARGS FLIP CLOCK STYLES --- */
+.countdown-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 20px !important;
+  flex-wrap: wrap;
+}
+
+.count-block {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.flip-group {
+  display: flex;
+  gap: 5px;
+  position: relative;
+  height: 120px;
+}
+
+.nums {
+  box-shadow: 0 3px 10px #111;
+  border-top: 1px solid #393939;
+  display: inline-block;
+  height: 100px;
+  perspective: 1000px;
+  position: relative;
+  width: 70px;
+}
+
+.nums:before {
+  border-bottom: 2px solid black;
+  content: "";
+  height: 1px;
+  left: 0;
+  position: absolute;
+  transform: translate3d(0, -1px, 0);
+  top: 50%;
+  width: 100%;
+  z-index: 1000;
+}
+
+.nums:after {
+  backface-visibility: hidden;
+  background: #2a2a2a;
+  border-bottom: 1px solid #444444;
+  border-top: 1px solid black;
+  border-radius: 0 0 5px 5px;
+  bottom: 0;
+  box-shadow: inset 0 15px 50px #202020;
+  color: #eeeeee;
+  content: "0";
+  display: block;
+  font-size: 80px;
+  height: calc(50% - 1px);
+  left: 0;
+  line-height: 0;
+  overflow: hidden;
+  position: absolute;
+  text-align: center;
+  text-shadow: 0 1px 2px #333;
+  width: 100%;
+  z-index: 0;
+}
+
+.num {
+  border-radius: 5px;
+  font-size: 80px;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  transform: rotateX(0deg);
+  transition: transform 0.6s ease-in, z-index 0.6s;
+  transform-style: preserve-3d;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.num:before,
+.num:after {
+  backface-visibility: hidden;
+  color: #eeeeee;
+  display: block;
+  height: 50%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  text-align: center;
+  text-shadow: 0 1px 2px #333;
+  width: 100%;
+}
+
+.num:before {
+  background: #181818;
+  border-radius: 5px 5px 0 0;
+  box-shadow: inset 0 15px 50px #111111;
+  content: attr(data-num);
+  line-height: 1.38;
+  top: 0;
+  z-index: 2;
+}
+
+.num:after {
+  background: #2a2a2a;
+  border-bottom: 1px solid #444444;
+  border-radius: 0 0 5px 5px;
+  box-shadow: inset 0 15px 50px #202020;
+  content: attr(data-num-next);
+  height: calc(50% - 1px);
+  line-height: 0;
+  top: 0;
+  transform: rotateX(180deg);
+}
+
+/* Control Flip classes */
+.num.flipping {
+    transform: rotateX(-180deg);
+    z-index: 50 !important;
+}
+
+.num.active {
+    z-index: 10;
+}
+
+.num.done {
+    transform: rotateX(-180deg);
+    z-index: 1;
+}
+
+.count-label {
+  margin-top: 15px;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
+@media (max-width: 600px) {
+    .nums { width: 50px; height: 80px; }
+    .num, .nums:after { font-size: 60px; }
+    .flip-group { height: 100px; }
+}
+
     .hero-flourish, .hero-divider, 
     .story-signature, .story-img-accent {
         display: none !important;
@@ -2140,6 +1840,49 @@
     const introCard = document.getElementById('intro-card');
     const bgMusic = document.getElementById('bg-music');
     const musicToggle = document.getElementById('music-toggle');
+    
+    
+    function updateDigit(groupEl, value) {
+        if (!groupEl) return;
+        const currentNum = groupEl.getAttribute('data-val') || '0';
+        if (currentNum === String(value)) return;
+        
+        groupEl.setAttribute('data-val', value);
+        const nums = groupEl.querySelectorAll('.num');
+        
+        // Reset old flipping ones
+        nums.forEach(n => {
+            n.classList.remove('flipping');
+            n.classList.remove('active');
+            n.classList.remove('done');
+        });
+        
+        // Set state for animation
+        const prev = parseInt(currentNum);
+        const activeNum = nums[prev];
+        if (activeNum) {
+            activeNum.classList.add('flipping');
+        }
+        
+        const nextNum = nums[value];
+        if (nextNum) {
+            nextNum.classList.add('active');
+        }
+    }
+
+    function updateFlipGroup(id, value, digits=2) {
+        const groupWrap = document.getElementById(id);
+        if (!groupWrap) return;
+        
+        const valStr = String(value).padStart(digits, '0');
+        const groups = ['hundred', 'ten', 'one'];
+        const startIdx = groups.length - digits;
+        
+        for (let i = 0; i < digits; i++) {
+            const el = groupWrap.querySelector('.nums-' + groups[startIdx + i]);
+            updateDigit(el, valStr[i]);
+        }
+    }
     
     // Gift Modal Logic
     function openGiftModal() {
