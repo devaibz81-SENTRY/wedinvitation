@@ -31,6 +31,16 @@
     .white-bar { background: linear-gradient(-45deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%); width: 10px; height: 45px; opacity: 0.3; rotate: 45deg; }
     @keyframes loading { 0% { width: 0; } 80% { width: 100%; } 100% { width: 100%; } }
     @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+  
+    /* --- COLOR & TRIM OVERRIDES --- */
+    .hero-flourish, .hero-divider, .hero-ampersand, 
+    .story-signature, .story-img-accent {
+        display: none !important;
+    }
+    .photo-frame::after {
+        border-color: transparent !important;
+    }
+
   </style>
 </head>
 <body>

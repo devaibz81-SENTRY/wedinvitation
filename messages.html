@@ -38,6 +38,16 @@
     .dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(212, 184, 150, 0.3); transition: all 0.3s; }
     .dot.active { background: #d4b896; transform: scale(1.2); }
+  
+    /* --- COLOR & TRIM OVERRIDES --- */
+    .hero-flourish, .hero-divider, .hero-ampersand, 
+    .story-signature, .story-img-accent {
+        display: none !important;
+    }
+    .photo-frame::after {
+        border-color: transparent !important;
+    }
+
   </style>
 </head>
 <body>

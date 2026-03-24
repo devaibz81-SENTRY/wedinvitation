@@ -16,15 +16,15 @@
     :root {
       --black: #000000;
       /* Black */
-      --ivory: #FAF5EF;
+      --ivory: #ffffff;
       /* Ivory */
-      --champagne: #F7E7CE;
+      --champagne: #ffffff;
       /* Champagne */
-      --green: #F7E7CE;
+      --green: #ffffff;
       /* Champagne */
-      --gold: #d4af37;
+      --gold: #000000;
       /* Gold */
-      --cream: #FAF5EF;
+      --cream: #ffffff;
       /* Background Tint */
     }
 
@@ -1306,6 +1306,16 @@
         display: none;
       }
     }
+  
+    /* --- COLOR & TRIM OVERRIDES --- */
+    .hero-flourish, .hero-divider, .hero-ampersand, 
+    .story-signature, .story-img-accent {
+        display: none !important;
+    }
+    .photo-frame::after {
+        border-color: transparent !important;
+    }
+
   </style>
 </head>
 
@@ -1699,6 +1709,16 @@
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
       border-color: var(--black);
     }
+  
+    /* --- COLOR & TRIM OVERRIDES --- */
+    .hero-flourish, .hero-divider, .hero-ampersand, 
+    .story-signature, .story-img-accent {
+        display: none !important;
+    }
+    .photo-frame::after {
+        border-color: transparent !important;
+    }
+
   </style>
 
   <!-- ─── FOOTER ────────────────────────────────────── -->

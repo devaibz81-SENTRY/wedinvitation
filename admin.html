@@ -12,9 +12,9 @@
   <style>
     :root {
       --black: #0d0d0d;
-      --ivory: #f5f0e8;
-      --champagne: #d4b896;
-      --gold: #c9a84c;
+      --ivory: #ffffff;
+      --champagne: #ffffff;
+      --gold: #000000;
       --sidebar: #111;
       --attending: #2ecc71;
       --declined: #e74c3c;
@@ -862,6 +862,16 @@
         width: 100%;
       }
     }
+  
+    /* --- COLOR & TRIM OVERRIDES --- */
+    .hero-flourish, .hero-divider, .hero-ampersand, 
+    .story-signature, .story-img-accent {
+        display: none !important;
+    }
+    .photo-frame::after {
+        border-color: transparent !important;
+    }
+
   </style>
 </head>
 

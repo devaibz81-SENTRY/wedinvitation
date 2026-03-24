@@ -12,10 +12,10 @@
   <style>
     :root {
       --black: #000000;
-      --ivory: #FAF5EF;
-      --champagne: #F7E7CE;
-      --gold: #d4af37;
-      --cream: #FAF5EF;
+      --ivory: #ffffff;
+      --champagne: #ffffff;
+      --gold: #000000;
+      --cream: #ffffff;
       --error: #c0392b;
       --success: #27ae60;
     }
@@ -822,6 +822,16 @@
         grid-template-columns: 1fr
       }
     }
+  
+    /* --- COLOR & TRIM OVERRIDES --- */
+    .hero-flourish, .hero-divider, .hero-ampersand, 
+    .story-signature, .story-img-accent {
+        display: none !important;
+    }
+    .photo-frame::after {
+        border-color: transparent !important;
+    }
+
   </style>
 </head>
 
