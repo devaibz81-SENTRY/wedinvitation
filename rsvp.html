@@ -17,8 +17,8 @@
       --gold: #c9a84c;
       --cream: #000000;
       --error: #c0392b;
-      --success: #27ae60;
-      --green: #27ae60;
+      --success: #ffffff;
+      --green: #ffffff;
     }
     
     * {
@@ -31,6 +31,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      color: #FFFFF0;
     }
 
     html, body {
@@ -132,11 +133,11 @@
       gap: 0.6rem;
       margin-top: 1.5rem;
       padding: 0.5rem 2rem;
-      border: 1px solid var(--green);
+      border: 1px solid #FFFFF0;
       font-size: 0.65rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--green);
+      color: #FFFFF0;
       white-space: nowrap;
       max-width: 100%;
     }
@@ -218,7 +219,7 @@
       font-size: 0.7rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: #555;
+      color: #FFFFF0;
       font-weight: 600;
       white-space: nowrap;
     }
@@ -228,11 +229,11 @@
     .form-group textarea {
       background: transparent;
       border: none;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 240, 0.3);
       padding: 0.8rem 0;
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.2rem;
-      color: var(--black);
+      color: #FFFFF0;
       font-weight: 500;
       outline: none;
       transition: border-color 0.3s;
@@ -242,7 +243,7 @@
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
-      border-bottom-color: var(--green);
+      border-bottom-color: var(--gold);
     }
 
     .form-group textarea {
@@ -261,12 +262,12 @@
       width: 100%;
       min-height: 120px;
       padding: 1rem;
-      border: 1px solid rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 240, 0.2);
       border-radius: 8px;
       font-family: 'Cormorant Garamond', serif;
       font-size: 1rem;
-      color: var(--black);
-      background: white;
+      color: #FFFFF0;
+      background: transparent;
       resize: vertical;
       transition: border-color 0.3s, box-shadow 0.3s;
     }
@@ -358,26 +359,31 @@
       justify-content: center;
       min-height: 118px;
       padding: 1.2rem 0.85rem;
-      border: 2px solid #ddd;
+      border: 1px solid rgba(255, 255, 240, 0.2);
       border-radius: 12px;
-      background: #ffffff;
-      color: #000000;
+      background: transparent;
+      color: #FFFFF0;
       cursor: pointer;
       text-align: center;
       transition: all 0.3s ease;
     }
 
     .attend-label:hover {
-      border-color: #000000;
-      background: #fafafa;
-      color: #000000;
+      border-color: var(--gold);
+      background: rgba(255, 255, 240, 0.05);
+      color: #FFFFF0;
     }
 
     .attend-option input:checked+.attend-label {
-      border-color: #000000;
-      background: #f9f9f9;
-      color: #000000;
+      border-color: var(--gold);
+      background: rgba(201, 168, 76, 0.1);
+      color: #FFFFF0;
+      box-shadow: 0 0 15px rgba(201, 168, 76, 0.1);
     }
+    .attend-text { color: inherit; }
+    .attend-sub { color: inherit; opacity: 0.7; }
+    .attend-icon svg rect { stroke: #FFFFF0; }
+    .attend-icon svg path { stroke: #FFFFF0; }
 
     .attend-icon {
       font-size: 1.5rem;
@@ -558,13 +564,13 @@
       font-family: 'Great Vibes', cursive;
       font-size: 3rem;
       margin-bottom: 1rem;
-      color: var(--green);
+      color: #FFFFF0;
     }
 
     #success-state p {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.1rem;
-      color: #666;
+      color: #FFFFF0;
       line-height: 1.9;
       max-width: 500px;
       margin: 0 auto 2rem;
@@ -600,7 +606,7 @@
 
     .proof-note {
       font-size: 0.72rem;
-      color: #777;
+      color: #FFFFF0;
       letter-spacing: 0.04em;
     }
 
@@ -1155,7 +1161,7 @@
         <button type="button" class="btn-submit" id="submit-btn" onclick="submitRSVP()">
           Send My RSVP
         </button>
-        <p class="submit-note">Your response will be shared with Andrew &amp; Rosanna.</p>
+        <p class="submit-note" style="color:#FFFFF0">Your response will be shared with Andrew &amp; Rosanna.</p>
       </div>
     </div>
 
