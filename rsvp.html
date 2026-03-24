@@ -32,14 +32,9 @@
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
-      overflow-x: clip;
-    }
-
-    body {
-      background: var(--cream);
-      color: var(--black);
+    html, body {
+      background: #000000;
+      color: #FFFFF0;
       font-family: 'Montserrat', sans-serif;
       font-weight: 500;
       font-size: 16px;
@@ -58,6 +53,7 @@
       text-transform: uppercase;
       flex-wrap: wrap;
       background: #000;
+      color: #FFFFF0;
     }
 
     nav a {
@@ -493,7 +489,10 @@
       text-align: center;
       padding: 5rem 2rem;
       animation: fadeInScale 0.8s ease-out;
+      color: #FFFFF0;
     }
+    #success-state h2 { color: #FFFFF0; margin-bottom: 1rem; }
+    #success-state p { color: #FFFFF0; }
 
     @keyframes fadeInScale {
       from {
@@ -1514,16 +1513,18 @@
       if (payload.song_request) {
         fetch(`${APPS_SCRIPT_URL}?sheet=Songs`, {
           method: 'POST',
+          mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: guestName, content: payload.song_request })
-        }).catch(() => {});
+        }).catch((e) => console.log('Songs log err:', e));
       }
       if (payload.message) {
         fetch(`${APPS_SCRIPT_URL}?sheet=Messages`, {
           method: 'POST',
+          mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: guestName, content: payload.message })
-        }).catch(() => {});
+        }).catch((e) => console.log('Messages log err:', e));
       }
       
       return parsed ?? {};
