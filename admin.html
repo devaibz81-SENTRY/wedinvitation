@@ -1107,7 +1107,7 @@ Rosanna and Andrew</textarea>
 
           <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Live Preview (First
             match)</div>
-          <div class="wa-preview" id="wa-preview">Loading preview...</div>
+          <textarea class="wa-preview wa-template" id="wa-preview" style="min-height:220px;">Loading preview...</textarea>
 
           <div class="wa-actions" style="margin-top:1.3rem;">
             <button class="btn-sm" onclick="copyWA()">Copy Message</button>
@@ -1554,11 +1554,12 @@ Rosanna and Andrew</textarea>
       return requirePhone ? list.filter(g => normalizeWaPhone(g.phone)) : list;
     }
 
-    function openGuestWhatsApp(g) {
+    function openGuestWhatsApp(g, customText = null) {
       if (!g) return false;
       const phone = normalizeWaPhone(g.phone);
       if (!phone) return false;
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(buildPersonalizedText(g))}`, '_blank');
+      const text = customText !== null ? customText : buildPersonalizedText(g);
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
       return true;
     }
 
@@ -1665,7 +1666,7 @@ Rosanna and Andrew</textarea>
       const tgt = document.getElementById('wa-group').value;
       const list = getGuestsForTarget(tgt, false);
       const sample = list[0];
-      document.getElementById('wa-preview').textContent = sample ? buildText(sample) : "No guests match this filter.";
+      document.getElementById('wa-preview').value = sample ? buildText(sample) : "No guests match this filter.";
       populateWaPeople();
       updateWaMetrics();
     }
@@ -1714,7 +1715,11 @@ Rosanna and Andrew</textarea>
       const statusMap = { attending: 'Attending', declined: 'Declined', later: 'Ask Later', invited: 'Invited' };
       const status = statusMap[person.attendance || 'invited'] || 'Invited';
       const due = person.deadline ? new Date(person.deadline).toLocaleDateString() : 'Not set';
-      box.textContent = `${person.first_name} ${person.last_name || ''} | ${person.guest_type || 'single'} | ${status} | RSVP deadline: ${due}`;
+      box.textContent = `${person.first_name  const previewBox = document.getElementById('wa-preview');
+      if(previewBox && previewBox.tagName === 'TEXTAREA') {
+          previewBox.value = buildPersonalizedText(person);
+      }
+    } ${person.last_name || ''} | ${person.guest_type || 'single'} | ${status} | RSVP deadline: ${due}`;
     }
 
     function updateWaMetrics() {
@@ -1734,6 +1739,14 @@ Rosanna and Andrew</textarea>
       if (!sel || !sel.value) { alert('Select a guest first.'); return; }
       const person = findGuestByKey(sel.value);
       if (!person) { alert('Could not find selected guest.'); return; }
+      
+      const customText = document.getElementById('wa-preview').value;
+      if (!openGuestWhatsApp(person, customText)) {
+        alert('No valid WhatsApp number for selected guest.');
+      }
+    }
+      const person = findGuestByKey(sel.value);
+      if (!person) { alert('Could not find selected guest.'); return; }
       if (!openGuestWhatsApp(person)) {
         alert('No valid WhatsApp number for selected guest.');
       }
@@ -1747,7 +1760,7 @@ Rosanna and Andrew</textarea>
     }
 
     function copyWA() {
-      navigator.clipboard.writeText(document.getElementById('wa-preview').textContent);
+      navigator.clipboard.writeText(document.getElementById('wa-preview').value);
       alert('Copied to clipboard!');
     }
 
