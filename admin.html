@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,9 +12,9 @@
   <style>
     :root {
       --black: #0d0d0d;
-      --ivory: #ffffff;
-      --champagne: #ffffff;
-      --gold: #000000;
+      --ivory: #f5f0e8;
+      --champagne: #d4b896;
+      --gold: #c9a84c;
       --sidebar: #111;
       --attending: #2ecc71;
       --declined: #e74c3c;
@@ -1715,11 +1715,13 @@ Rosanna and Andrew</textarea>
       const statusMap = { attending: 'Attending', declined: 'Declined', later: 'Ask Later', invited: 'Invited' };
       const status = statusMap[person.attendance || 'invited'] || 'Invited';
       const due = person.deadline ? new Date(person.deadline).toLocaleDateString() : 'Not set';
-      box.textContent = `${person.first_name  const previewBox = document.getElementById('wa-preview');
+      
+      box.textContent = `${person.first_name} ${person.last_name || ''} | ${person.guest_type || 'single'} | ${status} | RSVP deadline: ${due}`;
+      
+      const previewBox = document.getElementById('wa-preview');
       if(previewBox && previewBox.tagName === 'TEXTAREA') {
           previewBox.value = buildPersonalizedText(person);
       }
-    } ${person.last_name || ''} | ${person.guest_type || 'single'} | ${status} | RSVP deadline: ${due}`;
     }
 
     function updateWaMetrics() {
@@ -1740,14 +1742,10 @@ Rosanna and Andrew</textarea>
       const person = findGuestByKey(sel.value);
       if (!person) { alert('Could not find selected guest.'); return; }
       
-      const customText = document.getElementById('wa-preview').value;
+      const previewBox = document.getElementById('wa-preview');
+      const customText = previewBox ? previewBox.value : '';
+      
       if (!openGuestWhatsApp(person, customText)) {
-        alert('No valid WhatsApp number for selected guest.');
-      }
-    }
-      const person = findGuestByKey(sel.value);
-      if (!person) { alert('Could not find selected guest.'); return; }
-      if (!openGuestWhatsApp(person)) {
         alert('No valid WhatsApp number for selected guest.');
       }
     }
