@@ -65,13 +65,51 @@
       color: #888;
     }
   
-    /* --- COLOR & TRIM OVERRIDES --- */
-    .hero-flourish, .hero-divider, .hero-ampersand, 
+    
+    /* --- COLOR & TRIM OVERRIDES V2 --- */
+    .hero-flourish, .hero-divider, 
     .story-signature, .story-img-accent {
         display: none !important;
     }
-    .photo-frame::after {
-        border-color: transparent !important;
+    
+    /* Restore Ampersand */
+    .hero-ampersand {
+        display: inline-block !important;
+        color: #000000 !important;
+    }
+    
+    /* Soft shadows on headings */
+    h1, h2, h3, .section-title, .hero-names, .gift-title {
+        text-shadow: 0 4px 15px rgba(0,0,0,0.08) !important;
+    }
+    
+    /* Black Nav Header & Buttons */
+    nav {
+        background: #000000 !important;
+        border-bottom: none !important;
+    }
+    nav a {
+        background: #000000 !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255,255,255,0.3) !important;
+    }
+    nav a:hover {
+        background: rgba(255,255,255,0.15) !important;
+        border-color: #ffffff !important;
+    }
+    
+    /* White Footer Text with Dark Background */
+    footer {
+        background: #000000 !important;
+        color: #ffffff !important;
+    }
+    footer .footer-names, footer p {
+        color: #ffffff !important;
+    }
+    /* Larger Date in Footer */
+    footer p:nth-of-type(1) {
+        font-size: clamp(2rem, 5vw, 3.2rem) !important;
+        margin-top: 1rem;
     }
 
   </style>
