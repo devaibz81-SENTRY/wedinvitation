@@ -2004,6 +2004,41 @@
       document.body.style.overflow = '';
     }
 
+    async function copySpecificInput(text, hintId) {
+      const hint = document.getElementById(hintId);
+      const original = hint.innerText;
+      
+      const success = await attemptCopy(text);
+      if (success) {
+        hint.innerText = '(COPIED!)';
+        hint.style.color = '#27ae60';
+        setTimeout(() => {
+          hint.innerText = original;
+          hint.style.color = '#ccc';
+        }, 2000);
+      }
+    }
+
+    async function attemptCopy(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (err) {
+        // Fallback for older browsers or non-secure contexts
+        try {
+          const textArea = document.createElement("textarea");
+          textArea.value = text;
+          document.body.appendChild(textArea);
+          textArea.select();
+          const successful = document.execCommand('copy');
+          document.body.removeChild(textArea);
+          return successful;
+        } catch (err2) {
+          return false;
+        }
+      }
+    }
+
     window.onclick = function (event) {
       if (event.target == document.getElementById('gift-modal')) {
         closeGiftModal();
