@@ -1181,7 +1181,7 @@
         </svg>
       </div>
       <h2>You're All Set!</h2>
-      <p id="success-text">Your RSVP has been received. We are so looking forward to celebrating with you at Gully Grill
+      <p id="success-text">Your RSVP has been received. We are so looking forward to celebrating with you at The Gully Grill
         in San Ignacio!</p>
       <div class="proof-actions">
         <button type="button" class="btn-proof" onclick="downloadProofCard()">Download Invite Card (JPEG)</button>
@@ -1222,7 +1222,7 @@
 
   <footer
     style="background:var(--black);color:var(--ivory);text-align:center;padding:2rem;font-size:0.6rem;letter-spacing:0.2em;opacity:0.8;">
-    Andrew &amp; Rosanna - July 4, 2026 - Gully Grill, San Ignacio
+    Andrew &amp; Rosanna - July 4, 2026 - The Gully Grill, San Ignacio
   </footer>
 
   <script>
@@ -1257,7 +1257,7 @@
     const DEADLINE = getParam('due') || '2026-06-10';
     const PERS_NOTE = getParam('msg') || '';
     const EVENT_DATE_TEXT = 'Saturday, July 4, 2026';
-    const EVENT_LOCATION_TEXT = 'Gully Grill, San Ignacio';
+    const EVENT_LOCATION_TEXT = 'The Gully Grill, San Ignacio';
     const COUPLE_NAMES = 'Andrew & Rosanna';
     let lastSubmittedCardData = null;
 
@@ -1492,7 +1492,7 @@
         document.getElementById('rsvp-form-wrap').style.display = 'none';
         document.getElementById('success-state').style.display = 'block';
         const msgs = {
-          attending: `We are beyond excited to celebrate with you, ${firstName}! See you at Gully Grill!`,
+          attending: `We are beyond excited to celebrate with you, ${firstName}! See you at The Gully Grill!`,
           declined: `We'll miss you dearly, ${firstName}. Thank you for letting us know.`
         };
         document.getElementById('success-text').textContent = msgs[attendance] || msgs.attending;
@@ -1752,7 +1752,7 @@
       // Location on its own line, bigger font
       ctx.fillStyle = '#d4af37';
       ctx.font = 'italic 28px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('The Gully Grill', leftX, 284);
+      ctx.fillText('The The Gully Grill', leftX, 284);
       ctx.fillStyle = '#000000';
       ctx.font = 'italic 22px "Cormorant Garamond", Georgia, serif';
       ctx.fillText('San Ignacio, Belize', leftX, 314);
