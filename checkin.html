@@ -106,18 +106,21 @@
 
     async function fetchGuests() {
       try {
+        console.log('Fetching guests from:', CONVEX_URL);
         const res = await fetch(`${CONVEX_URL}/api/guests`);
+        console.log('Response status:', res.status);
         if (!res.ok) throw new Error('Failed to fetch guests');
         const data = await res.json();
+        console.log('Raw data:', data);
         let guests = Array.isArray(data) ? data : (data.guests || []);
         console.log('Guests loaded:', guests.length);
-        console.log('Sample:', guests[0]);
+        if (guests.length > 0) console.log('First guest:', JSON.stringify(guests[0]));
         allGuests = guests;
         updateTotalCount();
         renderGuestList();
         renderGuestQRs();
       } catch (err) {
-        document.getElementById('guest-list').innerHTML = '<div class="loading">Error loading guests.</div>';
+        document.getElementById('guest-list').innerHTML = '<div class="loading">Error: ' + err.message + '</div>';
         console.error('Fetch error:', err);
       }
     }
@@ -139,7 +142,11 @@
     }
 
     function updateTotalCount() {
-      document.getElementById('total-count').textContent = allGuests.length;
+      const el = document.getElementById('total-count');
+      if (el) {
+        el.textContent = allGuests.length;
+        console.log('Total guests:', allGuests.length);
+      }
     }
 
     function updateCheckedCount() {
@@ -148,6 +155,11 @@
 
     function renderGuestList() {
       const list = document.getElementById('guest-list');
+      if (!list) return;
+      if (allGuests.length === 0) {
+        list.innerHTML = '<div class="loading">No guests found. Check console for errors.</div>';
+        return;
+      }
       let filtered = allGuests;
       if (currentFilter === 'checked') {
         filtered = allGuests.filter(g => checkedInGuests.has(String(g._id || g.id)));
