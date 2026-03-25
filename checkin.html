@@ -554,26 +554,33 @@
 
     // Check in guest to Google Sheets
     async function checkInGuest(guestId, guestName, partyCount) {
+      console.log('Checking in:', guestId, guestName, partyCount);
       try {
+        const payload = {
+          action: 'checkin',
+          guestId: String(guestId),
+          guestName: String(guestName),
+          partyCount: Number(partyCount) || 1
+        };
+        console.log('Sending to Sheets:', payload);
+        
         const res = await fetch(SHEETS_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'checkin',
-            guestId: guestId,
-            guestName: guestName,
-            partyCount: partyCount
-          })
+          body: JSON.stringify(payload)
         });
         
-        checkedInGuests.add(guestId);
+        console.log('Sheets response:', res);
+        checkedInGuests.add(String(guestId));
         updateCheckedCount();
         renderGuestList();
+        renderGuestQRs();
         
         return true;
       } catch (err) {
         console.error('Check-in error:', err);
+        alert('Check-in failed: ' + err);
         return false;
       }
     }
@@ -582,26 +589,37 @@
     function showScannedGuest(guestId, guestName) {
       const decodedName = guestName ? decodeURIComponent(guestName).trim() : '';
       console.log('QR scanned - looking for:', decodedName);
+      console.log('All guests:', allGuests.map(g => ({name: `${g.first_name} ${g.last_name}`, first: g.first_name, last: g.last_name})));
       
-      // Find guest by name (case-insensitive)
+      // Normalize name for matching - remove extra spaces, lowercase
+      const normalize = (s) => (s || '').replace(/\s+/g, ' ').trim().toLowerCase();
+      const searchName = normalize(decodedName);
+      
+      // Find guest by name
       let guest = null;
       
-      // Try exact match first
-      if (decodedName) {
-        const searchName = decodedName.toLowerCase();
+      if (searchName) {
+        // Try first name + last name match
         guest = allGuests.find(g => {
-          const fullName = `${(g.first_name || '')} ${(g.last_name || '')}`.toLowerCase().trim();
+          const fullName = normalize(`${g.first_name} ${g.last_name}`);
           return fullName === searchName;
         });
-      }
-      
-      // Try partial match
-      if (!guest && decodedName) {
-        const searchName = decodedName.toLowerCase();
-        guest = allGuests.find(g => {
-          const fullName = `${(g.first_name || '')} ${(g.last_name || '')}`.toLowerCase().trim();
-          return fullName.includes(searchName) || searchName.includes(fullName);
-        });
+        
+        // Try just first name match
+        if (!guest) {
+          guest = allGuests.find(g => {
+            const first = normalize(g.first_name);
+            return first === searchName || searchName.includes(first) || first.includes(searchName);
+          });
+        }
+        
+        // Try last name match
+        if (!guest) {
+          guest = allGuests.find(g => {
+            const last = normalize(g.last_name);
+            return last === searchName || searchName.includes(last);
+          });
+        }
       }
       
       if (!guest) {
@@ -609,7 +627,7 @@
         document.getElementById('scanned-result').innerHTML = `
           <div class="scanned-guest" style="background:#333;color:#fff;">
             <h3>Guest Not Found</h3>
-            <p>QR name: ${decodedName || 'Unknown'}</p>
+            <p>QR name: "${decodedName || 'Unknown'}"</p>
             <p style="font-size:0.8rem;opacity:0.7;">Try searching manually below</p>
             <button class="checkin-btn" onclick="document.getElementById('scanned-result').innerHTML=''">Close</button>
           </div>
