@@ -26,19 +26,24 @@
       allGuests.forEach(g => {
         const id = g._id || g.id || g.guestId || g._key || '';
         const fullName = `${g.first_name || ''}${g.spouse_name ? ' & ' + g.spouse_name : ''} ${g.last_name || ''}`.trim();
+        const isChecked = checkedInGuests.has(String(id));
+        
         const tile = document.createElement('div');
-        tile.className = 'guest-qr-tile';
+        tile.className = 'guest-qr-tile' + (isChecked ? ' checked-in' : '');
+        tile.style.cssText = isChecked ? 'background:#ddd;opacity:0.7;' : '';
         tile.innerHTML = `
-          <div class="guest-qr-name">${fullName || 'Guest'}</div>
-          <canvas id="qr-${id}" width="180" height="180"></canvas>
+          <div class="guest-qr-name" style="${isChecked ? 'text-decoration:line-through;' : ''}">${fullName || 'Guest'}</div>
+          ${isChecked ? '<div style="color:#2e8b57;font-size:0.8rem;font-weight:bold;">✓ CHECKED IN</div>' : '<canvas id="qr-' + id + '" width="160" height="160"></canvas>'}
         `;
+        tile.onclick = () => quickCheckIn(g);
         grid.appendChild(tile);
-        if (id) {
+        
+        if (id && !isChecked) {
           const checkinUrl = `https://wedinvitation-ruddy.vercel.app/checkin.html?id=${encodeURIComponent(id)}&name=${encodeURIComponent(fullName)}`;
           const canvas = document.getElementById('qr-' + id);
           if (canvas && canvas.getContext) {
             const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#FAF5EF';
+            ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             try {
               const qr = qrcode(0, 'M');
@@ -60,6 +65,44 @@
           }
         }
       });
+    }
+    
+    // Quick check-in from QR tile
+    async function quickCheckIn(guest) {
+      const id = String(guest._id || guest.id || guest.guestId || guest._key || '');
+      const fullName = `${guest.first_name || ''}${guest.spouse_name ? ' & ' + guest.spouse_name : ''} ${guest.last_name || ''}`.trim();
+      const party = guest.max_party || 1;
+      
+      // Show status
+      document.getElementById('scanned-result').innerHTML = `
+        <div class="scanned-guest">
+          <h3>${fullName}</h3>
+          <p>Checking in ${party} guest${party > 1 ? 's' : ''}...</p>
+        </div>
+      `;
+      
+      // Check in to Sheets
+      const success = await checkInGuest(id, fullName, party);
+      
+      if (success) {
+        document.getElementById('scanned-result').innerHTML = `
+          <div class="scanned-guest">
+            <h3>${fullName}</h3>
+            <div style="color:#2e8b57;font-size:1.2rem;font-weight:bold;padding:0.5rem;">✓ Checked In!</div>
+            <p>${party} guest${party > 1 ? 's' : ''}</p>
+          </div>
+        `;
+        // Re-render QR grid to show checked state
+        renderGuestQRs();
+      } else {
+        document.getElementById('scanned-result').innerHTML = `
+          <div class="scanned-guest" style="background:#c0392b;color:#fff;">
+            <h3>Error</h3>
+            <p>Could not check in. Try again.</p>
+            <button class="checkin-btn" onclick="quickCheckIn(${JSON.stringify(guest).replace(/"/g, '&quot;')})">Retry</button>
+          </div>
+        `;
+      }
     }
 
     * {
@@ -535,55 +578,63 @@
       }
     }
 
-    // Show scanned guest info - uses name from QR
+    // Show scanned guest info - simple name-based lookup
     function showScannedGuest(guestId, guestName) {
-      const decodedName = guestName ? decodeURIComponent(guestName).toLowerCase().trim() : '';
-      console.log('Looking for guest:', decodedName);
-      console.log('Available guests:', allGuests.map(g => `${g.first_name} ${g.last_name}`));
+      const decodedName = guestName ? decodeURIComponent(guestName).trim() : '';
+      console.log('QR scanned - looking for:', decodedName);
       
-      // Find guest by name - simple lowercase comparison
+      // Find guest by name (case-insensitive)
       let guest = null;
+      
+      // Try exact match first
       if (decodedName) {
+        const searchName = decodedName.toLowerCase();
         guest = allGuests.find(g => {
-          const fullName = `${(g.first_name || '').toLowerCase()} ${(g.last_name || '').toLowerCase()}`.trim();
-          return fullName === decodedName;
+          const fullName = `${(g.first_name || '')} ${(g.last_name || '')}`.toLowerCase().trim();
+          return fullName === searchName;
+        });
+      }
+      
+      // Try partial match
+      if (!guest && decodedName) {
+        const searchName = decodedName.toLowerCase();
+        guest = allGuests.find(g => {
+          const fullName = `${(g.first_name || '')} ${(g.last_name || '')}`.toLowerCase().trim();
+          return fullName.includes(searchName) || searchName.includes(fullName);
         });
       }
       
       if (!guest) {
-        // Try partial match
-        guest = allGuests.find(g => {
-          const fullName = `${(g.first_name || '').toLowerCase()} ${(g.last_name || '').toLowerCase()}`.trim();
-          return fullName.includes(decodedName) || decodedName.includes(fullName);
-        });
-      }
-      
-      if (!guest) {
+        console.log('Guest not found. Available:', allGuests.map(g => `${g.first_name} ${g.last_name}`));
         document.getElementById('scanned-result').innerHTML = `
-          <div class="scanned-guest">
+          <div class="scanned-guest" style="background:#333;color:#fff;">
             <h3>Guest Not Found</h3>
-            <p>Looking for: ${decodedName}</p>
+            <p>QR name: ${decodedName || 'Unknown'}</p>
+            <p style="font-size:0.8rem;opacity:0.7;">Try searching manually below</p>
             <button class="checkin-btn" onclick="document.getElementById('scanned-result').innerHTML=''">Close</button>
           </div>
         `;
         return;
       }
 
-      console.log('Found guest:', guest.first_name, guest.last_name);
+      console.log('Found:', guest.first_name, guest.last_name);
       const fullName = `${guest.first_name || ''}${guest.spouse_name ? ' & ' + guest.spouse_name : ''} ${guest.last_name || ''}`.trim();
       const party = guest.max_party || 1;
       const guestUniqueId = String(guest._id || guest.id || guest.guestId || guest._key);
       const isChecked = checkedInGuests.has(guestUniqueId);
 
+      // Auto check-in on scan!
+      if (!isChecked) {
+        handleCheckIn(guestUniqueId, fullName, party);
+      }
+      
       document.getElementById('scanned-result').innerHTML = `
         <div class="scanned-guest">
           <h3>${fullName}</h3>
           <p>${party} guest${party > 1 ? 's' : ''}</p>
-          <button class="checkin-btn ${isChecked ? 'checked' : ''}" 
-                  onclick="handleCheckIn('${guestUniqueId}', '${fullName}', ${party})"
-                  ${isChecked ? 'disabled' : ''}>
-            ${isChecked ? '✓ Already Checked In' : 'Check In'}
-          </button>
+          <div style="color:#2e8b57;font-weight:bold;padding:0.5rem;">
+            ${isChecked ? '✓ Already Checked In!' : '✓ Checked In!'}
+          </div>
         </div>
       `;
     }
