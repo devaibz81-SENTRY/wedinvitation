@@ -31,7 +31,8 @@
     .filter-tab { background: transparent; border: 1px solid #fff; color: #fff; padding: 0.5rem 1rem; font-size: 0.75rem; border-radius: 20px; cursor: pointer; transition: all 0.3s; }
     .filter-tab.active { background: #fff; color: #000; }
     .guest-list { max-height: 50vh; overflow-y: auto; }
-    .guest-item { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; background: #111; border-radius: 8px; margin-bottom: 0.5rem; border-left: 3px solid #fff; }
+    .guest-item { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; background: #111; border-radius: 8px; margin-bottom: 0.5rem; border-left: 3px solid #fff; cursor: pointer; }
+    .guest-item:hover { background: #222; }
     .guest-item.checked-in { border-left-color: #888; background: #222; }
     .guest-item.checked-in .guest-status { color: #888; }
     .guest-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #fff; }
@@ -53,13 +54,73 @@
     .guest-qr-name { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; margin-top: 6px; color: #000; font-weight: 600; }
     .guest-qr-tile.checked-in { background: #222; opacity: 0.5; }
     .guest-qr-tile.checked-in .guest-qr-name { color: #888; text-decoration: line-through; }
+    
+    /* Login overlay */
+    #login-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    #login-overlay.hidden { display: none; }
+    .login-box {
+      background: #111;
+      border: 1px solid #333;
+      padding: 3rem;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    .login-box h2 { font-family: 'Great Vibes', cursive; color: #fff; font-size: 2rem; margin-bottom: 1rem; }
+    .login-box p { color: #888; margin-bottom: 1.5rem; font-size: 0.9rem; }
+    .login-box input {
+      width: 100%;
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .login-box button {
+      width: 100%;
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .login-box button:hover { background: #ddd; }
+    #login-err { color: #ff6b6b; margin-top: 1rem; display: none; font-size: 0.85rem; }
+    .logout-btn { background: #333; color: #fff; border: 1px solid #555; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; margin-top: 1rem; }
   </style>
 </head>
 <body>
+  <!-- Login Overlay -->
+  <div id="login-overlay">
+    <div class="login-box">
+      <h2>Andrew & Rosanna</h2>
+      <p>Enter admin password to access check-in</p>
+      <input type="password" id="admin-pass" placeholder="Password" onkeypress="if(event.key==='Enter')doLogin()" />
+      <button onclick="doLogin()">Enter</button>
+      <div id="login-err">Invalid password</div>
+    </div>
+  </div>
+
   <header>
     <h1>Andrew & Rosanna</h1>
     <p>Wedding Check-In</p>
     <div class="counter"><span id="checked-count">0</span> / <span id="total-count">0</span> Checked In</div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
   </header>
 
   <div class="scanner-section">
@@ -96,31 +157,82 @@
   </div>
 
   <script>
-    const CONVEX_URL = 'https://curious-wildcat-113.convex.site';
+    const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
     const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbw33IBpUacNLGAcqc4EGp5L2dlxaMkWSbEFvSTdFTDq6p9iO5oZCIWl6aS-BB6EIW-JUA/exec';
+    const SESSION_KEY = 'ra_checkin_token';
 
+    let adminToken = localStorage.getItem(SESSION_KEY) || '';
     let allGuests = [];
     let checkedInGuests = new Set();
     let html5QrCode = null;
     let currentFilter = 'all';
 
+    function authHeaders() {
+      return { Authorization: `Bearer ${adminToken}` };
+    }
+
+    async function doLogin() {
+      const pass = document.getElementById('admin-pass').value;
+      try {
+        const res = await fetch(`${CONVEX_HTTP_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pass })
+        });
+        if (!res.ok) throw new Error('Invalid password');
+        const data = await res.json();
+        adminToken = data.token;
+        localStorage.setItem(SESSION_KEY, adminToken);
+        document.getElementById('login-overlay').classList.add('hidden');
+        document.getElementById('login-err').style.display = 'none';
+        fetchGuests();
+        fetchCheckedIn();
+      } catch (err) {
+        document.getElementById('login-err').style.display = 'block';
+      }
+    }
+
+    async function logout() {
+      if (adminToken) {
+        await fetch(`${CONVEX_HTTP_URL}/api/auth/logout`, {
+          method: 'POST',
+          headers: authHeaders()
+        }).catch(() => {});
+      }
+      adminToken = '';
+      localStorage.removeItem(SESSION_KEY);
+      document.getElementById('login-overlay').classList.remove('hidden');
+      document.getElementById('admin-pass').value = '';
+    }
+
+    async function hasValidSession() {
+      if (!adminToken) return false;
+      try {
+        const res = await fetch(`${CONVEX_HTTP_URL}/api/auth/me`, {
+          headers: authHeaders()
+        });
+        return res.ok;
+      } catch {
+        return false;
+      }
+    }
+
     async function fetchGuests() {
       try {
-        console.log('Fetching guests from:', CONVEX_URL);
-        const res = await fetch(`${CONVEX_URL}/api/guests`);
-        console.log('Response status:', res.status);
+        const res = await fetch(`${CONVEX_HTTP_URL}/api/guests`, {
+          headers: authHeaders()
+        });
+        if (res.status === 401) {
+          logout();
+          return;
+        }
         if (!res.ok) throw new Error('Failed to fetch guests');
-        const data = await res.json();
-        console.log('Raw data:', data);
-        let guests = Array.isArray(data) ? data : (data.guests || []);
-        console.log('Guests loaded:', guests.length);
-        if (guests.length > 0) console.log('First guest:', JSON.stringify(guests[0]));
-        allGuests = guests;
+        allGuests = await res.json();
         updateTotalCount();
         renderGuestList();
         renderGuestQRs();
       } catch (err) {
-        document.getElementById('guest-list').innerHTML = '<div class="loading">Error: ' + err.message + '</div>';
+        document.getElementById('guest-list').innerHTML = '<div class="loading">Error loading guests.</div>';
         console.error('Fetch error:', err);
       }
     }
@@ -143,10 +255,7 @@
 
     function updateTotalCount() {
       const el = document.getElementById('total-count');
-      if (el) {
-        el.textContent = allGuests.length;
-        console.log('Total guests:', allGuests.length);
-      }
+      if (el) el.textContent = allGuests.length;
     }
 
     function updateCheckedCount() {
@@ -157,7 +266,7 @@
       const list = document.getElementById('guest-list');
       if (!list) return;
       if (allGuests.length === 0) {
-        list.innerHTML = '<div class="loading">No guests found. Check console for errors.</div>';
+        list.innerHTML = '<div class="loading">No guests found</div>';
         return;
       }
       let filtered = allGuests;
@@ -191,10 +300,7 @@
     }
 
     async function checkInGuest(guestId, guestName, partyCount) {
-      console.log('Checking in to Sheets:', guestId, guestName);
-      const timestamp = Date.now();
       try {
-        // no-cors mode - request fires but we can't read response
         fetch(SHEETS_URL, {
           method: 'POST',
           mode: 'no-cors',
@@ -203,12 +309,10 @@
             action: 'checkin',
             guestId: String(guestId),
             guestName: String(guestName),
-            partyCount: Number(partyCount) || 1,
-            timestamp: timestamp
+            partyCount: Number(partyCount) || 1
           })
         }).catch(e => console.log('Sheets error:', e));
         
-        // Update local state immediately (assume success with no-cors)
         checkedInGuests.add(String(guestId));
         updateCheckedCount();
         renderGuestList();
@@ -222,8 +326,6 @@
 
     function showScannedGuest(guestId, guestName) {
       const decodedName = guestName ? decodeURIComponent(guestName).trim() : '';
-      console.log('QR scanned - looking for:', decodedName);
-      
       const normalize = (s) => (s || '').replace(/\s+/g, ' ').trim().toLowerCase();
       const searchName = normalize(decodedName);
       
@@ -236,20 +338,17 @@
       }
       
       if (!guest) {
-        console.log('Guest not found. QR name:', decodedName);
-        console.log('Available guests:', allGuests.map(g => `${g.first_name} ${g.last_name}`));
         document.getElementById('scanned-result').innerHTML = `
           <div class="scanned-guest">
             <h3>Guest Not Found</h3>
             <p>QR says: "${decodedName}"</p>
-            <p style="font-size:0.8rem;opacity:0.7;margin-top:0.5rem;">Try tapping their name in the list below</p>
+            <p style="font-size:0.8rem;opacity:0.7;margin-top:0.5rem;">Try tapping their name in the list</p>
             <button class="checkin-btn" onclick="document.getElementById('scanned-result').innerHTML=''">Close</button>
           </div>
         `;
         return;
       }
 
-      console.log('Found:', guest.first_name, guest.last_name);
       const fullName = `${guest.first_name || ''}${guest.spouse_name ? ' & ' + guest.spouse_name : ''} ${guest.last_name || ''}`.trim();
       const party = guest.max_party || 1;
       const guestUniqueId = String(guest._id || guest.id);
@@ -292,11 +391,10 @@
         const name = `${g.first_name || ''} ${g.last_name || ''}`.toLowerCase();
         return name.includes(query);
       });
-      const resultDiv = document.getElementById('manual-result');
       if (found) {
         quickCheckIn(found);
       } else {
-        resultDiv.innerHTML = `<div class="scanned-guest"><h3>Guest Not Found</h3><p>No match for "${query}"</p></div>`;
+        document.getElementById('manual-result').innerHTML = `<div class="scanned-guest"><h3>Guest Not Found</h3><p>No match for "${query}"</p></div>`;
       }
     }
 
@@ -356,15 +454,11 @@
 
     async function initScanner() {
       try {
-        if (typeof Html5Qrcode === 'undefined') {
-          console.log('html5-qrcode not loaded yet');
-          return;
-        }
+        if (typeof Html5Qrcode === 'undefined') return;
         html5QrCode = new Html5Qrcode("qr-reader");
         const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1 };
         await html5QrCode.start({ facingMode: "environment" }, config,
           (decodedText) => {
-            console.log('QR Scanned:', decodedText);
             try {
               const url = new URL(decodedText);
               showScannedGuest(url.searchParams.get('id') || '', url.searchParams.get('name') || '');
@@ -375,31 +469,32 @@
           () => {}
         );
       } catch (err) {
-        console.log('Scanner error:', err);
         const readerEl = document.getElementById('qr-reader');
-        if (readerEl) readerEl.innerHTML = `<div style="text-align:center;padding:2rem;color:#666;"><p>QR Scanner unavailable</p><p style="font-size:0.8rem">Use the guest list below</p></div>`;
+        if (readerEl) readerEl.innerHTML = `<div style="text-align:center;padding:2rem;color:#666;"><p>QR Scanner unavailable</p></div>`;
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      console.log('Page loaded, fetching guests...');
-      fetchGuests();
-      fetchCheckedIn();
-      initScanner();
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('id') || params.get('name')) {
-        setTimeout(() => showScannedGuest(params.get('id') || '', params.get('name') || ''), 1500);
-      }
-      setInterval(fetchCheckedIn, 30000);
-    });
-    
-    // Fallback: try loading guests after a short delay
-    setTimeout(() => {
-      if (allGuests.length === 0) {
-        console.log('Fallback: re-fetching guests');
-        fetchGuests();
-      }
-    }, 3000);
+    // Check session on load
+    if (adminToken) {
+      hasValidSession().then(valid => {
+        if (valid) {
+          document.getElementById('login-overlay').classList.add('hidden');
+          fetchGuests();
+          fetchCheckedIn();
+          initScanner();
+        } else {
+          adminToken = '';
+          localStorage.removeItem(SESSION_KEY);
+        }
+      });
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('id') || params.get('name')) {
+      setTimeout(() => showScannedGuest(params.get('id') || '', params.get('name') || ''), 2000);
+    }
+
+    setInterval(fetchCheckedIn, 30000);
   </script>
 </body>
 </html>

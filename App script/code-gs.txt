@@ -1,12 +1,14 @@
 /**
  * Wedding Songs & Messages - Google Apps Script
  * Handles: 
- *   GET ?sheet=Songs|Messages|CheckIns - Returns JSON data
+ *   GET ?sheet=Songs|Messages|CheckIns|GuestList - Returns JSON data
  *   GET ?action=getCheckIns - Returns check-ins list
+ *   GET ?action=getGuestList - Returns guest list for check-in
  *   GET ?action=test - Test if script is working
  *   GET ?page=songs - Returns HTML song list page
  *   GET ?page=messages - Returns HTML interactive messages page
  *   POST ?action=checkin - Records guest check-in
+ *   POST ?action=addGuest - Adds guest to guest list
  *   POST ?sheet=Songs|Messages - Adds entry to sheet
  */
 
@@ -31,6 +33,12 @@ function doGet(e) {
     if (params.action === 'getCheckIns') {
       const checkins = getSheetData('CheckIns');
       return jsonOut({ checkins: checkins });
+    }
+    
+    // Get guest list for check-in
+    if (params.action === 'getGuestList') {
+      const guests = getGuestListData();
+      return jsonOut({ guests: guests });
     }
     
     // Test endpoint
@@ -78,6 +86,30 @@ function doPost(e) {
       ]);
       
       return jsonOut({ success: true, message: 'Checked in successfully' });
+    }
+    
+    // Handle add guest to guest list
+    if (params.action === 'addGuest' || payload.action === 'addGuest') {
+      const sheet = getOrCreateSheet('GuestList', ['Guest ID', 'First Name', 'Last Name', 'Party Size', 'Added At']);
+      
+      // Check if already exists
+      const existing = sheet.getDataRange().getValues();
+      for (let i = 1; i < existing.length; i++) {
+        if (existing[i][0] === payload.guestId || 
+            (existing[i][1] + ' ' + existing[i][2]).toLowerCase() === (payload.firstName + ' ' + payload.lastName).toLowerCase()) {
+          return jsonOut({ success: true, message: 'Guest already in list' });
+        }
+      }
+      
+      sheet.appendRow([
+        payload.guestId || '',
+        payload.firstName || '',
+        payload.lastName || '',
+        payload.partySize || 1,
+        new Date().toLocaleString()
+      ]);
+      
+      return jsonOut({ success: true, message: 'Guest added to list' });
     }
     
     // Default: Add to Songs or Messages sheet
