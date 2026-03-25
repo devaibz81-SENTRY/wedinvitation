@@ -1830,12 +1830,7 @@
       // QR Code - Bottom of left side, NOT over photo
       const qrSize = 160;
       const qrX = leftX + 20;
-      const qrY = h - qrSize - 80;
-      
-      // QR label above the QR
-      ctx.fillStyle = '#000000';
-      ctx.font = 'italic 16px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('Scan to check in at the event', qrX, qrY - 10);
+      const qrY = h - qrSize - 60;
       
       // QR background with gold border
       ctx.fillStyle = '#FFFFFF';
@@ -1843,6 +1838,11 @@
       ctx.strokeStyle = '#d4af37';
       ctx.lineWidth = 3;
       ctx.strokeRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
+      
+      // QR label below the QR
+      ctx.fillStyle = '#000000';
+      ctx.font = 'italic 18px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText('Present this at the event', qrX, qrY + qrSize + 25);
       
       // Generate QR code with guest name for backup lookup
       const guestFullName = encodeURIComponent(card.fullName || 'Guest');

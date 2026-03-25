@@ -519,8 +519,9 @@
     }
 
     // Check session on load
-    if (adminToken) {
-      hasValidSession().then(valid => {
+    window.addEventListener('DOMContentLoaded', async () => {
+      if (adminToken) {
+        const valid = await hasValidSession();
         if (valid) {
           document.getElementById('login-overlay').classList.add('hidden');
           fetchGuests();
@@ -530,13 +531,13 @@
           adminToken = '';
           localStorage.removeItem(SESSION_KEY);
         }
-      });
-    }
-
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('id') || params.get('name')) {
-      setTimeout(() => showScannedGuest(params.get('id') || '', params.get('name') || ''), 2000);
-    }
+      }
+      
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('id') || params.get('name')) {
+        setTimeout(() => showScannedGuest(params.get('id') || '', params.get('name') || ''), 2000);
+      }
+    });
 
     setInterval(fetchCheckedIn, 30000);
   </script>
