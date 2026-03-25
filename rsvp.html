@@ -1685,15 +1685,15 @@
       canvas.height = h;
       const ctx = canvas.getContext('2d');
 
-      // Clean ivory white background
-      ctx.fillStyle = '#FFFFF0';
+      // Ivory background
+      ctx.fillStyle = '#FAF5EF';
       ctx.fillRect(0, 0, w, h);
 
-      // Subtle decorative frame
-      ctx.strokeStyle = '#000000';
-      ctx.lineWidth = 2;
+      // Gold decorative frame
+      ctx.strokeStyle = '#d4af37';
+      ctx.lineWidth = 3;
       ctx.strokeRect(24, 24, w - 48, h - 48);
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1.5;
       ctx.strokeRect(40, 40, w - 80, h - 80);
 
       // Right-side photo panel
@@ -1713,22 +1713,22 @@
         const dy = photoY + (photoH - drawH) / 2;
         ctx.drawImage(photo, dx, dy, drawW, drawH);
       } catch {
-        ctx.fillStyle = '#d9c4a2';
+        ctx.fillStyle = '#F7E7CE';
         ctx.fillRect(photoX, photoY, photoW, photoH);
       }
       ctx.restore();
 
       drawRoundedRectPath(ctx, photoX, photoY, photoW, photoH, 26);
-      ctx.strokeStyle = '#000000';
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#d4af37';
+      ctx.lineWidth = 3;
       ctx.stroke();
 
       const leftX = 92;
       const leftWidth = 840;
       const statusMap = {
-        attending: { bg: '#e8f5e9', border: '#000000', text: '#000000' },
-        declined: { bg: '#ffebee', border: '#000000', text: '#000000' },
-        later: { bg: '#fff8e1', border: '#000000', text: '#000000' },
+        attending: { bg: '#d4af37', border: '#000000', text: '#FFFFFF' },
+        declined: { bg: '#000000', border: '#d4af37', text: '#FAF5EF' },
+        later: { bg: '#F7E7CE', border: '#d4af37', text: '#000000' },
       };
       const statusStyle = statusMap[card.attendance] || statusMap.later;
       const guestNames = Array.isArray(card.guestNames) && card.guestNames.length
@@ -1736,12 +1736,12 @@
         : [card.fullName];
 
       // Header - all black
-      ctx.fillStyle = '#000000';
+      ctx.fillStyle = '#d4af37';
       ctx.font = '600 20px Montserrat, sans-serif';
       ctx.fillText('RSVP CONFIRMATION CARD', leftX, 110);
 
-      ctx.fillStyle = '#000000';
-      ctx.font = '72px "Great Vibes", "Times New Roman", serif';
+      ctx.fillStyle = '#d4af37';
+      ctx.font = '80px "Great Vibes", "Times New Roman", serif';
       ctx.fillText('Andrew & Rosanna', leftX, 196);
 
       ctx.fillStyle = '#000000';
@@ -1750,7 +1750,7 @@
       ctx.font = '600 20px Montserrat, sans-serif';
       ctx.fillText(EVENT_LOCATION_TEXT, leftX, 280);
 
-      // Guest names block - all black
+      // Guest names block
       ctx.fillStyle = '#000000';
       ctx.font = '600 22px Montserrat, sans-serif';
       ctx.fillText(guestNames.length > 1 ? 'Guests' : 'Guest', leftX, 340);
@@ -1764,13 +1764,13 @@
         namesY += usedSize + 16;
       }
       if (guestNames.length > displayNames.length) {
-        ctx.fillStyle = '#333333';
+        ctx.fillStyle = '#000000';
         ctx.font = '500 18px Montserrat, sans-serif';
         ctx.fillText(`+${guestNames.length - displayNames.length} more`, leftX, namesY + 4);
         namesY += 24;
       }
 
-      // RSVP status pill - clean black
+      // RSVP status pill
       const statusY = namesY + 16;
       const statusW = leftWidth - 30;
       const statusH = 60;
@@ -1778,14 +1778,14 @@
       ctx.fillStyle = statusStyle.bg;
       ctx.fill();
       ctx.strokeStyle = statusStyle.border;
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 2;
       ctx.stroke();
 
       ctx.fillStyle = statusStyle.text;
       ctx.font = '700 24px "Cormorant Garamond", Georgia, serif';
       ctx.fillText(attendanceLabel(card.attendance), leftX + 20, statusY + 38);
 
-      // Detail rows - all black
+      // Detail rows
       let rowY = statusY + 98;
       const rowGap = 42;
       const valueX = leftX + 190;
@@ -1804,9 +1804,11 @@
       addRow('Validated', new Date(card.submittedAt).toLocaleString());
       addRow('Reference', String(card.guestId).slice(-8).toUpperCase());
 
-      ctx.fillStyle = '#333333';
+      ctx.fillStyle = '#d4af37';
       ctx.font = '500 17px Montserrat, sans-serif';
       ctx.fillText(COUPLE_NAMES, leftX, h - 96);
+      ctx.fillStyle = '#000000';
+      ctx.font = 'italic 16px "Cormorant Garamond", Georgia, serif';
       ctx.fillText('Please present this card with your RSVP confirmation.', leftX, h - 64);
 
       return canvas;
