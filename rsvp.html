@@ -1812,22 +1812,22 @@
       addRow('Validated', new Date(card.submittedAt).toLocaleString());
       addRow('Reference', String(card.guestId).slice(-8).toUpperCase());
 
-      // QR Code - Bottom right corner with clear space
-      const qrSize = 140;
-      const qrX = leftX + leftWidth - qrSize - 30;
-      const qrY = h - qrSize - 50;
+      // QR Code - Bottom right with dedicated space
+      const qrSize = 180;
+      const qrX = leftX + leftWidth - qrSize - 20;
+      const qrY = h - qrSize - 20;
       
-      // Small quote above QR
+      // QR label
       ctx.fillStyle = '#d4af37';
       ctx.font = 'italic 16px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('\u275E Present this at the event', qrX, qrY - 12);
+      ctx.fillText('\u275E Present this at the event', qrX, qrY - 10);
       
       // QR background with gold border
       ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(qrX - 6, qrY - 6, qrSize + 12, qrSize + 12);
+      ctx.fillRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
       ctx.strokeStyle = '#d4af37';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(qrX - 6, qrY - 6, qrSize + 12, qrSize + 12);
+      ctx.lineWidth = 3;
+      ctx.strokeRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
       
       // Generate QR code
       const guestFullName = encodeURIComponent(card.fullName || 'Guest');
@@ -1847,11 +1847,6 @@
           }
         }
       } catch (e) {}
-      
-      // Couple names in cursive at very bottom
-      ctx.fillStyle = '#d4af37';
-      ctx.font = '28px "Great Vibes", "Times New Roman", serif';
-      ctx.fillText('Andrew & Rosanna', leftX, h - 24);
 
       return canvas;
     }
