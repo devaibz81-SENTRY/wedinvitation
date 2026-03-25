@@ -198,10 +198,15 @@
         const res = await fetch(`${CONVEX_HTTP_URL}/api/guests`, { headers: authHeaders() });
         if (res.status === 401) { logout(); return; }
         allGuests = await res.json();
-        document.getElementById('total-count').textContent = allGuests.length;
+        document.getElementById('total-count').textContent = allGuests.reduce((s,g) => s + (Number(g.max_party)||1), 0);
         renderGuestList();
         renderGuestQRs();
       } catch (e) { console.error(e); }
+    }
+
+    function updateCheckedCount() {
+      const count = allGuests.filter(g => checkedInGuests.has(String(g._id || g.id))).reduce((s,g) => s + (Number(g.max_party)||1), 0);
+      document.getElementById('checked-count').textContent = count;
     }
 
     async function fetchCheckedIn() {
@@ -211,7 +216,7 @@
         const data = await res.json();
         if (data && data.checkins) {
           checkedInGuests = new Set(data.checkins.map(c => String(c.guestId)));
-          document.getElementById('checked-count').textContent = checkedInGuests.size;
+          updateCheckedCount();
           renderGuestList();
           renderGuestQRs();
         }
@@ -226,7 +231,7 @@
 
     function undoCheckIn(id) {
       checkedInGuests.delete(String(id));
-      document.getElementById('checked-count').textContent = checkedInGuests.size;
+      updateCheckedCount();
       renderGuestList();
       renderGuestQRs();
     }
@@ -270,7 +275,7 @@
         body: JSON.stringify({ action: 'checkin', guestId: id, guestName: name, partyCount: party })
       }).catch(()=>{});
       checkedInGuests.add(String(id));
-      document.getElementById('checked-count').textContent = checkedInGuests.size;
+      updateCheckedCount();
       renderGuestList();
       renderGuestQRs();
     }
