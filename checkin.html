@@ -93,7 +93,7 @@
 
   <div class="scanner-section">
     <h2>Scan QR Code</h2>
-    <div id="qr-reader"></div>
+    <div id="qr-reader" style="min-height:200px;"></div>
     <div id="scanned-result"></div>
   </div>
 
@@ -177,7 +177,8 @@
         const res = await fetch(`${CONVEX_HTTP_URL}/api/guests`, { headers: authHeaders() });
         if (res.status === 401) { logout(); return; }
         allGuests = await res.json();
-        document.getElementById('total-count').textContent = allGuests.length;
+        const totalPeople = allGuests.reduce((sum, g) => sum + (Number(g.max_party) || 1), 0);
+        document.getElementById('total-count').textContent = totalPeople;
         renderGuestList();
         renderGuestQRs();
       } catch (e) { console.error(e); }
@@ -190,7 +191,10 @@
         const data = await res.json();
         if (data && data.checkins) {
           checkedInGuests = new Set(data.checkins.map(c => String(c.guestId)));
-          document.getElementById('checked-count').textContent = checkedInGuests.size;
+          const checkedPeople = allGuests
+            .filter(g => checkedInGuests.has(String(g._id || g.id)))
+            .reduce((sum, g) => sum + (Number(g.max_party) || 1), 0);
+          document.getElementById('checked-count').textContent = checkedPeople;
           renderGuestList();
           renderGuestQRs();
         }
@@ -205,7 +209,10 @@
 
     function undoCheckIn(id) {
       checkedInGuests.delete(String(id));
-      document.getElementById('checked-count').textContent = checkedInGuests.size;
+      const checkedPeople = allGuests
+        .filter(g => checkedInGuests.has(String(g._id || g.id)))
+        .reduce((sum, g) => sum + (Number(g.max_party) || 1), 0);
+      document.getElementById('checked-count').textContent = checkedPeople;
       renderGuestList();
       renderGuestQRs();
     }
@@ -346,14 +353,26 @@
       renderGuestList();
     }));
 
+    let scannerRunning = false;
+
     async function initScanner() {
+      const btn = document.getElementById('start-scanner-btn');
+      if (scannerRunning && html5QrCode) {
+        try { await html5QrCode.stop(); scannerRunning = false; } catch {}
+      }
+      btn.style.display = 'none';
+      document.getElementById('qr-reader').innerHTML = '<div style="padding:2rem;text-align:center;color:#888;">Starting camera...</div>';
       try {
         html5QrCode = new Html5Qrcode("qr-reader");
         await html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } },
           text => { try { const u = new URL(text); showScannedGuest(u.searchParams.get('id')||'', u.searchParams.get('name')||''); } catch { showScannedGuest('', text); } },
           () => {}
         );
-      } catch (e) { document.getElementById('qr-reader').innerHTML = '<div class="loading">Scanner unavailable</div>'; }
+        scannerRunning = true;
+        document.getElementById('qr-reader').style.display = '';
+      } catch (e) { 
+        document.getElementById('qr-reader').innerHTML = '<div style="padding:2rem;text-align:center;color:#e74c3c;">Camera access denied or unavailable.<br><br><button onclick="initScanner()" style="padding:0.6rem 1.2rem;background:#d4af37;color:#000;border:none;border-radius:6px;cursor:pointer;">Try Again</button></div>';
+      }
     }
 
     window.onload = async () => {
