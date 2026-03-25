@@ -1603,6 +1603,9 @@
 
       let guestNames = [primaryName];
       
+      // Get party names from input or form
+      const partyNamesInput = input.party_names || '';
+      
       if (GUEST_TYPE === 'couple') {
         const sFn = document.getElementById('party-fn-1')?.value || '';
         const sLn = document.getElementById('party-ln-1')?.value || last;
@@ -1612,12 +1615,16 @@
         } else {
           guestNames = [primaryName];
         }
-      } else {
-        guestNames = [primaryName];
+      } else if (partyNamesInput) {
+        // Parse comma-separated party names
+        guestNames = partyNamesInput.split(',').map(n => n.trim()).filter(Boolean);
+        if (guestNames.length > 0 && !guestNames[0].includes(first)) {
+          guestNames.unshift(primaryName);
+        }
       }
 
       return {
-        fullName: guestNames[0],
+        fullName: guestNames[0] || primaryName,
         guestNames,
         attendance: input.attendance || document.querySelector('input[name="attendance"]:checked')?.value || 'invited',
         guestType: GUEST_TYPE || 'single',
