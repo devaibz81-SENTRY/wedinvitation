@@ -356,6 +356,10 @@
 
     async function initScanner() {
       try {
+        if (typeof Html5Qrcode === 'undefined') {
+          console.log('html5-qrcode not loaded yet');
+          return;
+        }
         html5QrCode = new Html5Qrcode("qr-reader");
         const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1 };
         await html5QrCode.start({ facingMode: "environment" }, config,
@@ -371,11 +375,14 @@
           () => {}
         );
       } catch (err) {
-        document.getElementById('qr-reader').innerHTML = `<div style="text-align:center;padding:2rem;color:#fff;"><p>Camera access needed</p></div>`;
+        console.log('Scanner error:', err);
+        const readerEl = document.getElementById('qr-reader');
+        if (readerEl) readerEl.innerHTML = `<div style="text-align:center;padding:2rem;color:#666;"><p>QR Scanner unavailable</p><p style="font-size:0.8rem">Use the guest list below</p></div>`;
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      console.log('Page loaded, fetching guests...');
       fetchGuests();
       fetchCheckedIn();
       initScanner();
@@ -385,6 +392,14 @@
       }
       setInterval(fetchCheckedIn, 30000);
     });
+    
+    // Fallback: try loading guests after a short delay
+    setTimeout(() => {
+      if (allGuests.length === 0) {
+        console.log('Fallback: re-fetching guests');
+        fetchGuests();
+      }
+    }, 3000);
   </script>
 </body>
 </html>
