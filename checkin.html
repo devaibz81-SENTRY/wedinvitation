@@ -357,9 +357,10 @@
         
         let guests = Array.isArray(data) ? data : (data.guests || []);
         
-        // Debug: show sample
+        // Debug: show all guest names
+        console.log('All guests:', guests.map(g => `${g.first_name} ${g.last_name} (${g.attendance})`));
         if (guests.length > 0) {
-          console.log('Sample guest:', guests[0].first_name, guests[0].last_name);
+          console.log('Sample guest:', guests[0].first_name, guests[0].last_name, guests[0].attendance);
         }
         
         allGuests = guests.filter(g => g.attendance === 'attending');
@@ -466,12 +467,17 @@
     function showScannedGuest(guestId, guestName) {
       const decodedName = guestName ? decodeURIComponent(guestName).toLowerCase().trim() : '';
       
-      // Find guest by name (simple match)
+      // Find guest by name (flexible match)
       let guest = null;
       if (decodedName) {
+        // Remove extra spaces for matching
+        const cleanName = decodedName.replace(/\s+/g, ' ');
         guest = allGuests.find(g => {
-          const fullName = `${g.first_name || ''} ${g.last_name || ''}`.toLowerCase().trim();
-          return fullName === decodedName || fullName.includes(decodedName) || decodedName.includes(fullName);
+          const fullName = `${g.first_name || ''} ${g.last_name || ''}`.toLowerCase().replace(/\s+/g, ' ').trim();
+          // Check first name match (most reliable)
+          const firstName = (g.first_name || '').toLowerCase().trim();
+          const searchFirst = cleanName.split(' ')[0];
+          return firstName === searchFirst && fullName.includes(searchFirst);
         });
       }
       
