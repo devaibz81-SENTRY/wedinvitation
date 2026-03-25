@@ -1095,7 +1095,7 @@
           <!-- Default Template Box -->
           <textarea id="wa-text" class="wa-template" oninput="updateWaPreview()">Hi {{name}},
 
-You are cordially invited to celebrate the wedding of Andrew Haylock and Rosanna DePaz.
+You are cordially invited to celebrate the wedding of Andrew and Rosanna.
 
 We have reserved your RSVP as a {{type}} invitation. Kindly reply by {{deadline}}.
 
@@ -1335,7 +1335,7 @@ Andrew and Rosanna</textarea>
     }
 
     function downloadMessages() {
-      const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyt5l2wFdAb0aoPNVeuA5-IG-wBUexiymxuISdyNiYYc_uwFwD3c9BE4qGKOIPP3BumVg/exec';
+      const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw33IBpUacNLGAcqc4EGp5L2dlxaMkWSbEFvSTdFTDq6p9iO5oZCIWl6aS-BB6EIW-JUA/exec';
       fetch(APPS_SCRIPT_URL + '?sheet=Messages')
         .then(res => res.json())
         .then(data => {

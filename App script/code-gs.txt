@@ -3,6 +3,7 @@
  * Handles: 
  *   GET ?sheet=Songs|Messages|CheckIns - Returns JSON data
  *   GET ?action=getCheckIns - Returns check-ins list
+ *   GET ?action=test - Test if script is working
  *   GET ?page=songs - Returns HTML song list page
  *   GET ?page=messages - Returns HTML interactive messages page
  *   POST ?action=checkin - Records guest check-in
@@ -30,6 +31,11 @@ function doGet(e) {
     if (params.action === 'getCheckIns') {
       const checkins = getSheetData('CheckIns');
       return jsonOut({ checkins: checkins });
+    }
+    
+    // Test endpoint
+    if (params.action === 'test') {
+      return jsonOut({ status: 'ok', message: 'Apps Script is working!' });
     }
     
     // Default: Return JSON data

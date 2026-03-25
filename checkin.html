@@ -340,7 +340,7 @@
 
   <script>
     const CONVEX_URL = 'https://curious-wildcat-113.convex.site';
-    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyt5l2wFdAb0aoPNVeuA5-IG-wBUexiymxuISdyNiYYc_uwFwD3c9BE4qGKOIPP3BumVg/exec';
+    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbw33IBpUacNLGAcqc4EGp5L2dlxaMkWSbEFvSTdFTDq6p9iO5oZCIWl6aS-BB6EIW-JUA/exec';
     const CHECKINS_SHEET = 'CheckIns';
 
     let allGuests = [];
@@ -353,13 +353,21 @@
       try {
         const res = await fetch(`${CONVEX_URL}/api/guests`);
         if (!res.ok) throw new Error('Failed to fetch guests');
-        const guests = await res.json();
+        const data = await res.json();
+        
+        let guests = Array.isArray(data) ? data : (data.guests || []);
+        
+        // Debug: show sample
+        if (guests.length > 0) {
+          console.log('Sample guest:', guests[0].first_name, guests[0].last_name);
+        }
+        
         allGuests = guests.filter(g => g.attendance === 'attending');
         updateTotalCount();
         renderGuestList();
       } catch (err) {
         document.getElementById('guest-list').innerHTML = '<div class="loading">Error loading guests. Please refresh.</div>';
-        console.error(err);
+        console.error('Fetch error:', err);
       }
     }
 
@@ -369,13 +377,13 @@
         const res = await fetch(`${SHEETS_URL}?action=getCheckIns`);
         if (!res.ok) return;
         const data = await res.json();
-        if (data && data.checkins) {
-          checkedInGuests = new Set(data.checkins.map(c => c.guestId));
+        if (data && data.checkins && Array.isArray(data.checkins)) {
+          checkedInGuests = new Set(data.checkins.map(c => String(c.guestId)));
+          updateCheckedCount();
+          renderGuestList();
         }
-        updateCheckedCount();
-        renderGuestList();
       } catch (err) {
-        console.log('Could not fetch check-ins');
+        console.log('Could not fetch check-ins:', err);
       }
     }
 
@@ -454,20 +462,24 @@
       }
     }
 
-    // Show scanned guest info
+    // Show scanned guest info - uses name from QR
     function showScannedGuest(guestId, guestName) {
-      // Try multiple ID fields
-      const guest = allGuests.find(g => {
-        const guestIdField = g._id || g.id || g.guestId || g._key;
-        return String(guestIdField) === String(guestId);
-      });
+      const decodedName = guestName ? decodeURIComponent(guestName).toLowerCase().trim() : '';
+      
+      // Find guest by name (simple match)
+      let guest = null;
+      if (decodedName) {
+        guest = allGuests.find(g => {
+          const fullName = `${g.first_name || ''} ${g.last_name || ''}`.toLowerCase().trim();
+          return fullName === decodedName || fullName.includes(decodedName) || decodedName.includes(fullName);
+        });
+      }
       
       if (!guest) {
         document.getElementById('scanned-result').innerHTML = `
           <div class="scanned-guest">
             <h3>Guest Not Found</h3>
-            <p>Searching by name...</p>
-            ${guestName ? `<button class="checkin-btn" onclick="searchByName('${guestName}')">Try: ${guestName}</button>` : ''}
+            <p>Looking for: ${decodedName || 'Unknown'}</p>
             <button class="checkin-btn" onclick="document.getElementById('scanned-result').innerHTML=''">Close</button>
           </div>
         `;

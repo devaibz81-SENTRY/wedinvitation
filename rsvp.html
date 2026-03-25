@@ -1243,7 +1243,7 @@
 
     // â”€â”€â”€ Convex Config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyt5l2wFdAb0aoPNVeuA5-IG-wBUexiymxuISdyNiYYc_uwFwD3c9BE4qGKOIPP3BumVg/exec';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw33IBpUacNLGAcqc4EGp5L2dlxaMkWSbEFvSTdFTDq6p9iO5oZCIWl6aS-BB6EIW-JUA/exec';
 
     // â”€â”€â”€ Read URL params for personalisation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const gUrl = new URL(window.location.href);
@@ -1832,19 +1832,20 @@
       ctx.fillText('Present this QR code to enter the event.', leftX, h - 28);
 
       // QR Code - Bottom left corner (away from photo)
-      const qrSize = 120;
+      const qrSize = 180;
       const qrX = leftX;
-      const qrY = h - qrSize - 50;
+      const qrY = h - qrSize - 60;
       
       // QR background with gold border
       ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
+      ctx.fillRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20);
       ctx.strokeStyle = '#d4af37';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
+      ctx.lineWidth = 3;
+      ctx.strokeRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20);
       
-      // Generate QR code
-      const checkinUrl = `https://wedinvitation-ruddy.vercel.app/checkin.html?id=${card.guestId}`;
+      // Generate QR code with guest name for backup lookup
+      const guestFullName = encodeURIComponent(card.fullName || 'Guest');
+      const checkinUrl = `https://wedinvitation-ruddy.vercel.app/checkin.html?id=${card.guestId}&name=${guestFullName}`;
       try {
         const qr = qrcode(0, 'M');
         qr.addData(checkinUrl);
