@@ -1812,9 +1812,9 @@
       addRow('Validated', new Date(card.submittedAt).toLocaleString());
       addRow('Reference', String(card.guestId).slice(-8).toUpperCase());
 
-      // QR Code - Bottom right with dedicated space
+      // QR Code - Bottom right outside the card border
       const qrSize = 180;
-      const qrX = leftX + leftWidth - qrSize - 20;
+      const qrX = leftX + leftWidth + 15;
       const qrY = h - qrSize - 20;
       
       // QR label
@@ -1822,12 +1822,12 @@
       ctx.font = 'italic 16px "Cormorant Garamond", Georgia, serif';
       ctx.fillText('\u275E Present this at the event', qrX, qrY - 10);
       
-      // QR background with gold border
+      // QR background with black border (outside card)
       ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
-      ctx.strokeStyle = '#d4af37';
+      ctx.fillRect(qrX - 6, qrY - 6, qrSize + 12, qrSize + 12);
+      ctx.strokeStyle = '#000000';
       ctx.lineWidth = 3;
-      ctx.strokeRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
+      ctx.strokeRect(qrX - 6, qrY - 6, qrSize + 12, qrSize + 12);
       
       // Generate QR code
       const guestFullName = encodeURIComponent(card.fullName || 'Guest');
