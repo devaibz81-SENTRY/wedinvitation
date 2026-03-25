@@ -363,7 +363,8 @@
           console.log('Sample guest:', guests[0].first_name, guests[0].last_name, guests[0].attendance);
         }
         
-        allGuests = guests.filter(g => g.attendance === 'attending');
+        // Show all guests (not just attending) - filter happens on check-in
+        allGuests = guests;
         updateTotalCount();
         renderGuestList();
       } catch (err) {
