@@ -31,14 +31,15 @@
     .filter-tab { background: transparent; border: 1px solid #fff; color: #fff; padding: 0.5rem 1rem; font-size: 0.75rem; border-radius: 20px; cursor: pointer; transition: all 0.3s; }
     .filter-tab.active { background: #fff; color: #000; }
     .guest-list { max-height: 50vh; overflow-y: auto; }
-    .guest-item { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; background: #fff; color: #000; border-radius: 8px; margin-bottom: 0.5rem; border-left: 4px solid #d4af37; cursor: pointer; }
+    .guest-item { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 1rem; background: #fff; color: #000; border-radius: 8px; margin-bottom: 0.4rem; border-left: 4px solid #d4af37; cursor: pointer; }
     .guest-item:hover { background: #f0f0e0; }
     .guest-item.checked-in { border-left-color: #2e8b57; background: #e8f5e9; }
     .guest-item.checked-in .guest-status { color: #2e8b57; font-weight: bold; }
     .guest-item.checked-in .guest-name { color: #2e8b57; }
-    .guest-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #000; }
-    .guest-party { font-size: 0.8rem; opacity: 0.7; color: #555; }
-    .guest-status { font-size: 0.8rem; color: #d4af37; }
+    .guest-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: #000; }
+    .guest-party-btn { background: #d4af37; color: #000; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem; cursor: pointer; }
+    .guest-party-btn:hover { background: #c9a84c; }
+    .guest-status { font-size: 0.8rem; color: #d4af37; min-width: 80px; text-align: right; }
     .manual-section { padding: 1.5rem; border-top: 1px solid #333; }
     .manual-section h2 { font-size: 0.9rem; letter-spacing: 0.15em; text-transform: uppercase; color: #fff; margin-bottom: 1rem; text-align: center; }
     .manual-input { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
@@ -224,9 +225,19 @@
         const name = `${g.first_name || ''}${g.spouse_name ? ' & ' + g.spouse_name : ''} ${g.last_name || ''}`.trim();
         const party = g.max_party || 1;
         const checked = checkedInGuests.has(id);
-        const status = editMode ? (checked ? 'Tap to uncheck' : 'Tap to check') : (checked ? '✓' : 'Tap to check');
+        let status, partyHtml;
+        if (editMode) {
+          status = checked ? '✗ UNCHECK' : '✓ CHECK';
+          partyHtml = `<button class="guest-party-btn" style="${checked ? 'background:#ff6b6b;color:#fff;' : ''}" onclick="event.stopPropagation();handleGuestClick('${id}','${name}',${party},${checked})">${party}</button>`;
+        } else {
+          status = checked ? '✓' : '';
+          partyHtml = `<button class="guest-party-btn" onclick="event.stopPropagation();handleGuestClick('${id}','${name}',${party},${checked})">${party}</button>`;
+        }
         return `<div class="guest-item ${checked ? 'checked-in' : ''}" onclick="handleGuestClick('${id}','${name}',${party},${checked})">
-          <div><div class="guest-name">${name}</div><div class="guest-party">${party} guest${party>1?'s':''}</div></div>
+          <div style="display:flex;align-items:center;">
+            <div class="guest-name">${name}</div>
+            ${partyHtml}
+          </div>
           <div class="guest-status">${status}</div>
         </div>`;
       }).join('');
