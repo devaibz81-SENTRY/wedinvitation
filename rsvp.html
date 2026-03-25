@@ -1812,50 +1812,32 @@
       addRow('Validated', new Date(card.submittedAt).toLocaleString());
       addRow('Reference', String(card.guestId).slice(-8).toUpperCase());
 
-      // Quote section
-      const quoteY = h - 140;
-      ctx.fillStyle = '#d4af37';
-      ctx.font = 'italic 20px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('\u275E', leftX, quoteY);
-      ctx.fillStyle = '#000000';
-      ctx.font = 'italic 18px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('"Love isn\'t just about the good moments."', leftX + 30, quoteY);
-      ctx.fillText('"It\'s about choosing each other through everything."', leftX + 30, quoteY + 28);
+      // QR Code - Bottom right corner with clear space
+      const qrSize = 140;
+      const qrX = leftX + leftWidth - qrSize - 30;
+      const qrY = h - qrSize - 50;
       
-      // Couple names in cursive
+      // Small quote above QR
       ctx.fillStyle = '#d4af37';
-      ctx.font = '36px "Great Vibes", "Times New Roman", serif';
-      ctx.fillText('Andrew & Rosanna', leftX, h - 56);
-
-      // QR Code - Bottom right area, NOT over photo
-      const qrSize = 160;
-      const qrX = leftX + leftWidth - qrSize - 40;
-      const qrY = h - qrSize - 60;
+      ctx.font = 'italic 16px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText('\u275E Present this at the event', qrX, qrY - 12);
       
       // QR background with gold border
       ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
+      ctx.fillRect(qrX - 6, qrY - 6, qrSize + 12, qrSize + 12);
       ctx.strokeStyle = '#d4af37';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
+      ctx.lineWidth = 2;
+      ctx.strokeRect(qrX - 6, qrY - 6, qrSize + 12, qrSize + 12);
       
-      // QR label below the QR
-      ctx.fillStyle = '#000000';
-      ctx.font = 'italic 18px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('Present this at the event', qrX, qrY + qrSize + 25);
-      
-      // Generate QR code with guest name for backup lookup
+      // Generate QR code
       const guestFullName = encodeURIComponent(card.fullName || 'Guest');
       const checkinUrl = `https://wedinvitation-ruddy.vercel.app/checkin.html?id=${card.guestId}&name=${guestFullName}`;
       try {
         const qr = qrcode(0, 'M');
         qr.addData(checkinUrl);
         qr.make();
-        
-        // Draw QR modules
         const moduleCount = qr.getModuleCount();
         const cellSize = qrSize / moduleCount;
-        
         ctx.fillStyle = '#000000';
         for (let row = 0; row < moduleCount; row++) {
           for (let col = 0; col < moduleCount; col++) {
@@ -1864,9 +1846,12 @@
             }
           }
         }
-      } catch (e) {
-        console.log('QR generation error:', e);
-      }
+      } catch (e) {}
+      
+      // Couple names in cursive at very bottom
+      ctx.fillStyle = '#d4af37';
+      ctx.font = '28px "Great Vibes", "Times New Roman", serif';
+      ctx.fillText('Andrew & Rosanna', leftX, h - 24);
 
       return canvas;
     }
