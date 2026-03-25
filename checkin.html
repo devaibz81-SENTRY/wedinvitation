@@ -127,6 +127,7 @@
     const SESSION_KEY = 'ra_admin_token';
 
     let adminToken = localStorage.getItem(SESSION_KEY) || '';
+    const admin = true;
     let allGuests = [];
     let checkedInGuests = new Set();
     let html5QrCode = null;
