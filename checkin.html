@@ -166,7 +166,7 @@
   <script>
     const CONVEX_HTTP_URL = 'https://curious-wildcat-113.convex.site';
     const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbw33IBpUacNLGAcqc4EGp5L2dlxaMkWSbEFvSTdFTDq6p9iO5oZCIWl6aS-BB6EIW-JUA/exec';
-    const SESSION_KEY = 'ra_checkin_token';
+    const SESSION_KEY = 'ra_admin_token';
 
     let adminToken = localStorage.getItem(SESSION_KEY) || '';
     let allGuests = [];
@@ -518,8 +518,7 @@
       }
     }
 
-    // Check session on load
-    window.addEventListener('DOMContentLoaded', async () => {
+    window.onload = async () => {
       if (adminToken) {
         const valid = await hasValidSession();
         if (valid) {
@@ -537,7 +536,7 @@
       if (params.get('id') || params.get('name')) {
         setTimeout(() => showScannedGuest(params.get('id') || '', params.get('name') || ''), 2000);
       }
-    });
+    };
 
     setInterval(fetchCheckedIn, 30000);
   </script>
