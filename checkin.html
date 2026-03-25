@@ -456,12 +456,18 @@
 
     // Show scanned guest info
     function showScannedGuest(guestId, guestName) {
-      const guest = allGuests.find(g => (g._id || g.id) === guestId);
+      // Try multiple ID fields
+      const guest = allGuests.find(g => {
+        const guestIdField = g._id || g.id || g.guestId || g._key;
+        return String(guestIdField) === String(guestId);
+      });
+      
       if (!guest) {
         document.getElementById('scanned-result').innerHTML = `
           <div class="scanned-guest">
             <h3>Guest Not Found</h3>
-            <p>ID: ${guestId}</p>
+            <p>Searching by name...</p>
+            ${guestName ? `<button class="checkin-btn" onclick="searchByName('${guestName}')">Try: ${guestName}</button>` : ''}
             <button class="checkin-btn" onclick="document.getElementById('scanned-result').innerHTML=''">Close</button>
           </div>
         `;
@@ -470,19 +476,26 @@
 
       const fullName = `${guest.first_name || ''}${guest.spouse_name ? ' & ' + guest.spouse_name : ''} ${guest.last_name || ''}`.trim();
       const party = guest.max_party || 1;
-      const isChecked = checkedInGuests.has(guestId);
+      const guestUniqueId = String(guest._id || guest.id || guest.guestId || guest._key);
+      const isChecked = checkedInGuests.has(guestUniqueId);
 
       document.getElementById('scanned-result').innerHTML = `
         <div class="scanned-guest">
           <h3>${fullName}</h3>
           <p>${party} guest${party > 1 ? 's' : ''}</p>
           <button class="checkin-btn ${isChecked ? 'checked' : ''}" 
-                  onclick="handleCheckIn('${guestId}', '${fullName}', ${party})"
+                  onclick="handleCheckIn('${guestUniqueId}', '${fullName}', ${party})"
                   ${isChecked ? 'disabled' : ''}>
             ${isChecked ? '✓ Already Checked In' : 'Check In'}
           </button>
         </div>
       `;
+    }
+    
+    function searchByName(name) {
+      document.getElementById('manual-name').value = name;
+      searchGuest();
+      document.getElementById('scanned-result').innerHTML = '';
     }
 
     async function handleCheckIn(guestId, guestName, partyCount) {

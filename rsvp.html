@@ -1829,16 +1829,19 @@
 
       ctx.fillStyle = '#000000';
       ctx.font = 'italic 16px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('Please present this card with your RSVP confirmation.', leftX, h - 28);
+      ctx.fillText('Present this QR code to enter the event.', leftX, h - 28);
 
-      // QR Code - Bottom right corner
-      const qrSize = 140;
-      const qrX = w - qrSize - 50;
+      // QR Code - Bottom left corner (away from photo)
+      const qrSize = 120;
+      const qrX = leftX;
       const qrY = h - qrSize - 50;
       
-      // QR background
+      // QR background with gold border
       ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20);
+      ctx.fillRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
+      ctx.strokeStyle = '#d4af37';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
       
       // Generate QR code
       const checkinUrl = `https://wedinvitation-ruddy.vercel.app/checkin.html?id=${card.guestId}`;
