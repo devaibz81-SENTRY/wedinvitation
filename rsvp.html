@@ -1601,12 +1601,31 @@
       const last = String(input.last_name || document.getElementById('last-name')?.value || '').trim();
       const primaryName = `${first} ${last}`.trim() || 'Guest';
 
-      let spName = '';
+      let guestNames = [primaryName];
+      
       if (GUEST_TYPE === 'couple') {
         const sFn = document.getElementById('party-fn-1')?.value || '';
         const sLn = document.getElementById('party-ln-1')?.value || last;
-        if (sFn) spName = `${sFn} ${sLn}`.trim();
+        if (sFn) {
+          // Format as "Jack & Lilly Jones"
+          guestNames = [`${first} & ${sFn} ${sLn}`];
+        } else {
+          guestNames = [primaryName];
+        }
+      } else {
+        guestNames = [primaryName];
       }
+
+      return {
+        fullName: guestNames[0],
+        guestNames,
+        attendance: input.attendance || document.querySelector('input[name="attendance"]:checked')?.value || 'invited',
+        guestType: GUEST_TYPE || 'single',
+        maxParty: Number.isFinite(MAX_PARTY) ? MAX_PARTY : 1,
+        submittedAt: input.submitted_at || new Date().toISOString(),
+        guestId: GGUEST_ID || 'guest',
+      };
+    }
 
       const partySource = input.party_names != null ? input.party_names : getPartyNames();
       const partyNamesRaw = String(partySource || '').trim();
@@ -1752,7 +1771,7 @@
       // Location on its own line, bigger font
       ctx.fillStyle = '#d4af37';
       ctx.font = 'italic 28px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('The The Gully Grill', leftX, 284);
+      ctx.fillText('The Gully Grill', leftX, 284);
       ctx.fillStyle = '#000000';
       ctx.font = 'italic 22px "Cormorant Garamond", Georgia, serif';
       ctx.fillText('San Ignacio, Belize', leftX, 314);
@@ -1830,7 +1849,7 @@
       ctx.strokeRect(qrX - 6, qrY - 6, qrSize + 12, qrSize + 12);
       
       // Generate QR code
-      const guestFullName = encodeURIComponent(card.fullName || 'Guest');
+      const guestFullName = encodeURIComponent(card.guestNames?.[0] || card.fullName || 'Guest');
       const checkinUrl = `https://wedinvitation-ruddy.vercel.app/checkin.html?id=${card.guestId}&name=${guestFullName}`;
       try {
         const qr = qrcode(0, 'M');
