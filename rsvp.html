@@ -1827,21 +1827,17 @@
       ctx.font = '36px "Great Vibes", "Times New Roman", serif';
       ctx.fillText('Andrew & Rosanna', leftX, h - 56);
 
-      ctx.fillStyle = '#000000';
-      ctx.font = 'italic 16px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('Present this QR code to enter the event.', leftX, h - 28);
-
-      // QR Code - Bottom left corner (away from photo)
-      const qrSize = 180;
-      const qrX = leftX;
-      const qrY = h - qrSize - 60;
+      // QR Code - Inside photo area, bottom right of photo
+      const qrSize = 200;
+      const qrX = photoX + photoW - qrSize - 30;
+      const qrY = photoY + photoH - qrSize - 30;
       
       // QR background with gold border
       ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20);
+      ctx.fillRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
       ctx.strokeStyle = '#d4af37';
       ctx.lineWidth = 3;
-      ctx.strokeRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20);
+      ctx.strokeRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16);
       
       // Generate QR code with guest name for backup lookup
       const guestFullName = encodeURIComponent(card.fullName || 'Guest');
@@ -1866,6 +1862,11 @@
       } catch (e) {
         console.log('QR generation error:', e);
       }
+      
+      // QR label below the photo
+      ctx.fillStyle = '#000000';
+      ctx.font = 'italic 14px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText('Scan to check in', qrX, photoY + photoH + 20);
 
       return canvas;
     }

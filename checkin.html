@@ -467,18 +467,23 @@
     // Show scanned guest info - uses name from QR
     function showScannedGuest(guestId, guestName) {
       const decodedName = guestName ? decodeURIComponent(guestName).toLowerCase().trim() : '';
+      console.log('Looking for guest:', decodedName);
+      console.log('Available guests:', allGuests.map(g => `${g.first_name} ${g.last_name}`));
       
-      // Find guest by name (flexible match)
+      // Find guest by name - simple lowercase comparison
       let guest = null;
       if (decodedName) {
-        // Remove extra spaces for matching
-        const cleanName = decodedName.replace(/\s+/g, ' ');
         guest = allGuests.find(g => {
-          const fullName = `${g.first_name || ''} ${g.last_name || ''}`.toLowerCase().replace(/\s+/g, ' ').trim();
-          // Check first name match (most reliable)
-          const firstName = (g.first_name || '').toLowerCase().trim();
-          const searchFirst = cleanName.split(' ')[0];
-          return firstName === searchFirst && fullName.includes(searchFirst);
+          const fullName = `${(g.first_name || '').toLowerCase()} ${(g.last_name || '').toLowerCase()}`.trim();
+          return fullName === decodedName;
+        });
+      }
+      
+      if (!guest) {
+        // Try partial match
+        guest = allGuests.find(g => {
+          const fullName = `${(g.first_name || '').toLowerCase()} ${(g.last_name || '').toLowerCase()}`.trim();
+          return fullName.includes(decodedName) || decodedName.includes(fullName);
         });
       }
       
@@ -486,13 +491,14 @@
         document.getElementById('scanned-result').innerHTML = `
           <div class="scanned-guest">
             <h3>Guest Not Found</h3>
-            <p>Looking for: ${decodedName || 'Unknown'}</p>
+            <p>Looking for: ${decodedName}</p>
             <button class="checkin-btn" onclick="document.getElementById('scanned-result').innerHTML=''">Close</button>
           </div>
         `;
         return;
       }
 
+      console.log('Found guest:', guest.first_name, guest.last_name);
       const fullName = `${guest.first_name || ''}${guest.spouse_name ? ' & ' + guest.spouse_name : ''} ${guest.last_name || ''}`.trim();
       const party = guest.max_party || 1;
       const guestUniqueId = String(guest._id || guest.id || guest.guestId || guest._key);
@@ -604,13 +610,15 @@
           { facingMode: "environment" },
           config,
           (decodedText, decodedResult) => {
+            console.log('QR Scanned:', decodedText);
             // Parse URL params from QR
             const url = new URL(decodedText);
             const guestId = url.searchParams.get('id');
             const guestName = url.searchParams.get('name');
             
-            if (guestId) {
-              showScannedGuest(guestId, guestName);
+            // Call with name even if no id (name-based lookup)
+            if (guestId || guestName) {
+              showScannedGuest(guestId || '', guestName || '');
             }
           },
           (errorMessage) => {
