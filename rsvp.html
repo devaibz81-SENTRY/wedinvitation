@@ -1827,9 +1827,9 @@
       ctx.font = '36px "Great Vibes", "Times New Roman", serif';
       ctx.fillText('Andrew & Rosanna', leftX, h - 56);
 
-      // QR Code - Bottom of left side, NOT over photo
+      // QR Code - Bottom right area, NOT over photo
       const qrSize = 160;
-      const qrX = leftX + 20;
+      const qrX = leftX + leftWidth - qrSize - 40;
       const qrY = h - qrSize - 60;
       
       // QR background with gold border
