@@ -1685,8 +1685,8 @@
       canvas.height = h;
       const ctx = canvas.getContext('2d');
 
-      // Ivory background
-      ctx.fillStyle = '#FAF5EF';
+      // Soft ivory background
+      ctx.fillStyle = '#FFFDF9';
       ctx.fillRect(0, 0, w, h);
 
       // Gold decorative frame
@@ -1753,7 +1753,8 @@
       // Guest names block
       ctx.fillStyle = '#000000';
       ctx.font = '600 22px Montserrat, sans-serif';
-      ctx.fillText(guestNames.length > 1 ? 'Guests' : 'Guest', leftX, 340);
+      const guestLabel = guestNames.length > 1 ? `${guestNames.length} Guests Invited` : 'Guest Invited';
+      ctx.fillText(guestLabel, leftX, 340);
 
       let namesY = 408;
       const maxNameWidth = leftWidth - 48;
