@@ -1812,10 +1812,10 @@
       addRow('Validated', new Date(card.submittedAt).toLocaleString());
       addRow('Reference', String(card.guestId).slice(-8).toUpperCase());
 
-      // QR Code - Bottom right outside the card border
-      const qrSize = 180;
-      const qrX = leftX - 985;
-      const qrY = h - qrSize - 620;
+      // QR Code - Bottom of left side, within card
+      const qrSize = 160;
+      const qrX = leftX + 20;
+      const qrY = h - qrSize - 30;
       
       // QR label
       ctx.fillStyle = '#d4af37';
