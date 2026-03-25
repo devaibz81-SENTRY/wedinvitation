@@ -121,6 +121,12 @@
     <h1>Andrew & Rosanna</h1>
     <p>Wedding Check-In</p>
     <div class="counter"><span id="checked-count">0</span> / <span id="total-count">0</span> Checked In</div>
+    <div style="margin-top:0.5rem;">
+      <label style="cursor:pointer;font-size:0.8rem;color:#888;">
+        <input type="checkbox" id="edit-mode" onchange="toggleEditMode()" style="margin-right:5px;" />
+        Edit Mode (uncheck guests)
+      </label>
+    </div>
     <button class="logout-btn" onclick="logout()">Logout</button>
   </header>
 
@@ -167,6 +173,7 @@
     let checkedInGuests = new Set();
     let html5QrCode = null;
     let currentFilter = 'all';
+    let editMode = false;
 
     function authHeaders() {
       return { Authorization: `Bearer ${adminToken}` };
@@ -193,7 +200,25 @@
       }
     }
 
-    async function logout() {
+    async     function toggleEditMode() {
+      editMode = document.getElementById('edit-mode').checked;
+      renderGuestList();
+      renderGuestQRs();
+    }
+    
+    function undoCheckIn(guestId, guestName) {
+      checkedInGuests.delete(String(guestId));
+      updateCheckedCount();
+      renderGuestList();
+      renderGuestQRs();
+    }
+    
+    async function deleteCheckInFromSheets(guestId) {
+      // For now, just remove locally - sheets doesn't support delete
+      undoCheckIn(guestId);
+    }
+
+    function logout() {
       if (adminToken) {
         await fetch(`${CONVEX_HTTP_URL}/api/auth/logout`, {
           method: 'POST',
@@ -290,12 +315,13 @@
         const fullName = `${g.first_name || ''}${g.spouse_name ? ' & ' + g.spouse_name : ''} ${g.last_name || ''}`.trim();
         const party = g.max_party || 1;
         const isChecked = checkedInGuests.has(id);
+        const statusText = editMode ? (isChecked ? 'Tap to uncheck' : 'Tap to check in') : (isChecked ? '✓' : 'Tap to check in');
         return `<div class="guest-item ${isChecked ? 'checked-in' : ''}" onclick="quickCheckIn(${JSON.stringify(g).replace(/"/g, '&quot;')})">
           <div>
             <div class="guest-name">${fullName}</div>
             <div class="guest-party">${party} guest${party > 1 ? 's' : ''}</div>
           </div>
-          <div class="guest-status">${isChecked ? '✓' : 'Tap to check in'}</div>
+          <div class="guest-status">${statusText}</div>
         </div>`;
       }).join('');
     }
@@ -372,16 +398,33 @@
       const id = String(guest._id || guest.id || guest.guestId || guest._key || '');
       const fullName = `${guest.first_name || ''}${guest.spouse_name ? ' & ' + guest.spouse_name : ''} ${guest.last_name || ''}`.trim();
       const party = guest.max_party || 1;
+      const isChecked = checkedInGuests.has(id);
       
-      const success = await checkInGuest(id, fullName, party);
-      if (success) {
+      // If in edit mode and already checked in, uncheck
+      if (editMode && isChecked) {
+        undoCheckIn(id);
         document.getElementById('scanned-result').innerHTML = `
           <div class="scanned-guest">
             <h3>${fullName}</h3>
-            <div style="font-weight:bold;padding:0.5rem;">✓ Checked In!</div>
-            <p>${party} guest${party > 1 ? 's' : ''}</p>
+            <div style="font-weight:bold;padding:0.5rem;color:#ff6b6b;">✗ Unchecked</div>
+            <p>Removed from checked-in list</p>
           </div>
         `;
+        return;
+      }
+      
+      // Normal check-in
+      if (!isChecked) {
+        const success = await checkInGuest(id, fullName, party);
+        if (success) {
+          document.getElementById('scanned-result').innerHTML = `
+            <div class="scanned-guest">
+              <h3>${fullName}</h3>
+              <div style="font-weight:bold;padding:0.5rem;">✓ Checked In!</div>
+              <p>${party} guest${party > 1 ? 's' : ''}</p>
+            </div>
+          `;
+        }
       }
     }
 
@@ -414,7 +457,7 @@
         tile.onclick = () => quickCheckIn(g);
         
         if (isChecked) {
-          tile.innerHTML = `<div class="guest-qr-name">${fullName}</div><div style="font-size:0.8rem;font-weight:bold;">✓</div>`;
+          tile.innerHTML = `<div class="guest-qr-name">${fullName}</div><div style="font-size:0.8rem;font-weight:bold;">✓ ${editMode ? '(tap to uncheck)' : ''}</div>`;
         } else {
           tile.innerHTML = `<div class="guest-qr-name">${fullName}</div><canvas id="qr-${id}" width="120" height="120"></canvas>`;
           setTimeout(() => {
