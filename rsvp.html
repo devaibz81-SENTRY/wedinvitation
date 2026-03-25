@@ -1805,12 +1805,24 @@
       addRow('Validated', new Date(card.submittedAt).toLocaleString());
       addRow('Reference', String(card.guestId).slice(-8).toUpperCase());
 
+      // Quote section
+      const quoteY = h - 140;
       ctx.fillStyle = '#d4af37';
-      ctx.font = '500 17px Montserrat, sans-serif';
-      ctx.fillText(COUPLE_NAMES, leftX, h - 96);
+      ctx.font = 'italic 20px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText('\u275E', leftX, quoteY);
+      ctx.fillStyle = '#000000';
+      ctx.font = 'italic 18px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText('"Love isn\'t just about the good moments."', leftX + 30, quoteY);
+      ctx.fillText('"It\'s about choosing each other through everything."', leftX + 30, quoteY + 28);
+      
+      // Couple names in cursive
+      ctx.fillStyle = '#d4af37';
+      ctx.font = '36px "Great Vibes", "Times New Roman", serif';
+      ctx.fillText('Andrew & Rosanna', leftX, h - 56);
+
       ctx.fillStyle = '#000000';
       ctx.font = 'italic 16px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('Please present this card with your RSVP confirmation.', leftX, h - 64);
+      ctx.fillText('Please present this card with your RSVP confirmation.', leftX, h - 28);
 
       return canvas;
     }
