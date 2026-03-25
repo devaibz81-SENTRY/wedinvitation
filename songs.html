@@ -20,17 +20,6 @@
     .guest-name { font-size: 0.75rem; color: #8b7444; text-transform: uppercase; letter-spacing: 0.1em; }
     .empty, .loading { text-align: center; padding: 4rem 2rem; color: #8b8276; }
     .empty-icon { font-size: 4rem; margin-bottom: 1rem; }
-    .loader { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px; }
-    .loading-text { color: #8b7444; font-size: 14pt; font-weight: 600; margin-left: 10px; }
-    .dot { margin-left: 3px; animation: blink 1.5s infinite; }
-    .dot:nth-child(2) { animation-delay: 0.3s; }
-    .dot:nth-child(3) { animation-delay: 0.6s; }
-    .loading-bar-background { --height: 30px; display: flex; align-items: center; box-sizing: border-box; padding: 5px; width: 200px; height: var(--height); background-color: #e8e2d8; box-shadow: #ccc -2px 2px 4px 0px inset; border-radius: calc(var(--height) / 2); }
-    .loading-bar { position: relative; display: flex; justify-content: center; flex-direction: column; --height: 20px; width: 0%; height: var(--height); overflow: hidden; background: linear-gradient(0deg, #c9a84c 0%, #e8c87a 100%); border-radius: calc(var(--height) / 2); animation: loading 2s ease-out infinite; }
-    .white-bars-container { position: absolute; display: flex; align-items: center; gap: 18px; }
-    .white-bar { background: linear-gradient(-45deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%); width: 10px; height: 45px; opacity: 0.3; rotate: 45deg; }
-    @keyframes loading { 0% { width: 0; } 80% { width: 100%; } 100% { width: 100%; } }
-    @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
   
     
     /* --- COLOR & TRIM OVERRIDES V2 --- */
@@ -85,20 +74,7 @@
   <div class="container">
     <header><h1>Song Requests</h1><p class="subtitle">Andrew & Rosanna's Wedding</p></header>
     <div class="song-count"><strong id="count">0</strong> songs requested</div>
-    <div class="loading" id="loading">
-      <div class="loader">
-        <div class="loading-bar-background">
-          <div class="loading-bar">
-            <div class="white-bars-container">
-              <div class="white-bar"></div>
-              <div class="white-bar"></div>
-              <div class="white-bar"></div>
-            </div>
-          </div>
-        </div>
-        <div class="loading-text">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
-      </div>
-    </div>
+    <div class="loading" id="loading">Loading songs...</div>
     <div class="song-list" id="songs" style="display:none;"></div>
     <div class="empty" id="empty" style="display:none;"><div class="empty-icon">&#127925;</div><p>No song requests yet!</p></div>
   </div>
