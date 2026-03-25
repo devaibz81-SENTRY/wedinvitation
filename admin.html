@@ -155,10 +155,24 @@
     }
 
     .nav-item:hover,
-    .nav-item.active {
+    .nav-item.active,
+    a.nav-item:hover {
       color: var(--gold);
       background: rgba(201, 168, 76, 0.06);
       border-left-color: var(--gold);
+    }
+    
+    a.nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.7rem 1.5rem;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.5);
+      border-left: 2px solid transparent;
+      font-size: 0.78rem;
+      transition: 0.2s;
+      text-decoration: none;
     }
 
     /* Main Area */
@@ -935,6 +949,13 @@
     <div class="nav-item active" onclick="showView('guests', event)">Guests Data</div>
     <div class="nav-item" onclick="showView('media', event)">Songs &amp; Messages</div>
     <div class="nav-item" onclick="showView('whatsapp', event)">WhatsApp Inbox</div>
+    <div class="nav-label">Public Pages</div>
+    <a href="index.html" class="nav-item" target="_blank">🎉 Invitation</a>
+    <a href="rsvp.html" class="nav-item" target="_blank">📋 RSVP</a>
+    <a href="checkin.html" class="nav-item" target="_blank">✓ Check-In</a>
+    <a href="songs.html" class="nav-item" target="_blank">🎵 Song Requests</a>
+    <a href="playlist.html" class="nav-item" target="_blank">📻 Playlist</a>
+    <a href="messages.html" class="nav-item" target="_blank">💬 Messages</a>
   </div>
 
   <!-- Main -->
