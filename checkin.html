@@ -106,9 +106,9 @@
     <div class="guest-list" id="guest-list"><div class="loading">Loading...</div></div>
   </div>
 
-  <div class="guest-qr-grid">
-    <h2>Guest QR Codes</h2>
-    <div class="qr-grid" id="qr-grid"></div>
+  <div class="guest-qr-grid" id="qr-section">
+    <h2 onclick="toggleQRGrid()" style="cursor:pointer;">Guest QR Codes ▾</h2>
+    <div class="qr-grid" id="qr-grid" style="display:none;"></div>
   </div>
 
   <div class="manual-section">
@@ -314,6 +314,18 @@
           } catch(e) {}
         }, 100);
       });
+    }
+    
+    function toggleQRGrid() {
+      const grid = document.getElementById('qr-grid');
+      const heading = document.querySelector('#qr-section h2');
+      if (grid.style.display === 'none') {
+        grid.style.display = 'grid';
+        heading.textContent = 'Guest QR Codes ▴';
+      } else {
+        grid.style.display = 'none';
+        heading.textContent = 'Guest QR Codes ▾';
+      }
     }
 
     document.querySelectorAll('.filter-tab').forEach(t => t.addEventListener('click', () => {
