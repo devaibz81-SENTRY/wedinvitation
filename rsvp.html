@@ -9,6 +9,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap"
     rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <style>
     :root {
       --black: #000000;
@@ -1823,6 +1824,38 @@
       ctx.fillStyle = '#000000';
       ctx.font = 'italic 16px "Cormorant Garamond", Georgia, serif';
       ctx.fillText('Please present this card with your RSVP confirmation.', leftX, h - 28);
+
+      // QR Code - Bottom right corner
+      const qrSize = 140;
+      const qrX = w - qrSize - 50;
+      const qrY = h - qrSize - 50;
+      
+      // QR background
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20);
+      
+      // Generate QR code
+      const checkinUrl = `https://wedinvitation-ruddy.vercel.app/checkin.html?id=${card.guestId}`;
+      try {
+        const qr = qrcode(0, 'M');
+        qr.addData(checkinUrl);
+        qr.make();
+        
+        // Draw QR modules
+        const moduleCount = qr.getModuleCount();
+        const cellSize = qrSize / moduleCount;
+        
+        ctx.fillStyle = '#000000';
+        for (let row = 0; row < moduleCount; row++) {
+          for (let col = 0; col < moduleCount; col++) {
+            if (qr.isDark(row, col)) {
+              ctx.fillRect(qrX + col * cellSize, qrY + row * cellSize, cellSize + 0.5, cellSize + 0.5);
+            }
+          }
+        }
+      } catch (e) {
+        console.log('QR generation error:', e);
+      }
 
       return canvas;
     }

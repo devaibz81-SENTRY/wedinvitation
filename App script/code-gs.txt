@@ -1,9 +1,11 @@
 /**
  * Wedding Songs & Messages - Google Apps Script
  * Handles: 
- *   GET ?sheet=Songs|Messages - Returns JSON data
+ *   GET ?sheet=Songs|Messages|CheckIns - Returns JSON data
+ *   GET ?action=getCheckIns - Returns check-ins list
  *   GET ?page=songs - Returns HTML song list page
  *   GET ?page=messages - Returns HTML interactive messages page
+ *   POST ?action=checkin - Records guest check-in
  *   POST ?sheet=Songs|Messages - Adds entry to sheet
  */
 
@@ -24,6 +26,12 @@ function doGet(e) {
         .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
     }
     
+    // Get check-ins
+    if (params.action === 'getCheckIns') {
+      const checkins = getSheetData('CheckIns');
+      return jsonOut({ checkins: checkins });
+    }
+    
     // Default: Return JSON data
     const sheetName = params.sheet || 'Songs';
     return jsonOut({ data: getSheetData(sheetName), sheet: sheetName });
@@ -35,7 +43,6 @@ function doGet(e) {
 function doPost(e) {
   try {
     const params = (e && e.parameter) ? e.parameter : {};
-    const sheetName = params.sheet || 'Songs';
     
     let payload;
     if (e.postData && e.postData.contents) {
@@ -44,6 +51,31 @@ function doPost(e) {
       return jsonOut({ error: 'No data received' });
     }
     
+    // Handle check-in
+    if (params.action === 'checkin' || payload.action === 'checkin') {
+      const sheet = getOrCreateSheet('CheckIns', ['Timestamp', 'Guest ID', 'Guest Name', 'Party Count', 'Checked In Time']);
+      
+      // Check if already checked in
+      const existing = sheet.getDataRange().getValues();
+      for (let i = 1; i < existing.length; i++) {
+        if (existing[i][1] === payload.guestId) {
+          return jsonOut({ success: true, message: 'Already checked in', alreadyCheckedIn: true });
+        }
+      }
+      
+      sheet.appendRow([
+        new Date(),
+        payload.guestId || '',
+        payload.guestName || 'Guest',
+        payload.partyCount || 1,
+        new Date().toLocaleTimeString()
+      ]);
+      
+      return jsonOut({ success: true, message: 'Checked in successfully' });
+    }
+    
+    // Default: Add to Songs or Messages sheet
+    const sheetName = params.sheet || 'Songs';
     const sheet = getOrCreateSheet(sheetName, ['Timestamp', 'Name', 'Song', 'Date']);
     sheet.appendRow([
       new Date(),
@@ -73,7 +105,12 @@ function getSheetData(sheetName) {
         timestamp: row[0] ? row[0].toString() : '',
         name: row[1] ? row[1].toString() : '',
         content: row[2] ? row[2].toString() : '',
-        date: row[3] ? row[3].toString() : ''
+        date: row[3] ? row[3].toString() : '',
+        // For check-ins
+        guestId: row[1] ? row[1].toString() : '',
+        guestName: row[2] ? row[2].toString() : '',
+        partyCount: row[3] ? row[3].toString() : '',
+        checkedInTime: row[4] ? row[4].toString() : ''
       });
     }
   }

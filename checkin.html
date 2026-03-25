@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Check-In - Andrew & Rosanna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <style>
+    :root {
+      --black: #000000;
+      --ivory: #FAF5EF;
+      --champagne: #F7E7CE;
+      --gold: #d4af37;
+      --cream: #FAF5EF;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--ivory);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    header h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      opacity: 0.8;
+    }
+
+    .counter {
+      background: var(--gold);
+      color: var(--black);
+      padding: 0.5rem 1.5rem;
+      border-radius: 25px;
+      font-weight: 600;
+      margin-top: 1rem;
+      display: inline-block;
+    }
+
+    .scanner-section {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .scanner-section h2 {
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    #qr-reader {
+      width: 100%;
+      max-width: 350px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    #qr-reader video {
+      border-radius: 12px;
+    }
+
+    .scanned-guest {
+      background: var(--champagne);
+      color: var(--black);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-top: 1rem;
+      max-width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .scanned-guest h3 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.8rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .scanned-guest p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .checkin-btn {
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s;
+    }
+
+    .checkin-btn:hover {
+      background: var(--champagne);
+      transform: translateY(-2px);
+    }
+
+    .checkin-btn:disabled {
+      background: #666;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .checkin-btn.checked {
+      background: #2e8b57;
+      color: white;
+    }
+
+    .guest-list-section {
+      padding: 1.5rem;
+    }
+
+    .guest-list-section h2 {
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .filter-tab {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .filter-tab.active {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    .guest-list {
+      max-height: 50vh;
+      overflow-y: auto;
+    }
+
+    .guest-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      border-left: 3px solid var(--gold);
+    }
+
+    .guest-item.checked-in {
+      border-left-color: #2e8b57;
+      background: rgba(46, 139, 87, 0.1);
+    }
+
+    .guest-item.checked-in .guest-status {
+      color: #2e8b57;
+    }
+
+    .guest-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+    }
+
+    .guest-party {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    .guest-status {
+      font-size: 0.8rem;
+      color: var(--gold);
+    }
+
+    .guest-time {
+      font-size: 0.7rem;
+      opacity: 0.5;
+    }
+
+    .manual-section {
+      padding: 1.5rem;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .manual-section h2 {
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .manual-input {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .manual-input input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      color: var(--ivory);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+    }
+
+    .manual-input input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .manual-input button {
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .qr-display {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .qr-display.active {
+      display: block;
+    }
+
+    .qr-display canvas {
+      max-width: 200px;
+      margin: 0 auto;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--gold);
+    }
+
+    .success-msg {
+      background: #2e8b57;
+      color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 1rem;
+      animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Andrew & Rosanna</h1>
+    <p>Wedding Check-In</p>
+    <div class="counter"><span id="checked-count">0</span> / <span id="total-count">0</span> Checked In</div>
+  </header>
+
+  <div class="scanner-section">
+    <h2>Scan QR Code</h2>
+    <div id="qr-reader"></div>
+    <div id="scanned-result"></div>
+  </div>
+
+  <div class="guest-list-section">
+    <h2>Attending Guests</h2>
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="pending">Pending</button>
+      <button class="filter-tab" data-filter="checked">Checked In</button>
+    </div>
+    <div class="guest-list" id="guest-list">
+      <div class="loading">Loading guest list...</div>
+    </div>
+  </div>
+
+  <div class="manual-section">
+    <h2>Manual Check-In</h2>
+    <div class="manual-input">
+      <input type="text" id="manual-name" placeholder="Search guest name..." />
+      <button onclick="searchGuest()">Search</button>
+    </div>
+    <div id="manual-result"></div>
+  </div>
+
+  <script>
+    const CONVEX_URL = 'https://curious-wildcat-113.convex.site';
+    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyt5l2wFdAb0aoPNVeuA5-IG-wBUexiymxuISdyNiYYc_uwFwD3c9BE4qGKOIPP3BumVg/exec';
+    const CHECKINS_SHEET = 'CheckIns';
+
+    let allGuests = [];
+    let checkedInGuests = new Set();
+    let html5QrCode = null;
+    let currentFilter = 'all';
+
+    // Fetch attending guests from Convex
+    async function fetchGuests() {
+      try {
+        const res = await fetch(`${CONVEX_URL}/api/guests`);
+        if (!res.ok) throw new Error('Failed to fetch guests');
+        const guests = await res.json();
+        allGuests = guests.filter(g => g.attendance === 'attending');
+        updateTotalCount();
+        renderGuestList();
+      } catch (err) {
+        document.getElementById('guest-list').innerHTML = '<div class="loading">Error loading guests. Please refresh.</div>';
+        console.error(err);
+      }
+    }
+
+    // Fetch checked-in guests from Google Sheets
+    async function fetchCheckedIn() {
+      try {
+        const res = await fetch(`${SHEETS_URL}?action=getCheckIns`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.checkins) {
+          checkedInGuests = new Set(data.checkins.map(c => c.guestId));
+        }
+        updateCheckedCount();
+        renderGuestList();
+      } catch (err) {
+        console.log('Could not fetch check-ins');
+      }
+    }
+
+    function updateTotalCount() {
+      document.getElementById('total-count').textContent = allGuests.length;
+    }
+
+    function updateCheckedCount() {
+      document.getElementById('checked-count').textContent = checkedInGuests.size;
+    }
+
+    function renderGuestList() {
+      const list = document.getElementById('guest-list');
+      
+      let filtered = allGuests;
+      if (currentFilter === 'checked') {
+        filtered = allGuests.filter(g => checkedInGuests.has(g._id || g.id));
+      } else if (currentFilter === 'pending') {
+        filtered = allGuests.filter(g => !checkedInGuests.has(g._id || g.id));
+      }
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="loading">No guests found</div>';
+        return;
+      }
+
+      filtered.sort((a, b) => {
+        const nameA = `${a.first_name || ''} ${a.last_name || ''}`.toLowerCase();
+        const nameB = `${b.first_name || ''} ${b.last_name || ''}`.toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
+
+      list.innerHTML = filtered.map(g => {
+        const id = g._id || g.id;
+        const fullName = `${g.first_name || ''}${g.spouse_name ? ' & ' + g.spouse_name : ''} ${g.last_name || ''}`.trim();
+        const party = g.max_party || 1;
+        const isChecked = checkedInGuests.has(id);
+        
+        return `
+          <div class="guest-item ${isChecked ? 'checked-in' : ''}" data-id="${id}">
+            <div>
+              <div class="guest-name">${fullName}</div>
+              <div class="guest-party">${party} guest${party > 1 ? 's' : ''}</div>
+            </div>
+            <div>
+              <div class="guest-status">${isChecked ? '✓ Checked In' : 'Pending'}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Check in guest to Google Sheets
+    async function checkInGuest(guestId, guestName, partyCount) {
+      try {
+        const res = await fetch(SHEETS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'checkin',
+            guestId: guestId,
+            guestName: guestName,
+            partyCount: partyCount
+          })
+        });
+        
+        checkedInGuests.add(guestId);
+        updateCheckedCount();
+        renderGuestList();
+        
+        return true;
+      } catch (err) {
+        console.error('Check-in error:', err);
+        return false;
+      }
+    }
+
+    // Show scanned guest info
+    function showScannedGuest(guestId, guestName) {
+      const guest = allGuests.find(g => (g._id || g.id) === guestId);
+      if (!guest) {
+        document.getElementById('scanned-result').innerHTML = `
+          <div class="scanned-guest">
+            <h3>Guest Not Found</h3>
+            <p>ID: ${guestId}</p>
+            <button class="checkin-btn" onclick="document.getElementById('scanned-result').innerHTML=''">Close</button>
+          </div>
+        `;
+        return;
+      }
+
+      const fullName = `${guest.first_name || ''}${guest.spouse_name ? ' & ' + guest.spouse_name : ''} ${guest.last_name || ''}`.trim();
+      const party = guest.max_party || 1;
+      const isChecked = checkedInGuests.has(guestId);
+
+      document.getElementById('scanned-result').innerHTML = `
+        <div class="scanned-guest">
+          <h3>${fullName}</h3>
+          <p>${party} guest${party > 1 ? 's' : ''}</p>
+          <button class="checkin-btn ${isChecked ? 'checked' : ''}" 
+                  onclick="handleCheckIn('${guestId}', '${fullName}', ${party})"
+                  ${isChecked ? 'disabled' : ''}>
+            ${isChecked ? '✓ Already Checked In' : 'Check In'}
+          </button>
+        </div>
+      `;
+    }
+
+    async function handleCheckIn(guestId, guestName, partyCount) {
+      const btn = document.querySelector('.scanned-guest .checkin-btn');
+      btn.disabled = true;
+      btn.textContent = 'Checking in...';
+
+      const success = await checkInGuest(guestId, guestName, partyCount);
+      
+      if (success) {
+        btn.classList.add('checked');
+        btn.textContent = '✓ Checked In!';
+        
+        // Play success sound
+        try {
+          const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleWozUJHi/7VkFAA5');
+          audio.volume = 0.3;
+          audio.play();
+        } catch (e) {}
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Error - Try Again';
+      }
+    }
+
+    // Manual search
+    function searchGuest() {
+      const query = document.getElementById('manual-name').value.trim().toLowerCase();
+      if (!query) return;
+
+      const found = allGuests.find(g => {
+        const name = `${g.first_name || ''} ${g.last_name || ''}`.toLowerCase();
+        return name.includes(query);
+      });
+
+      const resultDiv = document.getElementById('manual-result');
+      
+      if (found) {
+        const id = found._id || found.id;
+        const fullName = `${found.first_name || ''}${found.spouse_name ? ' & ' + found.spouse_name : ''} ${found.last_name || ''}`.trim();
+        const party = found.max_party || 1;
+        const isChecked = checkedInGuests.has(id);
+
+        resultDiv.innerHTML = `
+          <div class="scanned-guest">
+            <h3>${fullName}</h3>
+            <p>${party} guest${party > 1 ? 's' : ''}</p>
+            <button class="checkin-btn ${isChecked ? 'checked' : ''}" 
+                    onclick="handleCheckIn('${id}', '${fullName}', ${party})"
+                    ${isChecked ? 'disabled' : ''}>
+              ${isChecked ? '✓ Already Checked In' : 'Check In'}
+            </button>
+          </div>
+        `;
+      } else {
+        resultDiv.innerHTML = `
+          <div class="scanned-guest" style="background: #333;">
+            <h3>Guest Not Found</h3>
+            <p>No matching guest found</p>
+          </div>
+        `;
+      }
+    }
+
+    // Filter tabs
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        renderGuestList();
+      });
+    });
+
+    // Initialize QR scanner
+    async function initScanner() {
+      try {
+        html5QrCode = new Html5Qrcode("qr-reader");
+        
+        const config = { 
+          fps: 10, 
+          qrbox: { width: 250, height: 250 },
+          aspectRatio: 1
+        };
+
+        await html5QrCode.start(
+          { facingMode: "environment" },
+          config,
+          (decodedText, decodedResult) => {
+            // Parse URL params from QR
+            const url = new URL(decodedText);
+            const guestId = url.searchParams.get('id');
+            const guestName = url.searchParams.get('name');
+            
+            if (guestId) {
+              showScannedGuest(guestId, guestName);
+            }
+          },
+          (errorMessage) => {
+            // QR scan error - ignore
+          }
+        );
+      } catch (err) {
+        document.getElementById('qr-reader').innerHTML = `
+          <div style="text-align:center; padding:2rem; color:var(--gold);">
+            <p>Camera access needed</p>
+            <p style="font-size:0.8rem; opacity:0.7; margin-top:0.5rem;">Please allow camera permission</p>
+          </div>
+        `;
+        console.log('Scanner init error:', err);
+      }
+    }
+
+    // Handle URL params for direct QR scan
+    function handleUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      const guestId = params.get('id');
+      const guestName = params.get('name');
+      
+      if (guestId) {
+        setTimeout(() => {
+          showScannedGuest(guestId, guestName);
+        }, 1000);
+      }
+    }
+
+    // Start
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchGuests();
+      fetchCheckedIn();
+      initScanner();
+      handleUrlParams();
+      
+      // Refresh check-ins every 30 seconds
+      setInterval(fetchCheckedIn, 30000);
+    });
+  </script>
+</body>
+</html>
