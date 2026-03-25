@@ -127,7 +127,6 @@
     const SESSION_KEY = 'ra_admin_token';
 
     let adminToken = localStorage.getItem(SESSION_KEY) || '';
-    const admin = true;
     let allGuests = [];
     let checkedInGuests = new Set();
     let html5QrCode = null;
@@ -376,18 +375,22 @@
       }
     }
 
-    window.onload = async () => {
-      if (admin && await hasValidSession()) {
-        document.getElementById('login-overlay').classList.add('hidden');
-        fetchGuests();
-        fetchCheckedIn();
-        initScanner();
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchGuests();
+      fetchCheckedIn();
+      initScanner();
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('id') || params.get('name')) {
+        setTimeout(() => showScannedGuest(params.get('id') || '', params.get('name') || ''), 1500);
       }
-      const p = new URLSearchParams(location.search);
-      if (p.get('id') || p.get('name')) setTimeout(() => showScannedGuest(p.get('id')||'', p.get('name')||''), 2000);
-    };
-
-    setInterval(fetchCheckedIn, 30000);
+      setInterval(fetchCheckedIn, 30000);
+    });
+    
+    setTimeout(() => {
+      if (allGuests.length === 0) {
+        fetchGuests();
+      }
+    }, 3000);
   </script>
 </body>
 </html>
