@@ -179,9 +179,11 @@
     }
 
     async function checkInGuest(guestId, guestName, partyCount) {
-      console.log('Checking in:', guestId, guestName);
+      console.log('Checking in to Sheets:', guestId, guestName);
+      const timestamp = Date.now();
       try {
-        const res = await fetch(SHEETS_URL, {
+        // no-cors mode - request fires but we can't read response
+        fetch(SHEETS_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
@@ -189,9 +191,12 @@
             action: 'checkin',
             guestId: String(guestId),
             guestName: String(guestName),
-            partyCount: Number(partyCount) || 1
+            partyCount: Number(partyCount) || 1,
+            timestamp: timestamp
           })
-        });
+        }).catch(e => console.log('Sheets error:', e));
+        
+        // Update local state immediately (assume success with no-cors)
         checkedInGuests.add(String(guestId));
         updateCheckedCount();
         renderGuestList();
@@ -219,11 +224,13 @@
       }
       
       if (!guest) {
-        console.log('Guest not found. Available:', allGuests.map(g => `${g.first_name} ${g.last_name}`));
+        console.log('Guest not found. QR name:', decodedName);
+        console.log('Available guests:', allGuests.map(g => `${g.first_name} ${g.last_name}`));
         document.getElementById('scanned-result').innerHTML = `
           <div class="scanned-guest">
             <h3>Guest Not Found</h3>
-            <p>QR name: "${decodedName}"</p>
+            <p>QR says: "${decodedName}"</p>
+            <p style="font-size:0.8rem;opacity:0.7;margin-top:0.5rem;">Try tapping their name in the list below</p>
             <button class="checkin-btn" onclick="document.getElementById('scanned-result').innerHTML=''">Close</button>
           </div>
         `;
