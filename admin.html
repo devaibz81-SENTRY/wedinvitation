@@ -1208,6 +1208,14 @@ Andrew and Rosanna</textarea>
           <input type="date" id="m-due" value="2026-06-10" />
         </div>
       </div>
+      <div class="modal-row">
+        <div class="modal-group" style="grid-column: 1 / -1;">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+            <input type="checkbox" id="m-easy" style="width:18px;height:18px;" />
+            Easy Mode RSVP (Simplified form - only first name & attendance)
+          </label>
+        </div>
+      </div>
       <div style="display:flex;justify-content:flex-end;gap:1rem;margin-top:2rem;">
         <button class="btn-sm" onclick="document.getElementById('add-modal').classList.remove('open')">Cancel</button>
         <button class="btn-sm primary" onclick="submitGuest()">Save Guest</button>
@@ -1516,6 +1524,7 @@ Andrew and Rosanna</textarea>
       document.getElementById('m-phone').value = g.phone || '';
       document.getElementById('m-due').value = (g.deadline || '2026-06-10').split('T')[0];
       document.getElementById('m-spouse').value = g.spouse_name || '';
+      document.getElementById('m-easy').checked = g.easy_mode === true;
       syncPartySize();
       document.getElementById('add-modal').classList.add('open');
     }
@@ -1543,7 +1552,8 @@ Andrew and Rosanna</textarea>
         phone: document.getElementById('m-phone').value.trim(),
         deadline: document.getElementById('m-due').value,
         spouse_name: document.getElementById('m-spouse').value.trim(),
-        attendance: editingGuestId ? undefined : 'invited'
+        attendance: editingGuestId ? undefined : 'invited',
+        easy_mode: document.getElementById('m-easy').checked ? true : undefined
       };
 
       fetch(`${CONVEX_HTTP_URL}/api/guest`, {
@@ -1575,6 +1585,12 @@ Andrew and Rosanna</textarea>
         max: g.max_party || 1,
         due: g.deadline || ''
       });
+      
+      // Add easy=1 if guest has Easy Mode enabled
+      if (g.easy_mode === true) {
+        p.set('easy', '1');
+      }
+      
       return `${base}/?${p.toString()}`;
     }
 
