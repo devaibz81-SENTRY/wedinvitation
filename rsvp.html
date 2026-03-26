@@ -1306,6 +1306,7 @@
     const gUrl = new URL(window.location.href);
     const params = gUrl.searchParams;
     const getParam = (k) => params.get(k) || '';
+    const EASY_MODE = getParam('easy') === '1';
     const GUEST_ID = getParam('id');
     const GUEST_NAME = getParam('name');
     const GUEST_SPOUSE = getParam('spouse');
@@ -1328,6 +1329,15 @@
     // â”€â”€â”€ On load: personalise the page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('deadline-text').textContent = fmtDeadline(DEADLINE);
+
+      // Auto-enable Easy Mode by default (existing links out in the wild)
+      // Use ?advanced=1 to show full form
+      const isAdvanced = getParam('advanced') === '1';
+      if (isAdvanced) {
+        document.getElementById('advanced-toggle').checked = true;
+      } else {
+        toggleAdvanced();
+      }
 
       if (GUEST_NAME) {
         document.getElementById('personal-greeting').style.display = 'block';
